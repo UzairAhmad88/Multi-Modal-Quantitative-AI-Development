@@ -4,3 +4,4 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 MODELS_DIR = ROOT / "models"
 BACKTESTS_DIR = ROOT / "backtests"
+REPORTS_DIR = ROOT / "research_report"

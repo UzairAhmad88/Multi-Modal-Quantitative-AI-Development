@@ -1,0 +1,50 @@
+{
+  "ticker": "AAPL",
+  "test_records": 16,
+  "backtest_cagr": -0.0006,
+  "backtest_sharpe": 1.64,
+  "backtest_max_drawdown": -0.0038,
+  "risk_status": "NORMAL",
+  "ablation": {
+    "Experiment A (Market Only)": {
+      "num_features": 38,
+      "ic": 0.116469,
+      "rmse": 0.044746,
+      "total_return": -0.0001,
+      "cagr": -0.0003,
+      "sharpe": -0.0504,
+      "max_drawdown": -0.0036,
+      "turnover": 0.0082
+    },
+    "Experiment B (Market + News)": {
+      "num_features": 55,
+      "ic": 0.128494,
+      "rmse": 0.042496,
+      "total_return": 0.0002,
+      "cagr": 0.0004,
+      "sharpe": 0.078,
+      "max_drawdown": -0.0032,
+      "turnover": 0.0075
+    },
+    "Experiment C (Market + Fundamentals)": {
+      "num_features": 63,
+      "ic": 0.113779,
+      "rmse": 0.045535,
+      "total_return": -0.0001,
+      "cagr": -0.0003,
+      "sharpe": -0.0479,
+      "max_drawdown": -0.0038,
+      "turnover": 0.0077
+    },
+    "Experiment D (Market + News + Fundamentals)": {
+      "num_features": 80,
+      "ic": 0.114189,
+      "rmse": 0.042727,
+      "total_return": 0.0,
+      "cagr": 0.0,
+      "sharpe": 0.005,
+      "max_drawdown": -0.0032,
+      "turnover": 0.0071
+    }
+  }
+}

@@ -123,11 +123,18 @@ class FeatureBuilder:
             version=version
         )
 
-        # Save parquet and manifest
+        # Save dataset (convert object columns to string for parquet compatibility)
+        for col in fused_with_targets.select_dtypes(include=['object']).columns:
+            fused_with_targets[col] = fused_with_targets[col].astype(str)
+
         parquet_path = self.output_dir / "features_dataset.parquet"
         manifest_path = self.output_dir / "features_manifest.json"
 
-        fused_with_targets.to_parquet(parquet_path, index=False)
+        try:
+            fused_with_targets.to_parquet(parquet_path, index=False)
+        except Exception:
+            fused_with_targets.to_csv(self.output_dir / "features_dataset.csv", index=False)
+
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(manifest, f, indent=2)
 
