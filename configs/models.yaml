@@ -1,0 +1,16 @@
+models:
+  - logistic_regression
+  - random_forest
+  - xgboost
+  - lstm
+  - gru
+  - transformer
+
+default_model: xgboost
+
+transformer:
+  d_model: 64
+  nhead: 4
+  num_layers: 2
+  dim_feedforward: 128
+  dropout: 0.1

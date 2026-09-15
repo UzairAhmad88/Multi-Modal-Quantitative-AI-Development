@@ -1,0 +1,8 @@
+allocation:
+  method: alpha_volatility
+
+constraints:
+  max_position: 0.25
+  max_sector_exposure: 0.40
+  min_cash: 0.00
+  max_gross_exposure: 1.00

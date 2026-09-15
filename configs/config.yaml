@@ -1,0 +1,39 @@
+project:
+  name: multi_modal_quant_ai
+  seed: 42
+  timezone: UTC
+
+data:
+  universe: [AAPL, MSFT, AMZN, GOOGL, META, NVDA, TSLA, JPM, XOM]
+  frequency: 1d
+
+target:
+  type: regression
+  horizon_days: 5
+
+model:
+  sequence_length: 30
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 20
+
+fusion:
+  method: early
+
+signal:
+  buy_threshold: 0.60
+  sell_threshold: -0.60
+
+portfolio:
+  max_position: 0.25
+  max_sector_exposure: 0.40
+  max_leverage: 1.0
+
+risk:
+  max_drawdown: 0.20
+  confidence_level: 0.95
+
+backtest:
+  initial_capital: 100000
+  transaction_cost_bps: 10
+  slippage_bps: 5

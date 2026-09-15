@@ -1,0 +1,14 @@
+market:
+  source: yfinance
+  frequency: 1d
+
+news:
+  timestamp_field: published_at
+  aggregate_frequency: 1d
+
+fundamentals:
+  availability_rule: public_release_time
+
+quality:
+  max_missing_fraction: 0.05
+  remove_duplicates: true

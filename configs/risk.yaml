@@ -1,0 +1,10 @@
+limits:
+  max_position: 0.25
+  max_sector_exposure: 0.40
+  max_leverage: 1.0
+  max_drawdown: 0.20
+  max_daily_turnover: 0.30
+
+var:
+  confidence: 0.95
+  method: historical
