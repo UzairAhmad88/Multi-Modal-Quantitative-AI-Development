@@ -1,0 +1,5 @@
+experiment,num_features,ic,rmse,total_return,cagr,sharpe,max_drawdown,turnover
+Experiment A (Market Only),38,0.116469,0.044746,-0.0001,-0.0003,-0.0504,-0.0036,0.0082
+Experiment B (Market + News),55,0.128494,0.042496,0.0002,0.0004,0.078,-0.0032,0.0075
+Experiment C (Market + Fundamentals),63,0.113779,0.045535,-0.0001,-0.0003,-0.0479,-0.0038,0.0077
+Experiment D (Market + News + Fundamentals),80,0.114189,0.042727,0.0,0.0,0.005,-0.0032,0.0071
