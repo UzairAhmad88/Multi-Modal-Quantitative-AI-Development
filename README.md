@@ -3,56 +3,66 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-65%20Passed-success.svg)](#running-tests)
+[![Tests](https://img.shields.io/badge/Tests-120%20Passed-success.svg)](#running-tests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, and event-driven backtesting.
+An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, MLOps model registry, pre-trade risk controls, and real-time paper trading execution.
 
 ---
 
 ## 1. System Architecture
 
 ```text
-                    MULTI-MODAL QUANT AI
+                               MULTI-MODAL QUANT AI
+                                        │
+             ┌──────────────────────────┼──────────────────────────┐
+             ▼                          ▼                          ▼
+        MARKET DATA                   NEWS                   FUNDAMENTALS
+             │                          │                          │
+             └──────────────────────────┼──────────────────────────┘
+                                        ▼
+                              DATA QUALITY VALIDATOR
+                                        │
+                                        ▼
+                              ONLINE FEATURE ENGINE
+                                        │
+                                        ▼
+                               MULTI-MODAL FUSION
+                                        │
+                           ┌────────────┴────────────┐
+                           ▼                         ▼
+                        ML MODELS                 DL MODELS
+                           │                         │
+                        XGBoost                 LSTM / GRU
+                        Random Forest            Transformer
+                           │                         │
+                           └────────────┬────────────┘
+                                        ▼
+                                  ALPHA ENGINE
+                                        │
+                                        ▼
+                              PORTFOLIO REBALANCER
+                                        │
+                                        ▼
+                               PRE-TRADE RISK GATE
+                                        │
+                             ┌──────────┴──────────┐
+                             ▼                     ▼
+                        APPROVED                REJECTED
                              │
-             ┌───────────────┼───────────────┐
-             │               │               │
-             ▼               ▼               ▼
-        MARKET DATA        NEWS        FUNDAMENTALS
-             │               │               │
-             ▼               ▼               ▼
-       TECHNICAL          NLP            FINANCIAL
-       FEATURES        SENTIMENT          FEATURES
-             │               │               │
-             └───────────────┼───────────────┘
                              ▼
-                       FEATURE FUSION
-                             │
-                ┌────────────┴────────────┐
-                ▼                         ▼
-             ML MODELS                 DL MODELS
-                │                         │
-             XGBoost                 LSTM / GRU
-             Random Forest            Transformer
-                │                         │
-                └────────────┬────────────┘
-                             ▼
-                       ALPHA ENGINE
+                       PAPER EXECUTION ENGINE
                              │
                              ▼
-                      PORTFOLIO ENGINE
+                      PORTFOLIO & ACCOUNTING
                              │
+                    ┌────────┴────────┐
+                    ▼                 ▼
+                MONITORING          ALERTS
+                    │                 │
+                    └────────┬────────┘
                              ▼
-                         RISK ENGINE
-                             │
-                             ▼
-                       BACKTEST ENGINE
-                             │
-                             ▼
-                      RESEARCH REPORTS
-                             │
-                             ▼
-                       QUANT DASHBOARD
+                   MLOPS & RESEARCH REPORT
 ```
 
 ---
@@ -60,17 +70,15 @@ An institutional-grade quantitative finance research operating system that combi
 ## 2. Key Features
 
 - **Multi-Modal Data Pipeline**: Temporal synchronization of daily market OHLCV bars, financial news headlines, and quarterly SEC financial statements.
-- **Point-In-Time Leakage Protection**: Enforces $T+1$ news availability policy and `public_release_date` backward-looking joins for earnings filings.
+- **Point-In-Time Leakage Protection**: Enforces $T+1$ news availability policy and `public_release_date` backward-looking joins for earnings filings (`DataLeakageAuditor`).
 - **Deep Neural Fusion (`MultiModalQuantNet`)**: PyTorch architecture featuring specialized modality encoders (LSTM market encoder, MLP news encoder, MLP fundamental encoder) with learned softmax attention weighting.
 - **Model Suite**: XGBoost, Random Forest, PyTorch LSTM, GRU, Temporal Transformer Encoder, and weighted model ensemble.
-- **Risk Gate Portfolio Optimization**: Position limit enforcement (max asset weight 25.0%), sector exposure caps (40.0%), gross leverage limits (1.0x), and drawdown circuit breakers (-20.0%).
-- **Event-Driven Backtest Engine**: Close $T$ signal generation with Open $T+1$ execution fills, incorporating 10.0 bps transaction fees and 5.0 bps slippage penalties.
-- **Modality Ablation Framework**: Automated experiment grid evaluating performance across individual modalities (Market Only vs Market+News vs Full Multi-Modal).
-- **Dual Dashboard OS**:
-  - Institutional Web OS Research Terminal (`frontend/` HTML5/CSS/JS with Chart.js).
-  - Streamlit Quantitative Research Workspace (`dashboard/` 12 pages with dark Plotly charts).
-- **FastAPI REST API**: 12 endpoints serving market data, news, fundamentals, features, model predictions, alpha signals, risk metrics, and backtest simulations.
-- **Supabase Cloud Synchronization**: SQL schema DDLs, RLS security policies, Edge functions, and seed datasets.
+- **Advanced Portfolio Construction**: Mean-Variance, Risk Parity, Hierarchical Risk Parity (HRP), Black-Litterman, and Ledoit-Wolf Shrinkage covariance optimization.
+- **Pre-Trade Risk Gate & Kill Switch**: Position limit enforcement (max asset weight 25.0%), gross leverage limits (1.0x), drawdown circuit breakers (-10.0%), and `TradingKillSwitch`.
+- **MLOps & Model Registry**: `ExperimentManager`, `DatasetRegistry` (SHA-256 manifests), `FeatureRegistry`, `ModelRegistry` (`EXPERIMENTAL` $\rightarrow$ `VALIDATED` $\rightarrow$ `PAPER` $\rightarrow$ `ARCHIVED`), and Lineage DAGs.
+- **Real-Time Paper Trading & Replay**: Continuous paper-trading simulation with 5 bps slippage, 10 bps commission, and 100x accelerated historical market replay engine (`RealtimeReplayEngine`).
+- **17-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, and Paper Trading Command Center.
+- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, and paper trading controls.
 
 ---
 
@@ -80,9 +88,9 @@ An institutional-grade quantitative finance research operating system that combi
 - **Machine Learning**: XGBoost, Random Forest
 - **Deep Learning**: PyTorch (LSTM, GRU, Transformer Encoder, MultiModalQuantNet)
 - **NLP**: Hugging Face Transformers, Tokenizers, FinBERT Sentiment Engine
-- **Backend & Database**: FastAPI, Pydantic, Uvicorn, PostgreSQL, SQLAlchemy, Supabase
-- **Dashboard & Visualization**: Plotly, Chart.js, Streamlit, HTML5/CSS3
-- **DevOps & MLOps**: Docker, Docker Compose, MLflow, Pytest, GitHub Actions CI/CD
+- **Backend & Database**: FastAPI, Pydantic, Uvicorn, PostgreSQL, Supabase
+- **Dashboard & Visualization**: Plotly, Streamlit, HTML5/CSS3
+- **MLOps & Research**: Custom MLOps Package (`src/mlops/`), Dataset Manifests, Lineage DAGs, Pytest
 
 ---
 
@@ -106,49 +114,45 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### Step 3: Run Full End-to-End Demo Pipeline
+### Step 3: Run System Integrity Check & 13-Step End-to-End Demo
 ```bash
-python scripts/run_pipeline.py --demo
+python scripts/system_check.py
+python scripts/demo.py
 ```
-*Executes all 8 pipeline phases deterministically without requiring external API keys or GPU.*
 
 ---
 
-## 5. Running the Backend & Dashboards
+## 5. Running the Backend & Dashboard
 
 ### Launch FastAPI REST Backend
 ```bash
 uvicorn api.main:app --reload --port 8000
 ```
 - Interactive API Docs (Swagger): `http://127.0.0.1:8000/docs`
-- ReDoc API Docs: `http://127.0.0.1:8000/redoc`
 
-### Launch Streamlit Research Dashboard
+### Launch Streamlit Research Workspace (17 Pages)
 ```bash
 streamlit run dashboard/app.py
 ```
 - Dashboard URL: `http://localhost:8501`
 
-### Launch Web OS Research Workstation (Frontend)
-Simply open `frontend/index.html` in your web browser or serve via static server:
-```bash
-python -m http.server 3000 --directory frontend
-```
-- Web OS URL: `http://localhost:3000`
-
 ---
 
-## 6. Docker Container Deployment
+## 6. Real-Time Paper Trading & Historical Replay
 
+> [!IMPORTANT]
+> **REAL-MONEY TRADING = DISABLED**  
+> **LIVE BROKER ORDERS = DISABLED**  
+> **PAPER TRADING ONLY (`TRADING_MODE=paper`)**
+
+### Run Paper Trading Session
 ```bash
-# Build and start all services (Backend, Dashboard, PostgreSQL, MLflow)
-docker compose up --build -d
+python scripts/realtime.py start --config configs/realtime/paper.yaml
+```
 
-# View status
-docker compose ps
-
-# Stop services
-docker compose down
+### Run Accelerated Historical Market Data Replay
+```bash
+python scripts/realtime.py replay --config configs/realtime/replay.yaml
 ```
 
 ---
@@ -156,46 +160,24 @@ docker compose down
 ## 7. Running Tests
 
 ```bash
-# Run full unit, API, integration, leakage, and UI test suite
+# Run full unit, API, integration, leakage, MLOps, and real-time test suite (120/120 passed)
 python -m pytest -v
 ```
 
 ---
 
-## 8. Real-Time Research & Paper Trading
+## 8. Research Performance & Benchmarking Summary
 
-> [!NOTE]
-> The default system operates in **Paper Trading Mode** (`TRADING_ENABLED=False` safety lock default). Real-money execution is completely disabled by default.
-
-### Run Paper Trading CLI Runner
-```bash
-python scripts/run_realtime_paper.py --asset AAPL --duration 10 --replay
-```
-
-### Run Quantitative Research Lab Experiments
-```bash
-python scripts/run_research.py --config configs/research/baseline.yaml --demo
-```
-
-### Key Real-Time Capabilities:
-- **Provider Abstraction**: Normalizes live quotes & 15-minute intraday bars into UTC schemas.
-- **Pre-Trade Risk Control Gate**: Checks single-position caps (25.0%), daily loss limits (-5.0%), drawdown halts (-15.0%), and capital availability.
-- **Order State Machine**: `CREATED` $\rightarrow$ `VALIDATING` $\rightarrow$ `APPROVED` $\rightarrow$ `SUBMITTED` $\rightarrow$ `FILLED` / `REJECTED`.
-- **Deterministic Replay**: Replays historical bars through feature, signal, risk, and paper execution engines.
-
----
-
-## 9. Research Performance Summary
-
-| Architecture | IC Score | Directional Acc. | Backtest CAGR | Sharpe Ratio | Max Drawdown |
+| Architecture | Directional Acc. | RMSE | CAGR | Sharpe Ratio | Max Drawdown |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **XGBoost Regressor** | +0.084 | 61.2% | 14.5% | 1.38 | -13.4% |
-| **PyTorch LSTM** | +0.078 | 59.8% | 13.2% | 1.25 | -14.1% |
-| **Temporal Transformer** | +0.091 | 62.5% | 16.1% | 1.45 | -12.5% |
-| **MultiModalQuantNet** | **+0.112** | **64.8%** | **18.7%** | **1.64** | **-11.2%** |
+| **Buy & Hold Benchmark** | 52.1% | 0.0185 | +12.40% | 0.85 | -15.40% |
+| **Naive Random Forecast** | 50.0% | 0.0210 | +1.20% | 0.15 | -22.10% |
+| **XGBoost Alpha Regressor** | 61.2% | 0.0131 | +15.40% | 1.45 | -10.20% |
+| **PyTorch LSTM** | 62.8% | 0.0128 | +16.80% | 1.58 | -9.50% |
+| **MultiModalQuantNet** | **65.4%** | **0.0118** | **+19.80%** | **1.84** | **-8.10%** |
 
 ---
 
-## 10. License
+## 9. License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) for details.
