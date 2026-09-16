@@ -177,16 +177,34 @@ class QuantAPIClient {
         }
     }
 
-    async runBacktest(ticker = "AAPL", capital = 100000.0) {
+    async runPipeline(experimentId = "EXP-END2END-001", symbols = ["AAPL", "MSFT"]) {
         try {
-            const res = await fetch(`${API_BASE}/backtest`, {
+            const res = await fetch(`${API_BASE}/pipeline/run`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ticker, initial_capital: capital })
+                body: JSON.stringify({ experiment_id: experimentId, symbols })
             });
             return await res.json();
         } catch (e) {
-            return { status: "error", message: e.message };
+            return { status: "FAILED", error: e.message };
+        }
+    }
+
+    async fetchPipelineReport(runId) {
+        try {
+            const res = await fetch(`${API_BASE}/pipeline/${runId}/report`);
+            return await res.json();
+        } catch (e) {
+            return { report_md: "Report unavailable." };
+        }
+    }
+
+    async fetchPipelineHealth() {
+        try {
+            const res = await fetch(`${API_BASE}/pipeline/health`);
+            return await res.json();
+        } catch (e) {
+            return { status: "unhealthy" };
         }
     }
 }
