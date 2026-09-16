@@ -1,0 +1,7 @@
+optimizer: MeanVariance
+risk_aversion: 2.5
+max_asset_weight: 0.25
+min_asset_weight: 0.0
+covariance_estimator: ledoit_wolf
+rebalance_freq: weekly
+rebalance_threshold: 0.02

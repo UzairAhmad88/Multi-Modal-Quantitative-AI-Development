@@ -1,0 +1,6 @@
+optimizer: RiskParity
+max_asset_weight: 0.25
+min_asset_weight: 0.0
+covariance_estimator: ewma
+rebalance_freq: weekly
+rebalance_threshold: 0.02

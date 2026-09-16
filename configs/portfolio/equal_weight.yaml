@@ -1,0 +1,5 @@
+optimizer: EqualWeight
+max_asset_weight: 0.25
+min_asset_weight: 0.0
+rebalance_freq: weekly
+rebalance_threshold: 0.02
