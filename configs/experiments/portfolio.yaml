@@ -1,0 +1,23 @@
+experiment_name: portfolio_optimization_experiment
+description: "Optimization experiment evaluating mean-variance and Black-Litterman allocations"
+dataset:
+  name: "sp500_daily"
+  version: "v1.0.0"
+features:
+  name: "technical_and_sentiment"
+  version: "v1.0.0"
+model:
+  type: "multimodal_fusion"
+  version: "v1.0.0"
+strategy:
+  name: "mean_variance_optimization"
+  portfolio_method: "mean_variance"
+  max_weight: 0.20
+  risk_free_rate: 0.02
+training_period:
+  start: "2020-01-01"
+  end: "2022-12-31"
+test_period:
+  start: "2023-01-01"
+  end: "2023-12-31"
+seed: 42

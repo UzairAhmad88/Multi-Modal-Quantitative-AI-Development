@@ -1,0 +1,12 @@
+experiment_name: transformer_attention_experiment
+model_type: Transformer
+dataset_version: v1.0.0
+feature_version: v1.0.0
+random_seed: 42
+ticker: AAPL
+d_model: 64
+nhead: 4
+num_encoder_layers: 2
+dropout: 0.15
+batch_size: 32
+epochs: 10

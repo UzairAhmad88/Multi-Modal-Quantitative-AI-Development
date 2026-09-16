@@ -1,0 +1,28 @@
+{
+  "model_id": "MODEL-XGBOOSTALPHA-v1.0.0",
+  "model_name": "XGBoostAlpha",
+  "model_type": "XGBoost",
+  "version": "v1.0.0",
+  "framework": "xgboost",
+  "status": "ARCHIVED",
+  "feature_names": [],
+  "feature_count": 0,
+  "training_dataset": "sp500_daily",
+  "dataset_version": "sp500_daily",
+  "feature_version": "v1.0.0",
+  "metrics": {
+    "predictive.rmse": 0.02,
+    "trading.sharpe_ratio": 1.5
+  },
+  "artifact_path": "artifacts/models\\XGBoostAlpha\\v1.0.0",
+  "signature": {
+    "input_features": [],
+    "input_shape": [
+      null,
+      0
+    ],
+    "output_format": "prediction_and_confidence"
+  },
+  "registered_at": "2026-09-16T14:25:02.688792+00:00",
+  "promoted_at": "2026-09-16T14:25:02.694351+00:00"
+}

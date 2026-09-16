@@ -1,0 +1,27 @@
+{
+  "model_id": "MODEL-MULTIMODAL_FUSION-v1.0.0",
+  "model_name": "multimodal_fusion",
+  "model_type": "multimodal_fusion",
+  "version": "v1.0.0",
+  "framework": "PyTorch",
+  "status": "EXPERIMENTAL",
+  "feature_names": [],
+  "feature_count": 0,
+  "training_dataset": "sp500_daily",
+  "dataset_version": "sp500_daily",
+  "feature_version": "v1.0.0",
+  "metrics": {
+    "predictive.rmse": 0.0125,
+    "predictive.r2": 0.38
+  },
+  "artifact_path": "artifacts/models\\multimodal_fusion\\v1.0.0",
+  "signature": {
+    "input_features": [],
+    "input_shape": [
+      null,
+      0
+    ],
+    "output_format": "prediction_and_confidence"
+  },
+  "registered_at": "2026-09-16T14:25:03.456481+00:00"
+}

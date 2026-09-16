@@ -1,0 +1,43 @@
+{
+  "dataset_id": "DS-SP500_DAILY-v1.0.0",
+  "name": "sp500_daily",
+  "version": "v1.0.0",
+  "source": "yfinance",
+  "created_at": "2026-09-16T14:25:03.456481+00:00",
+  "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "row_count": 5030,
+  "column_count": 8,
+  "columns": [
+    "date",
+    "symbol",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "sentiment_score"
+  ],
+  "symbols": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "NVDA"
+  ],
+  "date_range": [
+    "2020-01-01",
+    "2023-12-31"
+  ],
+  "missingness": {
+    "sentiment_score": 12
+  },
+  "quality_report": {
+    "missing_values": {
+      "sentiment_score": 12
+    },
+    "duplicates": 0,
+    "outliers": 0,
+    "schema_valid": true,
+    "timestamp_integrity": true
+  }
+}

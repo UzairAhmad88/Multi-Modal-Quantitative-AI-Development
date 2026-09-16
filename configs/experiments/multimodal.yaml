@@ -1,0 +1,15 @@
+experiment_name: multimodal_fusion_flagship_experiment
+model_type: MultiModalQuantNet
+dataset_version: v1.0.0
+feature_version: v1.0.0
+random_seed: 42
+ticker: AAPL
+horizon: 5D
+modalities:
+  market: true
+  news: true
+  fundamentals: true
+fusion_attention_heads: 4
+learning_rate: 0.001
+epochs: 15
+batch_size: 32

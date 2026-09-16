@@ -1,0 +1,23 @@
+{
+  "dataset_id": "DS-MANIFEST-001",
+  "name": "sp500_daily_prices_and_sentiment",
+  "version": "v1.0.0",
+  "source": "yfinance_and_finviz",
+  "created_at": "2026-09-16T12:00:00Z",
+  "date_range": {
+    "start": "2020-01-01",
+    "end": "2023-12-31"
+  },
+  "symbols": ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA"],
+  "columns": ["date", "symbol", "open", "high", "low", "close", "volume", "sentiment_score"],
+  "row_count": 5030,
+  "missingness": {
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 0,
+    "volume": 0,
+    "sentiment_score": 12
+  },
+  "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

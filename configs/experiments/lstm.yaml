@@ -1,0 +1,12 @@
+experiment_name: lstm_recurrent_experiment
+model_type: LSTM
+dataset_version: v1.0.0
+feature_version: v1.0.0
+random_seed: 42
+ticker: AAPL
+sequence_length: 20
+hidden_size: 64
+num_layers: 2
+dropout: 0.20
+batch_size: 32
+epochs: 10

@@ -1,0 +1,11 @@
+experiment_name: baseline_xgboost_experiment
+model_type: XGBoost
+dataset_version: v1.0.0
+feature_version: v1.0.0
+random_seed: 42
+ticker: AAPL
+horizon: 5D
+learning_rate: 0.05
+n_estimators: 100
+transaction_cost_bps: 10.0
+slippage_bps: 5.0
