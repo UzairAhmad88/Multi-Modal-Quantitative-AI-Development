@@ -1,0 +1,15 @@
+{
+  "experiment_id": "TEST-ERR",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 1,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:04:12.344131",
+      "incoming_config_hash": "ba1123767e54b6c2",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

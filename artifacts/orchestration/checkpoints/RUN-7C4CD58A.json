@@ -1,0 +1,47 @@
+{
+  "run_id": "RUN-7C4CD58A",
+  "experiment_id": "EXP-FULL-TEST",
+  "status": "FAILED",
+  "current_stage": "VALIDATION",
+  "stages": {
+    "DATA": {
+      "stage_name": "DATA",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0317,
+      "artifacts": {
+        "data_snapshot": "DATA-SNAPSHOT-001.csv"
+      },
+      "error_message": null
+    },
+    "FEATURES": {
+      "stage_name": "FEATURES",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0172,
+      "artifacts": {
+        "feature_matrix": "FEAT-MATRIX-001.csv"
+      },
+      "error_message": null
+    },
+    "VALIDATION": {
+      "stage_name": "VALIDATION",
+      "status": "FAILED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0688,
+      "artifacts": {},
+      "error_message": "'LeakageDetector' object has no attribute 'audit_leakage'"
+    }
+  },
+  "completed_stages": [
+    "DATA",
+    "FEATURES"
+  ],
+  "failed_stage": "VALIDATION",
+  "started_at": "2026-09-16T22:03:16.530391+00:00",
+  "completed_at": "2026-09-16T22:03:16.652863+00:00",
+  "duration_seconds": 0.1214
+}

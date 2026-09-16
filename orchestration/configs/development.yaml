@@ -1,0 +1,37 @@
+profile:
+  name: development
+  description: Laptop-first quick development execution profile
+
+experiment:
+  name: "dev_quick_run"
+  symbols:
+    - AAPL
+  random_seed: 42
+
+data:
+  date_range: "2024-01-01 to 2024-12-31"
+  frequency: "1d"
+
+validation:
+  method: walk_forward
+  strict_leakage: true
+  purge_period: 5
+  embargo_period: 5
+
+model:
+  type: MultiModalQuantNet
+  epochs: 5
+
+portfolio:
+  allocator: risk_parity
+  max_asset_weight: 0.25
+
+execution:
+  slippage_bps: 5.0
+  commission_bps: 10.0
+
+risk:
+  max_allowed_var_95: 0.20
+
+monitoring:
+  min_health_score: 50.0

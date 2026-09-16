@@ -46,6 +46,11 @@ class RiskService:
         else:
             cov = np.cov(rets, rowvar=False)
 
+        if cov.ndim == 0:
+            cov = np.array([[float(cov)]])
+        elif cov.ndim == 1:
+            cov = cov.reshape(1, 1)
+
         np.random.seed(42)
         bench = np.random.normal(loc=0.0004, scale=0.012, size=len(rets))
 

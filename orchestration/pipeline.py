@@ -1,190 +1,160 @@
 """
-Master Research Pipeline Orchestrator for Multi-Modal Quant AI.
-Orchestrates all 17 stages, enforces DAG dependencies, checkpoint resumes, resource limits, and artifact registration.
+Master Unified Pipeline Orchestrator Engine for End-to-End Research OS.
 """
 
-from typing import Dict, List, Any, Optional
-import time
 import datetime
+import time
 import uuid
-from orchestration.dependency_graph import DependencyGraph, PipelineStage
-from orchestration.state_manager import StateManager, PipelineState, StageState
-from orchestration.checkpoint_manager import CheckpointManager
-from orchestration.retry_manager import RetryManager
-from orchestration.resource_manager import ResourceManager
-from orchestration.artifact_manager import ArtifactManager
-from orchestration.logging_manager import LoggingManager
-from orchestration.task_registry import TaskRegistry
-from orchestration.executor import StageExecutor
-from research.registry.registry import ExperimentRegistry
+from typing import Any, Dict, List, Optional
+from .pipeline_context import PipelineContext
+from .pipeline_state import PipelineRunState, PipelineStatus, StageStatus, StageState
+from .stage_registry import StageRegistry
+from .dependency_graph import PipelineDependencyGraph
+from .validation import PipelineValidationGates
+from .checkpoints import CheckpointManager
+from .recovery import RecoveryEngine
+from .events import EventEmitter, PipelineEventType
 
 
-class ResearchPipeline:
-    """Master 17-stage DAG pipeline orchestrator."""
+class ResearchPipelineEngine:
+    """Master Unified End-to-End Quantitative Research Pipeline Engine."""
 
-    def __init__(
+
+    def __init__(self, checkpoints_dir: Optional[str] = None):
+        self.stage_registry = StageRegistry()
+        self.dependency_graph = PipelineDependencyGraph()
+        self.checkpoint_mgr = CheckpointManager(checkpoints_dir)
+        self.recovery_engine = RecoveryEngine(self.checkpoint_mgr)
+        self.event_emitter = EventEmitter()
+
+    def run_pipeline(
         self,
+        experiment_id: str = "EXP-END2END-001",
         config: Optional[Dict[str, Any]] = None,
+        symbols: Optional[List[str]] = None,
         resume_run_id: Optional[str] = None,
-        artifact_dir: str = "artifacts",
-        log_dir: str = "logs/runs",
-        max_memory_gb: float = 8.0,
-        max_runtime_minutes: float = 120.0,
-    ):
-        self.config = config or {}
-        self.resume_run_id = resume_run_id
-        self.artifact_dir = artifact_dir
-        self.log_dir = log_dir
-        self.state_manager = StateManager()
-        self.checkpoint_manager = CheckpointManager(artifact_dir)
-        self.retry_manager = RetryManager(enabled=True, max_attempts=3)
-        self.resource_manager = ResourceManager(max_memory_gb=max_memory_gb, max_runtime_minutes=max_runtime_minutes)
-        self.artifact_manager = ArtifactManager(artifact_dir)
-        self.logging_manager = LoggingManager(log_dir)
-        self.task_registry = TaskRegistry()
-        self.executor = StageExecutor(self.checkpoint_manager, self.retry_manager, self.resource_manager)
-        self.registry = ExperimentRegistry()
+        start_stage: Optional[str] = None,
+        end_stage: Optional[str] = None,
+    ) -> PipelineRunState:
+        run_id = resume_run_id or f"RUN-{uuid.uuid4().hex[:8].upper()}"
+        config = config or {}
+        symbols = symbols or ["AAPL", "MSFT"]
 
-        self.experiment_id = f"EXP-{self._generate_timestamp_id()}"
-        self.run_id = self.resume_run_id or f"RUN-{self._generate_timestamp_id()}"
-
-    @staticmethod
-    def _generate_timestamp_id() -> str:
-        now = datetime.datetime.utcnow()
-        return f"{now.strftime('%Y%m%d')}-{uuid.uuid4().hex[:4].upper()}"
-
-    def execute(self) -> Dict[str, Any]:
-        """Convenience method to execute current pipeline instance."""
-        return self.execute_pipeline(
-            experiment_id=self.experiment_id,
-            config=self.config,
-            run_id=self.run_id,
-            resume_run_id=self.resume_run_id
+        context = PipelineContext(
+            experiment_id=experiment_id,
+            run_id=run_id,
+            symbols=symbols,
+            config=config,
+            random_seed=config.get("random_seed", 42),
         )
 
-    def execute_pipeline(
-        self,
-        experiment_id: str,
-        config: Dict[str, Any],
-        run_id: Optional[str] = None,
-        resume_run_id: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """Executes full 17-stage research pipeline with DAG validation and checkpoint resume support."""
-        actual_run_id = run_id or resume_run_id or f"RUN-{self._generate_timestamp_id()}"
+        all_stages = self.dependency_graph.get_execution_order()
 
-        run_state = self.state_manager.get_run_state(actual_run_id)
-        if not run_state:
-            run_state = self.state_manager.create_run_state(actual_run_id, experiment_id, metadata={"config": config})
+        # Handle stage subset selection if requested
+        if start_stage or end_stage:
+            start_idx = all_stages.index(start_stage) if start_stage in all_stages else 0
+            end_idx = all_stages.index(end_stage) + 1 if end_stage in all_stages else len(all_stages)
+            stages_to_run = all_stages[start_idx:end_idx]
+        elif resume_run_id:
+            stages_to_run = self.recovery_engine.get_resume_stages(resume_run_id, all_stages)
+        else:
+            stages_to_run = list(all_stages)
 
-        self.state_manager.start_pipeline(actual_run_id)
-        self.logging_manager.log_event(actual_run_id, "PIPELINE", "STARTED", message=f"Pipeline run {actual_run_id} started for experiment {experiment_id}")
+        run_state = PipelineRunState(
+            run_id=run_id,
+            experiment_id=experiment_id,
+            status=PipelineStatus.RUNNING,
+            started_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        )
 
-        self.registry.register_experiment(experiment_id, config.get("experiment", {}).get("name", "experiment"), config)
-        self.registry.register_run(actual_run_id, experiment_id, config, status="RUNNING")
+        self.event_emitter.emit(
+            event_id=f"EVT-{uuid.uuid4().hex[:6]}",
+            run_id=run_id,
+            experiment_id=experiment_id,
+            event_type=PipelineEventType.PIPELINE_STARTED,
+            message=f"Starting end-to-end research pipeline for experiment '{experiment_id}'",
+        )
 
-        start_time = time.time()
-        ctx: Dict[str, Any] = {"experiment_id": experiment_id, "run_id": actual_run_id, "config": config}
-        completed_stages = set()
+        start_t = time.time()
 
-        ordered_stages = DependencyGraph.get_ordered_stages()
-
-        for stage in ordered_stages:
-            stage_name = stage.value
-
-            # Failure injection for testing
-            if config.get("_inject_failure_stage") == stage_name:
-                err_msg = f"Injected failure in stage {stage_name}"
-                self.state_manager.fail_stage(actual_run_id, stage, err_msg)
-                self.logging_manager.log_event(actual_run_id, stage_name, "FAILED", severity="ERROR", message=err_msg)
-                self.registry.update_run_status(actual_run_id, status="FAILED", error=err_msg)
-                return {
-                    "status": "FAILED",
-                    "failed_stage": stage_name,
-                    "experiment_id": experiment_id,
-                    "run_id": actual_run_id,
-                    "error": err_msg,
-                    "completed_stages": len(completed_stages),
-                    "total_stages": len(ordered_stages),
-                }
-
-            # Check if resuming from checkpoint
-            if resume_run_id and self.checkpoint_manager.has_checkpoint(experiment_id, stage):
-                checkpoint_data = self.checkpoint_manager.load_checkpoint(experiment_id, stage)
-                if checkpoint_data:
-                    ctx[stage_name] = checkpoint_data
-                    completed_stages.add(stage)
-                    self.state_manager.start_stage(actual_run_id, stage)
-                    self.state_manager.complete_stage(actual_run_id, stage, duration=0.0)
-                    self.logging_manager.log_event(actual_run_id, stage_name, "SKIPPED", message=f"Loaded stage {stage_name} from checkpoint")
+        for stage_name in all_stages:
+            if stage_name not in stages_to_run:
+                # Keep completed status if resuming
+                if stage_name in run_state.completed_stages:
                     continue
 
-            # Ensure dependencies are met
-            if not DependencyGraph.is_stage_ready(stage, completed_stages):
-                err_msg = f"Prerequisites for stage {stage_name} not satisfied."
-                self.state_manager.fail_stage(actual_run_id, stage, err_msg)
-                self.logging_manager.log_event(actual_run_id, stage_name, "FAILED", severity="ERROR", message=err_msg)
-                self.registry.update_run_status(actual_run_id, status="FAILED", error=err_msg)
-                raise RuntimeError(err_msg)
+            run_state.current_stage = stage_name
+            self.event_emitter.emit(
+                event_id=f"EVT-{uuid.uuid4().hex[:6]}",
+                run_id=run_id,
+                experiment_id=experiment_id,
+                event_type=PipelineEventType.STAGE_STARTED,
+                stage_name=stage_name,
+                message=f"Executing pipeline stage '{stage_name}'",
+            )
 
-            # Execute stage
-            self.state_manager.start_stage(actual_run_id, stage)
-            self.logging_manager.log_event(actual_run_id, stage_name, "RUNNING")
+            stage_handler = self.stage_registry.get_stage(stage_name)
+            st_state = stage_handler.run_stage(context)
+            run_state.stages[stage_name] = st_state
 
-            try:
-                handler = self.task_registry.get_handler(stage)
-                seed = config.get("experiment", {}).get("seed", 42)
-                stage_result = self.executor.execute_stage(experiment_id, stage, handler, ctx, seed=seed)
+            if st_state.status == StageStatus.COMPLETED:
+                run_state.completed_stages.append(stage_name)
+                self.event_emitter.emit(
+                    event_id=f"EVT-{uuid.uuid4().hex[:6]}",
+                    run_id=run_id,
+                    experiment_id=experiment_id,
+                    event_type=PipelineEventType.STAGE_COMPLETED,
+                    stage_name=stage_name,
+                    message=f"Completed stage '{stage_name}' in {st_state.duration_seconds:.2f}s",
+                )
+                # Audit gates
+                if stage_name == "DATA":
+                    PipelineValidationGates.audit_data_gate(context)
+                elif stage_name == "VALIDATION":
+                    PipelineValidationGates.audit_leakage_gate(context)
+                elif stage_name == "RISK":
+                    PipelineValidationGates.audit_risk_gate(context)
+                elif stage_name == "MONITORING":
+                    PipelineValidationGates.audit_monitoring_gate(context)
 
-                ctx[stage_name] = stage_result
-                completed_stages.add(stage)
-                duration = stage_result.get("_duration_seconds", 0.0)
-                self.state_manager.complete_stage(actual_run_id, stage, duration=duration)
-                self.logging_manager.log_event(actual_run_id, stage_name, "COMPLETED", message=f"Stage {stage_name} completed in {duration:.2f}s")
+                # Persist stage checkpoint
+                self.checkpoint_mgr.save_checkpoint(run_state)
 
-            except Exception as e:
-                import traceback
-                tb = traceback.format_exc()
-                self.state_manager.fail_stage(actual_run_id, stage, str(e), stack_trace=tb)
-                self.logging_manager.log_event(actual_run_id, stage_name, "FAILED", severity="ERROR", message=str(e), extra={"stack_trace": tb})
-                self.registry.update_run_status(actual_run_id, status="FAILED", error=str(e))
-                return {
-                    "status": "FAILED",
-                    "failed_stage": stage_name,
-                    "experiment_id": experiment_id,
-                    "run_id": actual_run_id,
-                    "error": str(e),
-                    "completed_stages": len(completed_stages),
-                    "total_stages": len(ordered_stages),
-                }
+            else:
+                run_state.status = PipelineStatus.FAILED
+                run_state.failed_stage = stage_name
+                run_state.completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                run_state.duration_seconds = round(time.time() - start_t, 4)
 
-        total_duration = time.time() - start_time
-        self.state_manager.complete_pipeline(actual_run_id, duration=total_duration)
+                self.event_emitter.emit(
+                    event_id=f"EVT-{uuid.uuid4().hex[:6]}",
+                    run_id=run_id,
+                    experiment_id=experiment_id,
+                    event_type=PipelineEventType.STAGE_FAILED,
+                    stage_name=stage_name,
+                    message=f"Pipeline stage '{stage_name}' failed: {st_state.error_message}",
+                )
+                self.checkpoint_mgr.save_checkpoint(run_state)
+                return run_state
 
-        # Register artifact manifest
-        manifest_path = self.artifact_manager.register_artifact_manifest(
+        run_state.status = PipelineStatus.COMPLETED
+        run_state.completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        run_state.duration_seconds = round(time.time() - start_t, 4)
+        run_state.current_stage = None
+
+        self.checkpoint_mgr.save_checkpoint(run_state)
+
+        self.event_emitter.emit(
+            event_id=f"EVT-{uuid.uuid4().hex[:6]}",
+            run_id=run_id,
             experiment_id=experiment_id,
-            run_id=actual_run_id,
-            dataset=ctx.get("DATA", {}).get("dataset_id", "DS-SP500"),
-            features=config.get("features", []),
-            model=config.get("model", {}).get("type", "multimodal"),
-            backtest=ctx.get("BACKTEST", {}),
-            validation=ctx.get("VALIDATION", {}),
-            report_path=ctx.get("REPORT", {}).get("report_path", f"reports/experiments/{experiment_id}_report.md"),
+            event_type=PipelineEventType.PIPELINE_COMPLETED,
+            message=f"Completed full 14-stage research pipeline run '{run_id}' in {run_state.duration_seconds:.2f}s",
         )
 
-        metrics = ctx.get("BACKTEST", {})
-        artifacts = {"manifest": manifest_path}
+        return run_state
 
-        self.registry.update_run_status(actual_run_id, status="COMPLETED", metrics=metrics, artifacts=artifacts)
 
-        return {
-            "status": "COMPLETED",
-            "experiment_id": experiment_id,
-            "run_id": actual_run_id,
-            "completed_stages": len(completed_stages),
-            "total_stages": len(ordered_stages),
-            "total_duration_seconds": round(total_duration, 2),
-            "manifest_path": manifest_path,
-            "metrics": metrics,
-            "results": ctx,
-        }
+# Alias for backward compatibility with Phase 14
+ResearchPipeline = ResearchPipelineEngine
+

@@ -1,0 +1,81 @@
+{
+  "experiment_id": "EXP-FULL-TEST",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 12,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:02:54.455130",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:03:16.593183",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:03:34.636336",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:03:55.283648",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:05:27.424325",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:09:16.712472",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:09:45.103616",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:10:12.043595",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:02.078691",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:12:24.680851",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:13:42.335564",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:14:01.538538",
+      "incoming_config_hash": "01a0dcf6e21b2e1c",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

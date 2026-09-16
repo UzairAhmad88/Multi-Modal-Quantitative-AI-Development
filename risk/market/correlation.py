@@ -14,6 +14,8 @@ class CorrelationAnalyzer:
     def compute_correlation_matrix(returns_matrix: np.ndarray, asset_names: Optional[List[str]] = None) -> Dict[str, Any]:
         rets = np.array(returns_matrix, dtype=float)
         corr = np.corrcoef(rets, rowvar=False)
+        if corr.ndim == 0:
+            corr = np.array([[float(corr)]])
         corr = np.nan_to_num(corr, nan=1.0)
         corr = np.clip(corr, -1.0, 1.0)
 

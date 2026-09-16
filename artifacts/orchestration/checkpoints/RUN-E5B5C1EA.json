@@ -1,0 +1,182 @@
+{
+  "run_id": "RUN-E5B5C1EA",
+  "experiment_id": "EXP-RECOVERY-TEST",
+  "status": "COMPLETED",
+  "current_stage": null,
+  "stages": {
+    "DATA": {
+      "stage_name": "DATA",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0058,
+      "artifacts": {
+        "data_snapshot": "DATA-SNAPSHOT-001.csv"
+      },
+      "error_message": null
+    },
+    "FEATURES": {
+      "stage_name": "FEATURES",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0038,
+      "artifacts": {
+        "feature_matrix": "FEAT-MATRIX-001.csv"
+      },
+      "error_message": null
+    },
+    "VALIDATION": {
+      "stage_name": "VALIDATION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0392,
+      "artifacts": {
+        "leakage_report": "leakage_report.md"
+      },
+      "error_message": null
+    },
+    "TRAINING": {
+      "stage_name": "TRAINING",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "model_checkpoint": "model.pt"
+      },
+      "error_message": null
+    },
+    "PREDICTION": {
+      "stage_name": "PREDICTION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "predictions": "preds.csv"
+      },
+      "error_message": null
+    },
+    "ALPHA": {
+      "stage_name": "ALPHA",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "alpha_signals": "signals.csv"
+      },
+      "error_message": null
+    },
+    "PORTFOLIO": {
+      "stage_name": "PORTFOLIO",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "portfolio_weights": "weights.json"
+      },
+      "error_message": null
+    },
+    "EXECUTION": {
+      "stage_name": "EXECUTION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "execution_log": "exec_log.json"
+      },
+      "error_message": null
+    },
+    "BACKTEST": {
+      "stage_name": "BACKTEST",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0033,
+      "artifacts": {
+        "backtest_report": "backtest.json"
+      },
+      "error_message": null
+    },
+    "RISK": {
+      "stage_name": "RISK",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0081,
+      "artifacts": {
+        "risk_snapshot": "risk_snapshot.json"
+      },
+      "error_message": null
+    },
+    "STATISTICS": {
+      "stage_name": "STATISTICS",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0084,
+      "artifacts": {
+        "stat_validation": "stat_val.json"
+      },
+      "error_message": null
+    },
+    "ROBUSTNESS": {
+      "stage_name": "ROBUSTNESS",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "robustness_summary": "robustness.json"
+      },
+      "error_message": null
+    },
+    "MONITORING": {
+      "stage_name": "MONITORING",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0192,
+      "artifacts": {
+        "monitoring_audit": "monitoring.json"
+      },
+      "error_message": null
+    },
+    "REPORT": {
+      "stage_name": "REPORT",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "research_report": "research_report.md"
+      },
+      "error_message": null
+    }
+  },
+  "completed_stages": [
+    "DATA",
+    "FEATURES",
+    "VALIDATION",
+    "TRAINING",
+    "PREDICTION",
+    "ALPHA",
+    "PORTFOLIO",
+    "EXECUTION",
+    "BACKTEST",
+    "RISK",
+    "STATISTICS",
+    "ROBUSTNESS",
+    "MONITORING",
+    "REPORT"
+  ],
+  "failed_stage": null,
+  "started_at": "2026-09-16T22:13:42.498723+00:00",
+  "completed_at": "2026-09-16T22:13:42.596079+00:00",
+  "duration_seconds": 0.0974
+}

@@ -1,145 +1,123 @@
-# Automated Research Pipeline & Experiment Orchestration (Phase 14)
+# End-to-End Quantitative Research Orchestration OS (Phase 29)
 
-## Architecture Overview
+## 1. Executive Overview
 
-The Orchestration layer connects all quantitative AI research components—data loaders, feature engineering, NLP sentiment, AI model training, signal generation, portfolio optimization, backtesting, validation, robustness analysis, and reporting—into a single **automated, reproducible research workflow**.
+The **End-to-End Quantitative Research Orchestration OS** unifies all 28 sub-systems of the Multi-Modal Quant AI platform into a single, deterministic, versioned, and auditable research workflow. It bridges raw market data, news sentiment, and financial fundamentals to automated portfolio construction, execution simulation, risk diagnostics, walk-forward validation, drift monitoring, and institutional report generation.
+
+---
+
+## 2. 14-Stage Quantitative Research Pipeline Architecture
 
 ```text
-                 RESEARCH HYPOTHESIS
-                         │
-                         ▼
-                  EXPERIMENT CONFIG
-                         │
-                         ▼
-                    DATA LOAD
-                         │
-                         ▼
-                  DATA VALIDATION
-                         │
-                         ▼
-                  FEATURE ENGINE
-                         │
-                         ▼
-                 TEMPORAL SPLIT
-                         │
-                         ▼
-                    MODEL TRAIN
-                         │
-                         ▼
-                   PREDICTION
-                         │
-                         ▼
-                  SIGNAL ENGINE
-                         │
-                         ▼
-                PORTFOLIO ENGINE
-                         │
-                         ▼
-                     BACKTEST
-                         │
-                         ▼
-                    VALIDATION
-                         │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-      STATISTICS     ROBUSTNESS      STRESS
-          │              │              │
-          └──────────────┼──────────────┘
-                         ▼
-                  RESEARCH ANALYSIS
-                         │
-                         ▼
-                  RESEARCH FINDING
-                         │
-                         ▼
-                       REPORT
-                         │
-                         ▼
-                  ARTIFACT REGISTRY
+                        RESEARCH CONFIGURATION
+                                   │
+                                   ▼
+                            DATA SNAPSHOT
+                                   │
+                                   ▼
+                       TECHNICAL & ALTERNATIVE
+                         FEATURE ENGINEERING
+                                   │
+                                   ▼
+                            FEATURE STORE
+                                   │
+                                   ▼
+                          TEMPORAL VALIDATION &
+                          LEAKAGE AUDIT GATE
+                                   │
+                                   ▼
+                            MODEL TRAINING
+                         (Multimodal / DL / ML)
+                                   │
+                                   ▼
+                            OOS PREDICTION
+                                   │
+                                   ▼
+                             ALPHA ENGINE
+                                   │
+                                   ▼
+                           PORTFOLIO ENGINE
+                       (Optimization & Limits)
+                                   │
+                                   ▼
+                         EXECUTION SIMULATION
+                         (Microstructure BPS)
+                                   │
+                                   ▼
+                           BACKTEST ENGINE
+                         (Sequential State)
+                                   │
+                    ┌──────────────┴──────────────┐
+                    ▼                             ▼
+               RISK ENGINE               STATISTICAL ENGINE
+              (VaR / Stress)             (Stationary Block)
+                    │                             │
+                    └──────────────┬──────────────┘
+                                   ▼
+                          ROBUSTNESS ENGINE
+                         (Stability & Folds)
+                                   │
+                                   ▼
+                          MONITORING ENGINE
+                        (Health & Drift PSI)
+                                   │
+                                   ▼
+                           KNOWLEDGE LAYER
+                        (Artifact Lineage)
+                                   │
+                                   ▼
+                          INSTITUTIONAL REPORT
+                        (Markdown / Metrics)
 ```
 
 ---
 
-## 17-Stage Quantitative Research Pipeline
+## 3. Pipeline Stages Reference
 
-1. **CONFIGURATION**: Validate and lock experiment configuration parameters and random seeds.
-2. **DATA**: Load market, news, and fundamental datasets.
-3. **DATA_VALIDATION**: Execute data quality checks and freshness assertions.
-4. **FEATURE_ENGINEERING**: Generate technical indicators, NLP sentiment, and fundamental metrics.
-5. **DATASET_SPLIT**: Enforce strict temporal train/validation/test splits preventing lookahead bias.
-6. **MODEL_TRAINING**: Fit ML/DL models (Multimodal, LSTM, Transformer, XGBoost).
-7. **PREDICTION**: Generate multi-horizon return forecasts and win probabilities.
-8. **SIGNAL_GENERATION**: Convert forecasts into normalized alpha signals.
-9. **PORTFOLIO_CONSTRUCTION**: Compute optimized asset weights subject to position and risk limits.
-10. **BACKTEST**: Execute event-driven historical simulation with transaction costs and slippage.
-11. **VALIDATION**: Execute walk-forward and leakage detection gates.
-12. **ROBUSTNESS**: Evaluate parameter sensitivity and perturbation robustness.
-13. **STRESS_TESTING**: Apply historical crisis scenarios (e.g., 2008 Crash, COVID Shock, Tech Sell-Off).
-14. **STATISTICAL_ANALYSIS**: Compute t-stats, p-values, and multiple testing adjustments.
-15. **RESEARCH_FINDING**: Formulate structured empirical research observations and limitations.
-16. **REPORT**: Compile comprehensive Markdown & JSON research reports.
-17. **ARTIFACT_REGISTRATION**: Register complete run manifest and checksum lineage in experiment registry.
+| # | Stage | Base Class | Responsibilities | Key Gate / Output |
+|---|-------|------------|------------------|-------------------|
+| 1 | `DATA` | `DataStage` | Ingests market, news sentiment, and fundamental data. | Immutable Data Snapshot |
+| 2 | `FEATURES` | `FeatureStage` | Generates point-in-time features & stores in Feature Store. | Feature Matrix Artifact |
+| 3 | `VALIDATION` | `ValidationStage` | Walk-forward split & strict temporal leakage detection. | **Leakage Gate (Audit)** |
+| 4 | `TRAINING` | `TrainingStage` | Trains RF, XGBoost, LSTM, Transformer & Multi-Modal models. | Model Checkpoint (`model.pt`) |
+| 5 | `PREDICTION` | `PredictionStage` | Generates strictly out-of-sample forward predictions. | Prediction Output |
+| 6 | `ALPHA` | `AlphaStage` | Converts raw predictions into directional alpha signals. | Alpha Signal Series |
+| 7 | `PORTFOLIO` | `PortfolioStage` | Optimizes asset weights under position & turnover constraints. | Target Weights Matrix |
+| 8 | `EXECUTION` | `ExecutionStage` | Simulates market microstructure, slippage, and commissions. | Simulated Fills |
+| 9 | `BACKTEST` | `BacktestStage` | Calculates sequential equity curve & performance statistics. | Equity & Return Series |
+| 10 | `RISK` | `RiskStage` | Evaluates VaR (95%), CVaR, drawdowns, and stress scenarios. | **Risk Audit Gate** |
+| 11 | `STATISTICS` | `StatisticsStage` | Runs stationary block bootstrap confidence intervals. | Bootstrap CIs |
+| 12 | `ROBUSTNESS` | `RobustnessStage` | Evaluates fold stability score and coefficient of variation. | Stability Score |
+| 13 | `MONITORING` | `MonitoringStage` | Assesses data/prediction drift (PSI) & overall health score. | **Research Health Gate** |
+| 14 | `REPORT` | `ReportStage` | Compiles Markdown research report with artifact lineage graph. | `research_report.md` |
 
 ---
 
-## CLI Reference
+## 4. Quick Start & CLI Execution
 
-### 1. Run Experiment
+### Running the End-to-End Pipeline
 ```bash
-python research/run_experiment.py --config configs/experiments/example.yaml
+python orchestration/cli/run.py --config orchestration/configs/development.yaml --symbols AAPL MSFT --experiment-id EXP-PROD-001
 ```
 
-### 2. List Experiments
+### Resume Failed / Interrupted Run from Checkpoint
 ```bash
-python research/list_experiments.py --model multimodal --status COMPLETED
-```
-
-### 3. Show Experiment Details
-```bash
-python research/show_experiment.py --id EXP-20260916-0001
-```
-
-### 4. Compare Experiments
-```bash
-python research/compare.py RUN-20260916-0001 RUN-20260916-0002
-```
-
-### 5. Reproduce Experiment
-```bash
-python research/reproduce.py --run-id RUN-20260916-0001
-```
-
-### 6. Cancel Run
-```bash
-python research/cancel.py --run-id RUN-20260916-0001
-```
-
-### 7. Resume Run from Checkpoint
-```bash
-python research/resume.py --run-id RUN-20260916-0001
+python orchestration/cli/run.py --resume RUN-20260916-0001
 ```
 
 ---
 
-## REST API Endpoints
+## 5. API Endpoints
 
-- `GET /research/experiments`
-- `POST /research/experiments`
-- `GET /research/experiments/{id}`
-- `POST /research/experiments/{id}/run`
-- `POST /research/runs/{id}/resume`
-- `POST /research/runs/{id}/cancel`
-- `GET /research/runs/{id}`
-- `GET /research/runs/{id}/logs`
-- `GET /research/runs/{id}/artifacts`
-- `POST /research/compare`
-- `POST /research/reproduce`
+- `POST /api/v1/pipeline/run`: Launch or queue a pipeline run.
+- `GET /api/v1/pipeline/{run_id}/status`: Inspect current status and completed stage list.
+- `GET /api/v1/pipeline/{run_id}/artifacts`: List registered artifacts and checksums.
+- `GET /api/v1/pipeline/{run_id}/report`: Retrieve generated Markdown report.
+- `GET /api/v1/pipeline/health`: System health check.
 
 ---
 
-## Safety & Governance Standards
+## 6. Real-Money Safety Guarantee
 
-- **NO LIVE TRADING**: Real-money trade execution is permanently disabled.
-- **DETERMINISTIC SEEDS**: Random seeds for Python, NumPy, Scikit-Learn, and PyTorch are recorded and set.
-- **CHECKPOINTING & RESUME**: JSON stage checkpoints enable zero-recomputation error recovery.
-- **IMMUTABLE RUN RECORDS**: Completed experiment run records cannot be altered or overwritten.
+> [!CAUTION]
+> **Real-Money Trading Prohibition**: The platform remains strictly a quantitative research and simulation framework. Real-money broker order placement is **DISABLED BY DESIGN**. All execution stages utilize simulated market microstructure algorithms (TWAP, VWAP, POV, slippage models, transaction cost curves).

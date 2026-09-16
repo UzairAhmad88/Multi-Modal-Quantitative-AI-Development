@@ -1,0 +1,63 @@
+{
+  "experiment_id": "EXP-API-PIPE",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 9,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:02:54.784789",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:03:16.884401",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:05:27.804057",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:09:17.453115",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:09:45.574131",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:02.722987",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:12:26.135688",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:13:42.785570",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:14:01.916831",
+      "incoming_config_hash": "4dd3a3a2e26e8b0d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

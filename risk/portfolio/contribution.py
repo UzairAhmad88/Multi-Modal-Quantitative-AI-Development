@@ -17,6 +17,10 @@ class RiskContributionEngine:
         assets = list(weights.keys())
         w = np.array([weights[a] for a in assets], dtype=float)
         cov = np.array(cov_matrix, dtype=float)
+        if cov.ndim == 0:
+            cov = np.array([[float(cov)]])
+        if cov.ndim == 1:
+            cov = cov.reshape(1, 1)
 
         port_var = float(w.T @ cov @ w)
         port_vol = np.sqrt(max(1e-12, port_var))

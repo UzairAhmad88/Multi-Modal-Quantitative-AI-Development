@@ -38,8 +38,7 @@
 | **Phase 26** | Advanced Quantitative Risk & Stress Testing Engine OS | RiskSnapshot, Volatility (Hist/Roll/EWMA), Asset/Portfolio Beta, Covariance Audit, Correlation Instability, Factor Risk, MCR/CCR/PCR Reconciliation, Concentration (HHI, N_eff), VaR (Hist/Param/MC), CVaR (Expected Shortfall), Drawdowns, ScenarioRegistry, Historical/Hypothetical/Volatility/Correlation/Liquidity/Cost Stress, Monte Carlo Engine (Cholesky, seed=42), Risk Limit Breach Engine, 5 CLI tools, Page 33 Dashboard | **COMPLETED** |
 | **Phase 27** | Walk-Forward Validation & Anti-Overfitting Research OS | TimelineValidator, Date-based splits, Expanding/Rolling/Anchored Window Generators, Purged CV & Embargo Excluder (López de Prado), 6-Stage Leakage Detector, Preprocessing Leakage Audit, OOS Prediction Storage & Metrics, Stability & Parameter Sensitivity Grids, Regime OOS Analysis, Test-Set Lock Protection (`TEST_SET_LOCKED`), 2 CLI tools, Page 34 Dashboard | **COMPLETED** |
 | **Phase 28** | Model Monitoring, Data Drift & Research Health OS | DataDriftDetector (PSI, KS, Wasserstein), Feature & Correlation Shift, Output Monitor, Concept Drift (DDM, EDDM, Page-Hinkley), Alpha IC Decay Tracker, Volatility Jump & Markov Regime Transition, Composite Research Health Score (0-100), AlertManager, 3 CLI tools, Page 35 Dashboard | **COMPLETED** |
-
-
+| **Phase 29** | End-to-End Research Orchestration & Workflow OS | 14-Stage DAG Pipeline Engine (`DATA` → `REPORT`), `PipelineContext`, `PipelineRunState`, `StageRegistry`, Checkpoint Manager, Zero-Recomputation Recovery Engine, Leakage Gate, Risk Audit Gate, Research Health Gate, Lineage Tracer, Markdown Research Report Generator (`research_report.md`), CLI Runner & Resume, FastAPI REST Router (`/pipeline/*`), Page 36 Streamlit Workspace | **COMPLETED** |
 
 ---
 
@@ -52,22 +51,19 @@ python scripts/system_check.py
 # Execute 13-step deterministic end-to-end pipeline demo
 python scripts/demo.py
 
-# Run complete automated test suite (202 passed)
+# Run Phase 29 End-to-End Orchestration Pipeline
+python orchestration/cli/run.py --config orchestration/configs/development.yaml --symbols AAPL MSFT --experiment-id EXP-PROD-001
+
+# Run complete automated test suite
 python -m pytest -v
 
 # Start FastAPI backend API
 uvicorn api.main:app --reload
 
-# Launch Streamlit 25-page Quant Workspace
+# Launch Streamlit 36-page Quant Workspace
 streamlit run dashboard/app.py
-
-# Portfolio Optimization CLI Commands
-python portfolio_optimization/cli/optimize.py --config configs/portfolio/multimodal.yaml
-python portfolio_optimization/cli/diagnostics.py --portfolio PORTFOLIO-001
-python portfolio_optimization/cli/rebalance.py --portfolio PORTFOLIO-001
-python portfolio_optimization/cli/compare.py --portfolios PORTFOLIO-001 PORTFOLIO-002
 ```
 
 ---
 
-*All Phase 1–18 code, unit tests, configurations, reports, and documentation are committed and pushed to GitHub main branch.*
+*All Phase 1–29 code, unit tests, configurations, reports, and documentation are committed and pushed to GitHub main branch.*

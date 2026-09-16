@@ -1,0 +1,33 @@
+{
+  "experiment_id": "TEST-PASS",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 4,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:06:38.577047",
+      "incoming_config_hash": "4260d551f764931a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:07:10.419492",
+      "incoming_config_hash": "4260d551f764931a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:07:35.903345",
+      "incoming_config_hash": "4260d551f764931a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:08:39.082175",
+      "incoming_config_hash": "4260d551f764931a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

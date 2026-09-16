@@ -1,0 +1,57 @@
+{
+  "experiment_id": "EXP-TEST",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 8,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:10:22.031490",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:11.792544",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:22.303716",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:39.744058",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:11:53.565138",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:12:37.934618",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:12:48.166182",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:13:11.677317",
+      "incoming_config_hash": "bd74c1cd412d100b",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

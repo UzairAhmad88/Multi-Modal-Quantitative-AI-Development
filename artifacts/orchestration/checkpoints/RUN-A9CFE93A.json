@@ -1,0 +1,131 @@
+{
+  "run_id": "RUN-A9CFE93A",
+  "experiment_id": "EXP-RECOVERY-TEST",
+  "status": "FAILED",
+  "current_stage": "RISK",
+  "stages": {
+    "DATA": {
+      "stage_name": "DATA",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0048,
+      "artifacts": {
+        "data_snapshot": "DATA-SNAPSHOT-001.csv"
+      },
+      "error_message": null
+    },
+    "FEATURES": {
+      "stage_name": "FEATURES",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0031,
+      "artifacts": {
+        "feature_matrix": "FEAT-MATRIX-001.csv"
+      },
+      "error_message": null
+    },
+    "VALIDATION": {
+      "stage_name": "VALIDATION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0344,
+      "artifacts": {
+        "leakage_report": "leakage_report.md"
+      },
+      "error_message": null
+    },
+    "TRAINING": {
+      "stage_name": "TRAINING",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "model_checkpoint": "model.pt"
+      },
+      "error_message": null
+    },
+    "PREDICTION": {
+      "stage_name": "PREDICTION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0012,
+      "artifacts": {
+        "predictions": "preds.csv"
+      },
+      "error_message": null
+    },
+    "ALPHA": {
+      "stage_name": "ALPHA",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0,
+      "artifacts": {
+        "alpha_signals": "signals.csv"
+      },
+      "error_message": null
+    },
+    "PORTFOLIO": {
+      "stage_name": "PORTFOLIO",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.002,
+      "artifacts": {
+        "portfolio_weights": "weights.json"
+      },
+      "error_message": null
+    },
+    "EXECUTION": {
+      "stage_name": "EXECUTION",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.001,
+      "artifacts": {
+        "execution_log": "exec_log.json"
+      },
+      "error_message": null
+    },
+    "BACKTEST": {
+      "stage_name": "BACKTEST",
+      "status": "COMPLETED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0005,
+      "artifacts": {
+        "backtest_report": "backtest.json"
+      },
+      "error_message": null
+    },
+    "RISK": {
+      "stage_name": "RISK",
+      "status": "FAILED",
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": 0.0032,
+      "artifacts": {},
+      "error_message": "tuple index out of range"
+    }
+  },
+  "completed_stages": [
+    "DATA",
+    "FEATURES",
+    "VALIDATION",
+    "TRAINING",
+    "PREDICTION",
+    "ALPHA",
+    "PORTFOLIO",
+    "EXECUTION",
+    "BACKTEST"
+  ],
+  "failed_stage": "RISK",
+  "started_at": "2026-09-16T22:11:02.159422+00:00",
+  "completed_at": "2026-09-16T22:11:02.213703+00:00",
+  "duration_seconds": 0.0543
+}
