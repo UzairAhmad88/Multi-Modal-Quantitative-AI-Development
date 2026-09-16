@@ -58,6 +58,6 @@
   "optimization_method": "mean_variance",
   "risk_model": "sample_covariance",
   "total_value": 100000.0,
-  "created_at": "2026-09-16T21:16:18.038385Z",
-  "updated_at": "2026-09-16T21:16:18.045223Z"
+  "created_at": "2026-09-16T21:33:03.013896Z",
+  "updated_at": "2026-09-16T21:33:03.022113Z"
 }
