@@ -1,0 +1,201 @@
+{
+  "campaign_id": "CMP-5C424621",
+  "name": "Alpha Campaign",
+  "objective": "Test objective",
+  "plan": {
+    "plan_id": "PLAN-CMP",
+    "name": "Campaign Plan",
+    "objective": "Test campaign objective",
+    "hypothesis": "Hypothesis statement",
+    "dataset_id": "DS-SP500",
+    "models": [
+      "xgboost"
+    ],
+    "modalities": [
+      "market"
+    ],
+    "strategies": [
+      "long_short",
+      "trend"
+    ],
+    "executions": [
+      "twap",
+      "vwap"
+    ],
+    "resource_budget": {
+      "max_experiments": 20,
+      "max_parallel_jobs": 2,
+      "max_runtime_minutes": 240,
+      "max_memory_gb": 12
+    },
+    "created_at": "2026-09-16T18:59:09.059153"
+  },
+  "experiments": [
+    {
+      "experiment_id": "EXP-99C24D18",
+      "name": "Campaign Plan - XGBOOST (market)",
+      "description": "Automated experiment for xgboost with market modality",
+      "hypothesis": {
+        "research_question": "Test campaign objective",
+        "hypothesis": "Hypothesis statement",
+        "expected_behavior": "Statistically significant Sharpe improvement",
+        "null_hypothesis": "No difference in performance",
+        "success_criteria": "Sharpe >= 1.25",
+        "limitations": "Subject to market regime changes and finite backtest history."
+      },
+      "dataset_id": "DS-SP500",
+      "feature_version": "FSET-MARKET-v1",
+      "model_version": "MDL-XGBOOST-v1",
+      "strategy_id": "STRAT-LONG_SHORT",
+      "portfolio_config": {
+        "allocation_method": "equal_weight",
+        "max_position": 0.2
+      },
+      "execution_config": {
+        "algorithm": "twap",
+        "slippage_bps": 5.0
+      },
+      "evaluation_config": {
+        "benchmark": "SP500",
+        "risk_free_rate": 0.02
+      },
+      "random_seed": 42,
+      "status": "DRAFT",
+      "tags": [
+        "xgboost",
+        "market",
+        "long_short",
+        "twap",
+        "automated"
+      ],
+      "created_at": "2026-09-16T18:59:09.059153Z",
+      "updated_at": "2026-09-16T18:59:09.059153Z",
+      "configuration_hash": ""
+    },
+    {
+      "experiment_id": "EXP-A0F13757",
+      "name": "Campaign Plan - XGBOOST (market)",
+      "description": "Automated experiment for xgboost with market modality",
+      "hypothesis": {
+        "research_question": "Test campaign objective",
+        "hypothesis": "Hypothesis statement",
+        "expected_behavior": "Statistically significant Sharpe improvement",
+        "null_hypothesis": "No difference in performance",
+        "success_criteria": "Sharpe >= 1.25",
+        "limitations": "Subject to market regime changes and finite backtest history."
+      },
+      "dataset_id": "DS-SP500",
+      "feature_version": "FSET-MARKET-v1",
+      "model_version": "MDL-XGBOOST-v1",
+      "strategy_id": "STRAT-LONG_SHORT",
+      "portfolio_config": {
+        "allocation_method": "equal_weight",
+        "max_position": 0.2
+      },
+      "execution_config": {
+        "algorithm": "vwap",
+        "slippage_bps": 5.0
+      },
+      "evaluation_config": {
+        "benchmark": "SP500",
+        "risk_free_rate": 0.02
+      },
+      "random_seed": 42,
+      "status": "DRAFT",
+      "tags": [
+        "xgboost",
+        "market",
+        "long_short",
+        "vwap",
+        "automated"
+      ],
+      "created_at": "2026-09-16T18:59:09.059153Z",
+      "updated_at": "2026-09-16T18:59:09.059153Z",
+      "configuration_hash": ""
+    },
+    {
+      "experiment_id": "EXP-087A8E77",
+      "name": "Campaign Plan - XGBOOST (market)",
+      "description": "Automated experiment for xgboost with market modality",
+      "hypothesis": {
+        "research_question": "Test campaign objective",
+        "hypothesis": "Hypothesis statement",
+        "expected_behavior": "Statistically significant Sharpe improvement",
+        "null_hypothesis": "No difference in performance",
+        "success_criteria": "Sharpe >= 1.25",
+        "limitations": "Subject to market regime changes and finite backtest history."
+      },
+      "dataset_id": "DS-SP500",
+      "feature_version": "FSET-MARKET-v1",
+      "model_version": "MDL-XGBOOST-v1",
+      "strategy_id": "STRAT-TREND",
+      "portfolio_config": {
+        "allocation_method": "equal_weight",
+        "max_position": 0.2
+      },
+      "execution_config": {
+        "algorithm": "twap",
+        "slippage_bps": 5.0
+      },
+      "evaluation_config": {
+        "benchmark": "SP500",
+        "risk_free_rate": 0.02
+      },
+      "random_seed": 42,
+      "status": "DRAFT",
+      "tags": [
+        "xgboost",
+        "market",
+        "trend",
+        "twap",
+        "automated"
+      ],
+      "created_at": "2026-09-16T18:59:09.059153Z",
+      "updated_at": "2026-09-16T18:59:09.059153Z",
+      "configuration_hash": ""
+    },
+    {
+      "experiment_id": "EXP-3C651378",
+      "name": "Campaign Plan - XGBOOST (market)",
+      "description": "Automated experiment for xgboost with market modality",
+      "hypothesis": {
+        "research_question": "Test campaign objective",
+        "hypothesis": "Hypothesis statement",
+        "expected_behavior": "Statistically significant Sharpe improvement",
+        "null_hypothesis": "No difference in performance",
+        "success_criteria": "Sharpe >= 1.25",
+        "limitations": "Subject to market regime changes and finite backtest history."
+      },
+      "dataset_id": "DS-SP500",
+      "feature_version": "FSET-MARKET-v1",
+      "model_version": "MDL-XGBOOST-v1",
+      "strategy_id": "STRAT-TREND",
+      "portfolio_config": {
+        "allocation_method": "equal_weight",
+        "max_position": 0.2
+      },
+      "execution_config": {
+        "algorithm": "vwap",
+        "slippage_bps": 5.0
+      },
+      "evaluation_config": {
+        "benchmark": "SP500",
+        "risk_free_rate": 0.02
+      },
+      "random_seed": 42,
+      "status": "DRAFT",
+      "tags": [
+        "xgboost",
+        "market",
+        "trend",
+        "vwap",
+        "automated"
+      ],
+      "created_at": "2026-09-16T18:59:09.059153Z",
+      "updated_at": "2026-09-16T18:59:09.059153Z",
+      "configuration_hash": ""
+    }
+  ],
+  "created_at": "2026-09-16T18:59:09.059153",
+  "status": "CREATED"
+}

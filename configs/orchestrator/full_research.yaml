@@ -1,0 +1,74 @@
+name: "Full Multi-Modal Quantitative Research Workflow"
+objective: "Complete end-to-end research pipeline from data validation to research report generation"
+experiment_template: "full_research"
+priority: "NORMAL"
+
+resource_budget:
+  max_experiments: 20
+  max_parallel_jobs: 2
+  max_runtime_minutes: 240
+  max_memory_gb: 12
+
+configuration:
+  dataset_id: "DS-SP500_DAILY-v1.0.0"
+  model_type: "xgboost"
+  slippage_bps: 5.0
+  fee_bps: 10.0
+  min_observations: 252
+  data_observations: 1260
+
+tasks:
+  - task_id: "data_validation"
+    name: "Data Validation Gate"
+    task_type: "DataValidationTask"
+    depends_on: []
+
+  - task_id: "feature_engineering"
+    name: "Feature Store Generation"
+    task_type: "FeatureEngineeringTask"
+    depends_on: ["data_validation"]
+
+  - task_id: "model_training"
+    name: "Model Factory Training"
+    task_type: "ModelTrainingTask"
+    depends_on: ["feature_engineering"]
+
+  - task_id: "signal_generation"
+    name: "Alpha Signal Generation"
+    task_type: "SignalGenerationTask"
+    depends_on: ["model_training"]
+
+  - task_id: "portfolio_construction"
+    name: "Portfolio Optimization"
+    task_type: "PortfolioConstructionTask"
+    depends_on: ["signal_generation"]
+
+  - task_id: "execution_simulation"
+    name: "Market Execution Simulation"
+    task_type: "ExecutionSimulationTask"
+    depends_on: ["portfolio_construction"]
+
+  - task_id: "backtest"
+    name: "Backtest Engine Execution"
+    task_type: "BacktestTask"
+    depends_on: ["execution_simulation"]
+
+  - task_id: "risk_analysis"
+    name: "Risk Engine Analysis"
+    task_type: "RiskAnalysisTask"
+    depends_on: ["backtest"]
+
+  - task_id: "research_evaluation"
+    name: "Research Evaluation & Statistics"
+    task_type: "ResearchEvaluationTask"
+    depends_on: ["backtest"]
+
+  - task_id: "robustness"
+    name: "Walk-Forward & Sensitivity Robustness"
+    task_type: "RobustnessTask"
+    depends_on: ["risk_analysis", "research_evaluation"]
+
+  - task_id: "report_generation"
+    name: "Research Report Compilation"
+    task_type: "ReportGenerationTask"
+    depends_on: ["robustness"]

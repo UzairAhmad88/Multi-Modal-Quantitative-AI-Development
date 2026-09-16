@@ -36,11 +36,12 @@ from api.routes.portfolio_optimization_routes import router as portfolio_optimiz
 from api.routes.execution_routes import router as execution_router
 from api.routes.research_evaluation_routes import router as research_evaluation_router
 from api.routes.research_lab_routes import router as research_lab_router
+from api.routes.orchestrator_routes import router as orchestrator_router
 
 app = FastAPI(
     title="QUANT AI - Multi-Modal Quantitative Intelligence API",
     description="Institutional-grade Quantitative AI Research Platform API",
-    version="2.8.0"
+    version="2.9.0"
 )
 
 app.include_router(research_router)
@@ -57,6 +58,8 @@ app.include_router(portfolio_optimization_router)
 app.include_router(execution_router)
 app.include_router(research_evaluation_router)
 app.include_router(research_lab_router)
+app.include_router(orchestrator_router)
+
 
 
 

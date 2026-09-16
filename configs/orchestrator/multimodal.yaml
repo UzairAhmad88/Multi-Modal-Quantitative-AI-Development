@@ -1,0 +1,42 @@
+name: "Multi-Modal Fusion Research Workflow"
+objective: "Evaluate Market + News + Fundamentals multi-modal predictive pipeline"
+experiment_template: "multimodal"
+priority: "HIGH"
+
+resource_budget:
+  max_experiments: 10
+  max_parallel_jobs: 2
+  max_runtime_minutes: 120
+  max_memory_gb: 16
+
+configuration:
+  dataset_id: "DS-MULTIMODAL-v1.0.0"
+  model_type: "multimodal"
+  slippage_bps: 5.0
+  fee_bps: 10.0
+
+tasks:
+  - task_id: "data_validation"
+    name: "Data Validation Gate"
+    task_type: "DataValidationTask"
+    depends_on: []
+
+  - task_id: "feature_engineering"
+    name: "Multi-Modal Feature Store"
+    task_type: "FeatureEngineeringTask"
+    depends_on: ["data_validation"]
+
+  - task_id: "model_training"
+    name: "Multi-Modal Fusion Model Training"
+    task_type: "ModelTrainingTask"
+    depends_on: ["feature_engineering"]
+
+  - task_id: "backtest"
+    name: "Backtest Execution"
+    task_type: "BacktestTask"
+    depends_on: ["model_training"]
+
+  - task_id: "report_generation"
+    name: "Report Generation"
+    task_type: "ReportGenerationTask"
+    depends_on: ["backtest"]
