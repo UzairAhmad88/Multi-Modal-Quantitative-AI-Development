@@ -1,0 +1,16 @@
+portfolio:
+  name: target_volatility_portfolio
+  method: target_volatility
+
+risk:
+  target_volatility: 0.12
+  covariance: shrinkage
+
+constraints:
+  long_only: true
+  max_weight: 0.35
+  max_gross_exposure: 1.0
+
+transaction_costs:
+  commission_bps: 1
+  slippage_bps: 5

@@ -1,6 +1,16 @@
-optimizer: RiskParity
-max_asset_weight: 0.25
-min_asset_weight: 0.0
-covariance_estimator: ewma
-rebalance_freq: weekly
-rebalance_threshold: 0.02
+portfolio:
+  name: risk_parity_portfolio
+  method: risk_parity
+
+constraints:
+  long_only: true
+  max_weight: 0.35
+  max_gross_exposure: 1.0
+
+risk:
+  covariance: shrinkage
+  target_risk_contribution: equal
+
+transaction_costs:
+  commission_bps: 1
+  slippage_bps: 5

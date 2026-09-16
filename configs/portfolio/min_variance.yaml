@@ -1,6 +1,15 @@
-optimizer: MinimumVariance
-max_asset_weight: 0.25
-min_asset_weight: 0.0
-covariance_estimator: shrinkage
-rebalance_freq: weekly
-rebalance_threshold: 0.02
+portfolio:
+  name: min_variance_portfolio
+  method: minimum_variance
+
+constraints:
+  long_only: true
+  max_weight: 0.30
+  max_gross_exposure: 1.0
+
+risk:
+  covariance: shrinkage
+
+transaction_costs:
+  commission_bps: 1
+  slippage_bps: 5

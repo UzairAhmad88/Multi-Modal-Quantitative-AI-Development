@@ -1,7 +1,20 @@
-optimizer: MeanVariance
-risk_aversion: 2.5
-max_asset_weight: 0.25
-min_asset_weight: 0.0
-covariance_estimator: ledoit_wolf
-rebalance_freq: weekly
-rebalance_threshold: 0.02
+portfolio:
+  name: mean_variance_portfolio
+  method: mean_variance
+
+objective:
+  risk_aversion: 2.0
+
+constraints:
+  long_only: true
+  max_weight: 0.25
+  max_turnover: 0.25
+  max_gross_exposure: 1.0
+
+risk:
+  covariance: shrinkage
+  target_volatility: 0.15
+
+transaction_costs:
+  commission_bps: 1
+  slippage_bps: 5

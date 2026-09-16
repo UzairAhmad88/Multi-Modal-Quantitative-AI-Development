@@ -1,5 +1,12 @@
-optimizer: EqualWeight
-max_asset_weight: 0.25
-min_asset_weight: 0.0
-rebalance_freq: weekly
-rebalance_threshold: 0.02
+portfolio:
+  name: equal_weight_baseline
+  method: equal_weight
+
+constraints:
+  long_only: true
+  max_weight: 0.35
+  max_gross_exposure: 1.0
+
+transaction_costs:
+  commission_bps: 1
+  slippage_bps: 5

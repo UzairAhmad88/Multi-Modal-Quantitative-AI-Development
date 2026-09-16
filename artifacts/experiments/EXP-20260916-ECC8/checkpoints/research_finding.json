@@ -1,0 +1,9 @@
+{
+  "experiment_id": "EXP-20260916-ECC8",
+  "stage": "RESEARCH_FINDING",
+  "data": {
+    "statement": "Observed Sharpe ratio of 1.64 for baseline multimodal model.",
+    "evidence": "Backtest CAGR 18.7%, Accuracy 58.4%.",
+    "limitations": "Simulated paper trading environment only."
+  }
+}
