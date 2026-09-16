@@ -1,0 +1,31 @@
+model:
+  name: baseline_logistic
+  type: logistic_regression
+  version: "1.0.0"
+  task: classification
+
+data:
+  dataset: DS-SP500_DAILY-v1.0.0
+  features:
+    market: true
+    news: false
+    fundamentals: false
+
+training:
+  seed: 42
+  epochs: 1
+  batch_size: 64
+  learning_rate: 0.01
+
+validation:
+  temporal_split: true
+  walk_forward: true
+
+promotion:
+  require:
+    data_quality: pass
+    leakage: pass
+    validation: pass
+
+artifacts:
+  save: true

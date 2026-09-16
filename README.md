@@ -63,6 +63,7 @@ An institutional-grade quantitative finance research operating system that combi
 
 ## 2. Key Features
 
+- **Model Factory, Registry & Controlled Model Lifecycle OS (Phase 16)**: Standardized lifecycle management (`DATA` $\rightarrow$ `FEATURES` $\rightarrow$ `CONFIG` $\rightarrow$ `TRAIN` $\rightarrow$ `VALIDATE` $\rightarrow$ `BACKTEST` $\rightarrow$ `ROBUSTNESS` $\rightarrow$ `REGISTER` $\rightarrow$ `COMPARISON` $\rightarrow$ `CANDIDATE` $\rightarrow$ `PAPER TRADING` $\rightarrow$ `MONITORING` $\rightarrow$ `RETRAINING` $\rightarrow$ `ARCHIVE`), ModelFactory instantiator, YAML configurations, GPU detection with CPU safe fallback, early stopping, loss tracking, task-aware evaluation, model comparison engine, ablation, Voting/Averaging/Stacking/Blending ensemble engine, drift detectors, champion/challenger selection, automated gate promotion, rollback, 11 CLI tools (`models/train.py`, etc.), REST API endpoints, and a 23-page Streamlit workspace (`/models`).
 - **Quant Research Intelligence & Pattern OS (Phase 15)**: Multi-modal pattern discovery, event studies, lead-lag analysis, anomaly detection, structured hypothesis generation, network research graph lineage, evidence classification, persistent memory, and evidence-based natural language research queries.
 - **Automated Research Pipeline & Orchestration (Phase 14)**: 17-stage configuration-driven workflow with DAG dependency graph, JSON stage checkpointing, zero-recomputation resume, and reproducible experiment lineage.
 - **Multi-Modal Data Pipeline**: Temporal synchronization of daily market OHLCV bars, financial news headlines, and quarterly SEC financial statements.
@@ -73,8 +74,8 @@ An institutional-grade quantitative finance research operating system that combi
 - **Pre-Trade Risk Gate & Kill Switch**: Position limit enforcement (max asset weight 25.0%), gross leverage limits (1.0x), drawdown circuit breakers (-10.0%), and `TradingKillSwitch`.
 - **MLOps & Model Registry**: `ExperimentManager`, `DatasetRegistry` (SHA-256 manifests), `FeatureRegistry`, `ModelRegistry` (`EXPERIMENTAL` $\rightarrow$ `VALIDATED` $\rightarrow$ `PAPER` $\rightarrow$ `ARCHIVED`), and Lineage DAGs.
 - **Real-Time Paper Trading & Replay**: Continuous paper-trading simulation with 5 bps slippage, 10 bps commission, and 100x accelerated historical market replay engine (`RealtimeReplayEngine`).
-- **22-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, Paper Trading, Research Validation, Research Orchestration, and **Research Intelligence Operating System**.
-- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, paper trading controls, research orchestration, and research intelligence.
+- **23-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, Paper Trading, Research Validation, Research Orchestration, Research Intelligence, and **Model Factory OS**.
+- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, paper trading controls, research orchestration, research intelligence, and model factory lifecycle.
 
 
 ---

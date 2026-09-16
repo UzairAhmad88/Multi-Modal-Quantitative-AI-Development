@@ -1,0 +1,39 @@
+model:
+  name: weighted_ensemble_alpha
+  type: ensemble
+  version: "1.0.0"
+  task: ensemble
+
+  parameters:
+    ensemble_type: weighted_average
+    models:
+      - xgboost_alpha
+      - lstm_sequence_predictor
+      - multimodal_quantnet
+    weights:
+      - 0.35
+      - 0.35
+      - 0.30
+
+data:
+  dataset: DS-SP500_DAILY-v1.0.0
+  features:
+    market: true
+    news: true
+    fundamentals: true
+
+training:
+  seed: 42
+
+validation:
+  temporal_split: true
+  walk_forward: true
+
+promotion:
+  require:
+    data_quality: pass
+    leakage: pass
+    validation: pass
+
+artifacts:
+  save: true

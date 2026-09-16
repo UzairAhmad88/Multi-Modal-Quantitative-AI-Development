@@ -1,0 +1,9 @@
+{
+  "experiment_id": "EXP-20260916-3763",
+  "stage": "SIGNAL_GENERATION",
+  "data": {
+    "signal": "BUY",
+    "confidence": 0.87,
+    "alpha": 0.76
+  }
+}

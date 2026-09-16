@@ -1,0 +1,37 @@
+model:
+  name: multimodal_quantnet
+  type: multimodal
+  version: "1.0.0"
+  task: multimodal
+
+  parameters:
+    market_dim: 16
+    news_dim: 8
+    fundamental_dim: 8
+    hidden_dim: 64
+
+data:
+  dataset: DS-SP500_DAILY-v1.0.0
+  features:
+    market: true
+    news: true
+    fundamentals: true
+
+training:
+  seed: 42
+  epochs: 15
+  batch_size: 64
+  learning_rate: 0.001
+
+validation:
+  temporal_split: true
+  walk_forward: true
+
+promotion:
+  require:
+    data_quality: pass
+    leakage: pass
+    validation: pass
+
+artifacts:
+  save: true
