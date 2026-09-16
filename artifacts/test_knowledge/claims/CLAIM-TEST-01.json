@@ -1,0 +1,9 @@
+{
+  "claim_id": "CLAIM-TEST-01",
+  "statement": "Multi-modal features improve out-of-sample Sharpe ratio",
+  "evidence_experiment_ids": [],
+  "status": "OBSERVED",
+  "created_at": "2026-09-16T19:36:55.641352",
+  "author": "Quant Researcher",
+  "notes": null
+}

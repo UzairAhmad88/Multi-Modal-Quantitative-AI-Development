@@ -3,10 +3,10 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-235%20Passed-success.svg)](#running-tests)
+[![Tests](https://img.shields.io/badge/Tests-243%20Passed-success.svg)](#running-tests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, execution simulation & market microstructure OS, out-of-sample research evaluation & statistical validation OS, systematic research laboratory OS, automated research pipeline orchestration & DAG scheduling, MLOps model registry, pre-trade risk controls, real-time paper trading execution, and a **Quant Research Intelligence Engine**.
+An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, execution simulation & market microstructure OS, out-of-sample research evaluation & statistical validation OS, systematic research laboratory OS, automated research pipeline orchestration & DAG scheduling, research knowledge base & experiment intelligence OS, MLOps model registry, pre-trade risk controls, real-time paper trading execution, and a **Quant Research Intelligence Engine**.
 
 ---
 

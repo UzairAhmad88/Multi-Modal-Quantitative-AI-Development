@@ -1,0 +1,9 @@
+{
+  "journal_id": "JRN-TEST-01",
+  "experiment_id": null,
+  "entry_type": "OBSERVATION",
+  "content": "Turnover spiked under high volatility regime.",
+  "linked_artifacts": [],
+  "timestamp": "2026-09-16T19:36:55.650327",
+  "author": "Quant Researcher"
+}
