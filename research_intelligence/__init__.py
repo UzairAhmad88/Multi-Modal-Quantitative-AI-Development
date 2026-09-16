@@ -1,7 +1,9 @@
 """
 Research Intelligence Package for Multi-Modal Quant AI.
-Phase 11 implementation: Hypothesis Management, Experiment Automation, Research Memory,
-Error Diagnostics, Ablation Engine, Robustness Engine, Recommender, and Report Generator.
+Provides pattern discovery, event studies, hypothesis generation, experiment construction,
+research graph lineage, evidence aggregation, persistent memory, and NL assistant queries.
 """
 
-__version__ = "1.0.0"
+from research_intelligence.engine import ResearchIntelligenceEngine
+
+__all__ = ["ResearchIntelligenceEngine"]

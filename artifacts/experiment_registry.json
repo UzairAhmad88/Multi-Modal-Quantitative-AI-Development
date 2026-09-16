@@ -944,6 +944,195 @@
       "runs": [
         "RUN-20260916-74C3"
       ]
+    },
+    "EXP-20260916-EB55": {
+      "experiment_id": "EXP-20260916-EB55",
+      "name": "unit_test_experiment",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        }
+      },
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-09-16T17:46:17.261695",
+      "status": "COMPLETED",
+      "runs": [
+        "RUN-20260916-5924"
+      ]
+    },
+    "EXP-20260916-6E07": {
+      "experiment_id": "EXP-20260916-6E07",
+      "name": "unit_test_experiment",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        }
+      },
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-09-16T17:46:17.551541",
+      "status": "COMPLETED",
+      "runs": [
+        "RUN-20260916-1F35"
+      ]
+    },
+    "EXP-20260916-F638": {
+      "experiment_id": "EXP-20260916-F638",
+      "name": "unit_test_experiment",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        }
+      },
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-09-16T17:46:17.771283",
+      "status": "COMPLETED",
+      "runs": [
+        "RUN-20260916-1F35"
+      ]
+    },
+    "EXP-20260916-FC3B": {
+      "experiment_id": "EXP-20260916-FC3B",
+      "name": "unit_test_experiment",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        },
+        "_inject_failure_stage": "MODEL_TRAINING"
+      },
+      "tags": [],
+      "notes": "",
+      "created_at": "2026-09-16T17:46:18.008721",
+      "status": "FAILED",
+      "runs": [
+        "RUN-20260916-311C"
+      ]
     }
   },
   "runs": {
@@ -1764,9 +1953,169 @@
       "artifacts": {},
       "timestamp": "2026-09-16T17:34:01.694861",
       "error": "Injected failure in stage MODEL_TRAINING"
+    },
+    "RUN-20260916-5924": {
+      "run_id": "RUN-20260916-5924",
+      "experiment_id": "EXP-20260916-EB55",
+      "status": "COMPLETED",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        }
+      },
+      "dataset": {},
+      "model": {},
+      "metrics": {
+        "cagr": 0.187,
+        "sharpe": 1.64,
+        "sortino": 2.21,
+        "max_drawdown": 0.112,
+        "turnover": 0.35,
+        "_duration_seconds": 0.0,
+        "_checkpoint_path": "artifacts\\experiments/EXP-20260916-EB55/checkpoints\\backtest.json"
+      },
+      "artifacts": {
+        "manifest": "artifacts\\runs/RUN-20260916-5924\\manifest.json"
+      },
+      "timestamp": "2026-09-16T17:46:17.269663"
+    },
+    "RUN-20260916-1F35": {
+      "run_id": "RUN-20260916-1F35",
+      "experiment_id": "EXP-20260916-F638",
+      "status": "COMPLETED",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        }
+      },
+      "dataset": {},
+      "model": {},
+      "metrics": {
+        "cagr": 0.187,
+        "sharpe": 1.64,
+        "sortino": 2.21,
+        "max_drawdown": 0.112,
+        "turnover": 0.35,
+        "_duration_seconds": 0.0,
+        "_checkpoint_path": "artifacts\\experiments/EXP-20260916-F638/checkpoints\\backtest.json"
+      },
+      "artifacts": {
+        "manifest": "artifacts\\runs/RUN-20260916-1F35\\manifest.json"
+      },
+      "timestamp": "2026-09-16T17:46:17.779833"
+    },
+    "RUN-20260916-311C": {
+      "run_id": "RUN-20260916-311C",
+      "experiment_id": "EXP-20260916-FC3B",
+      "status": "FAILED",
+      "config": {
+        "experiment": {
+          "name": "unit_test_experiment",
+          "description": "Test experiment",
+          "seed": 42
+        },
+        "data": {
+          "symbols": [
+            "AAPL"
+          ],
+          "start": "2021-01-01",
+          "end": "2023-01-01"
+        },
+        "features": {
+          "market": true,
+          "news": true,
+          "fundamentals": true
+        },
+        "model": {
+          "type": "multimodal",
+          "version": "1.0"
+        },
+        "backtest": {
+          "initial_capital": 100000.0,
+          "transaction_cost": 0.001,
+          "slippage": 0.0005
+        },
+        "validation": {
+          "walk_forward": true,
+          "leakage_detection": true,
+          "bootstrap": true
+        },
+        "report": {
+          "generate": true
+        },
+        "_inject_failure_stage": "MODEL_TRAINING"
+      },
+      "dataset": {},
+      "model": {},
+      "metrics": {},
+      "artifacts": {},
+      "timestamp": "2026-09-16T17:46:18.018224",
+      "error": "Injected failure in stage MODEL_TRAINING"
     }
   },
   "models": {},
   "datasets": {},
-  "updated_at": "2026-09-16T17:34:01.716712"
+  "updated_at": "2026-09-16T17:46:18.059850"
 }

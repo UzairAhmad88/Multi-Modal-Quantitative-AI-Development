@@ -3,73 +3,67 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-159%20Passed-success.svg)](#running-tests)
+[![Tests](https://img.shields.io/badge/Tests-171%20Passed-success.svg)](#running-tests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, MLOps model registry, pre-trade risk controls, real-time paper trading execution, and an **Automated 17-Stage Research Pipeline & Orchestration Engine**.
+An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, MLOps model registry, pre-trade risk controls, real-time paper trading execution, an **Automated 17-Stage Research Pipeline**, and a **Quant Research Intelligence Engine**.
 
 ---
 
 ## 1. System Architecture
 
 ```text
-                 RESEARCH HYPOTHESIS
-                         │
-                         ▼
-                  EXPERIMENT CONFIG
-                         │
-                         ▼
-                    DATA LOAD
-                         │
-                         ▼
-                  DATA VALIDATION
-                         │
-                         ▼
-                  FEATURE ENGINE
-                         │
-                         ▼
-                 TEMPORAL SPLIT
-                         │
-                         ▼
-                    MODEL TRAIN
-                         │
-                         ▼
-                   PREDICTION
-                         │
-                         ▼
-                  SIGNAL ENGINE
-                         │
-                         ▼
-                PORTFOLIO ENGINE
-                         │
-                         ▼
-                     BACKTEST
-                         │
-                         ▼
-                    VALIDATION
-                         │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-      STATISTICS     ROBUSTNESS      STRESS
-          │              │              │
-          └──────────────┼──────────────┘
-                         ▼
-                  RESEARCH ANALYSIS
-                         │
-                         ▼
-                  RESEARCH FINDING
-                         │
-                         ▼
-                       REPORT
-                         │
-                         ▼
-                  ARTIFACT REGISTRY
+                    QUANT DATA
+                        │
+                        ▼
+                PATTERN DISCOVERY
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+       MARKET          NEWS       FUNDAMENTALS
+          │             │             │
+          └─────────────┼─────────────┘
+                        ▼
+                CROSS-MODAL ANALYSIS
+                        │
+                        ▼
+                    ANOMALIES
+                        │
+                        ▼
+                HYPOTHESIS ENGINE
+                        │
+                        ▼
+              EXPERIMENT GENERATOR
+                        │
+                        ▼
+              RESEARCH ORCHESTRATOR
+                        │
+                        ▼
+                   VALIDATION
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+      STATISTICS     ROBUSTNESS     STRESS
+          │             │             │
+          └─────────────┼─────────────┘
+                        ▼
+                  EVIDENCE ENGINE
+                        │
+                        ▼
+                 RESEARCH FINDING
+                        │
+                        ▼
+               FOLLOW-UP QUESTIONS
+                        │
+                        ▼
+                RESEARCH KNOWLEDGE
 ```
 
 ---
 
 ## 2. Key Features
 
+- **Quant Research Intelligence & Pattern OS (Phase 15)**: Multi-modal pattern discovery, event studies, lead-lag analysis, anomaly detection, structured hypothesis generation, network research graph lineage, evidence classification, persistent memory, and evidence-based natural language research queries.
 - **Automated Research Pipeline & Orchestration (Phase 14)**: 17-stage configuration-driven workflow with DAG dependency graph, JSON stage checkpointing, zero-recomputation resume, and reproducible experiment lineage.
 - **Multi-Modal Data Pipeline**: Temporal synchronization of daily market OHLCV bars, financial news headlines, and quarterly SEC financial statements.
 - **Point-In-Time Leakage Protection**: Enforces $T+1$ news availability policy and `public_release_date` backward-looking joins for earnings filings (`DataLeakageAuditor`).
@@ -79,8 +73,9 @@ An institutional-grade quantitative finance research operating system that combi
 - **Pre-Trade Risk Gate & Kill Switch**: Position limit enforcement (max asset weight 25.0%), gross leverage limits (1.0x), drawdown circuit breakers (-10.0%), and `TradingKillSwitch`.
 - **MLOps & Model Registry**: `ExperimentManager`, `DatasetRegistry` (SHA-256 manifests), `FeatureRegistry`, `ModelRegistry` (`EXPERIMENTAL` $\rightarrow$ `VALIDATED` $\rightarrow$ `PAPER` $\rightarrow$ `ARCHIVED`), and Lineage DAGs.
 - **Real-Time Paper Trading & Replay**: Continuous paper-trading simulation with 5 bps slippage, 10 bps commission, and 100x accelerated historical market replay engine (`RealtimeReplayEngine`).
-- **21-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, Paper Trading, Research Intelligence, Research Validation, and **Research Orchestration Pipeline**.
-- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, paper trading controls, and research orchestration.
+- **22-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, Paper Trading, Research Validation, Research Orchestration, and **Research Intelligence Operating System**.
+- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, paper trading controls, research orchestration, and research intelligence.
+
 
 ---
 

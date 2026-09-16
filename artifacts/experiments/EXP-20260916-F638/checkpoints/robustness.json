@@ -1,0 +1,12 @@
+{
+  "experiment_id": "EXP-20260916-F638",
+  "stage": "ROBUSTNESS",
+  "data": {
+    "stability_score": 0.92,
+    "period_sharpes": [
+      1.72,
+      1.65,
+      1.58
+    ]
+  }
+}
