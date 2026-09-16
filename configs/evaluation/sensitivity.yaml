@@ -1,0 +1,4 @@
+evaluation:
+  sensitivity:
+    transaction_cost_bps: [0, 2, 5, 10, 20]
+    rebalance_frequency: [daily, weekly, monthly]

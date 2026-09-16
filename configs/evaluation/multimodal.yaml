@@ -1,0 +1,10 @@
+evaluation:
+  ablation:
+    modalities:
+      - market
+      - news
+      - fundamentals
+      - market_news
+      - market_fundamentals
+      - news_fundamentals
+      - full_fusion

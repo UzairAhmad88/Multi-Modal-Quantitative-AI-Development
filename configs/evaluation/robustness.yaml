@@ -1,0 +1,4 @@
+evaluation:
+  robustness:
+    min_sharpe_threshold: 1.0
+    cost_sensitivity_bps: [0, 5, 10, 15, 25]

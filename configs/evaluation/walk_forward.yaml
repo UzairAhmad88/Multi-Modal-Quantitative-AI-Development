@@ -1,0 +1,8 @@
+evaluation:
+  walk_forward:
+    train_period: 504
+    validation_period: 126
+    test_period: 126
+    step: 63
+    expanding: false
+    embargo_period: 10

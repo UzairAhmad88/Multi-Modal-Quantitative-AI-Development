@@ -1,0 +1,16 @@
+evaluation:
+  name: default_evaluation
+  risk_free_rate: 0.02
+  annualization_factor: 252
+  bootstrap:
+    num_samples: 500
+    confidence_level: 0.95
+  walk_forward:
+    train_period: 756
+    validation_period: 126
+    test_period: 126
+    step: 126
+    expanding: true
+    embargo_period: 5
+  sensitivity:
+    cost_grid_bps: [0, 2, 5, 10, 20]
