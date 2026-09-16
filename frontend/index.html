@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUANT AI — Multi-Modal Quantitative Intelligence Research OS</title>
+    <title>QUANT AI — Quantitative Research OS & Workstation</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- FontAwesome & Chart.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,12 +19,12 @@
             <div class="brand">
                 <i class="fa-solid fa-chart-line brand-icon"></i>
                 <span class="brand-title">QUANT AI</span>
-                <span class="brand-subtitle">RESEARCH OS v2.4</span>
+                <span class="brand-subtitle">RESEARCH WORKSTATION v2.5</span>
             </div>
 
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="globalSearch" placeholder="Search ticker, model, experiment, signal... (e.g. AAPL, NVDA)">
+                <input type="text" id="globalSearch" placeholder="Search symbol, model, experiment, signal... (e.g. AAPL, NVDA, EXP-001)">
                 <div class="quick-chips">
                     <span class="chip" onclick="switchTicker('AAPL')">AAPL</span>
                     <span class="chip" onclick="switchTicker('NVDA')">NVDA</span>
@@ -34,12 +34,13 @@
             </div>
 
             <div class="command-badges">
-                <span class="badge badge-success"><i class="fa-solid fa-circle text-xs"></i> MARKET OPEN</span>
-                <span class="badge badge-info"><i class="fa-solid fa-bolt"></i> DATA LIVE</span>
+                <span class="badge badge-paper"><i class="fa-solid fa-flask"></i> PAPER TRADING ONLY</span>
+                <span class="badge badge-warning"><i class="fa-solid fa-lock"></i> REAL-MONEY DISABLED</span>
+                <span class="badge badge-success"><i class="fa-solid fa-circle text-xs"></i> SYSTEM HEALTHY</span>
                 <span class="badge badge-neutral" id="utcClock">16:00:42 UTC</span>
                 <div class="user-profile">
                     <i class="fa-solid fa-user-shield"></i>
-                    <span>QUANT ADMIN</span>
+                    <span>QUANT RESEARCHER</span>
                 </div>
             </div>
         </header>
@@ -47,13 +48,13 @@
         <!-- Main Body Layout -->
         <div class="shell-body">
 
-            <!-- Collapsible Sidebar Navigation -->
+            <!-- Sidebar Navigation -->
             <aside class="sidebar" id="sidebar">
                 <div class="nav-section-title">COMMAND CENTER</div>
                 <ul class="nav-list">
                     <li class="nav-item active" onclick="navTo('overview', this)"><i class="fa-solid fa-gauge"></i> Overview</li>
                     <li class="nav-item" onclick="navTo('markets', this)"><i class="fa-solid fa-chart-candlestick"></i> Market Research</li>
-                    <li class="nav-item" onclick="navTo('signals', this)"><i class="fa-solid fa-signal"></i> Signal Center</li>
+                    <li class="nav-item" onclick="navTo('signals', this)"><i class="fa-solid fa-signal"></i> Signals & Lineage</li>
                 </ul>
 
                 <div class="nav-section-title">INTELLIGENCE & AI</div>
@@ -65,17 +66,25 @@
 
                 <div class="nav-section-title">PORTFOLIO & RISK</div>
                 <ul class="nav-list">
-                    <li class="nav-item" onclick="navTo('portfolio', this)"><i class="fa-solid fa-wallet"></i> Portfolio</li>
-                    <li class="nav-item" onclick="navTo('risk', this)"><i class="fa-solid fa-shield-halved"></i> Risk Engine</li>
-                    <li class="nav-item" onclick="navTo('backtest', this)"><i class="fa-solid fa-clock-rotate-left"></i> Backtester</li>
+                    <li class="nav-item" onclick="navTo('portfolio', this)"><i class="fa-solid fa-wallet"></i> Portfolio Engine</li>
+                    <li class="nav-item" onclick="navTo('risk', this)"><i class="fa-solid fa-shield-halved"></i> Risk Dashboard</li>
+                    <li class="nav-item" onclick="navTo('backtest', this)"><i class="fa-solid fa-clock-rotate-left"></i> Backtest Engine</li>
+                    <li class="nav-item" onclick="navTo('paper-trading', this)"><i class="fa-solid fa-robot"></i> Paper Trading</li>
                 </ul>
 
-                <div class="nav-section-title">RESEARCH & SYSTEM</div>
+                <div class="nav-section-title">RESEARCH & MLOPS</div>
                 <ul class="nav-list">
                     <li class="nav-item" onclick="navTo('models', this)"><i class="fa-solid fa-brain"></i> Model Lab</li>
-                    <li class="nav-item" onclick="navTo('research', this)"><i class="fa-solid fa-flask"></i> Experiments & Ablation</li>
-                    <li class="nav-item" onclick="navTo('data-quality', this)"><i class="fa-solid fa-database"></i> Data Quality</li>
-                    <li class="nav-item" onclick="navTo('system', this)"><i class="fa-solid fa-server"></i> System Health</li>
+                    <li class="nav-item" onclick="navTo('features', this)"><i class="fa-solid fa-sliders"></i> Feature Registry</li>
+                    <li class="nav-item" onclick="navTo('experiments', this)"><i class="fa-solid fa-flask"></i> Experiments</li>
+                    <li class="nav-item" onclick="navTo('ablation', this)"><i class="fa-solid fa-layer-group"></i> Modality Ablation</li>
+                    <li class="nav-item" onclick="navTo('robustness', this)"><i class="fa-solid fa-vial-circle-check"></i> Robustness Lab</li>
+                    <li class="nav-item" onclick="navTo('research', this)"><i class="fa-solid fa-lightbulb"></i> Research Workspace</li>
+                    <li class="nav-item" onclick="navTo('data-quality', this)"><i class="fa-solid fa-database"></i> Data Health</li>
+                    <li class="nav-item" onclick="navTo('mlops', this)"><i class="fa-solid fa-diagram-project"></i> MLOps & Drift</li>
+                    <li class="nav-item" onclick="navTo('reports', this)"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                    <li class="nav-item" onclick="navTo('system', this)"><i class="fa-solid fa-server"></i> System Status</li>
+                    <li class="nav-item" onclick="navTo('settings', this)"><i class="fa-solid fa-gear"></i> Settings</li>
                 </ul>
 
                 <div class="sidebar-footer">
@@ -89,8 +98,8 @@
                 <!-- 1. OVERVIEW VIEW -->
                 <section id="view-overview" class="view-panel active">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-gauge text-blue"></i> Executive Research Overview</h2>
-                        <span class="text-muted">Market Regime: <strong class="text-green">BULLISH (72%)</strong> | Volatility: 18.4% | Macro: EXPANSION</span>
+                        <h2><i class="fa-solid fa-gauge text-blue"></i> Quantitative Research Overview</h2>
+                        <span class="text-muted">Regime: <strong class="text-green">BULLISH (72%)</strong> | Volatility: 14.8% | Macro: EXPANSION</span>
                     </div>
 
                     <div class="grid-4">
@@ -118,18 +127,13 @@
 
                     <div class="grid-2 mt-4">
                         <div class="panel">
-                            <div class="panel-header">
-                                <h3><i class="fa-solid fa-chart-line text-green"></i> Portfolio Equity Curve vs Benchmark</h3>
-                            </div>
+                            <h3><i class="fa-solid fa-chart-line text-green"></i> Strategy Equity Curve</h3>
                             <div class="chart-container">
                                 <canvas id="chart-equity-overview"></canvas>
                             </div>
                         </div>
-
                         <div class="panel">
-                            <div class="panel-header">
-                                <h3><i class="fa-solid fa-shield-cat text-amber"></i> Risk & Asset Exposure Distribution</h3>
-                            </div>
+                            <h3><i class="fa-solid fa-pie-chart text-blue"></i> Sector Asset Allocation</h3>
                             <div class="chart-container">
                                 <canvas id="chart-exposure-overview"></canvas>
                             </div>
@@ -137,123 +141,17 @@
                     </div>
 
                     <div class="panel mt-4">
-                        <div class="panel-header">
-                            <h3><i class="fa-solid fa-bolt text-blue"></i> Active Multi-Modal Alpha Signals</h3>
-                        </div>
+                        <h3><i class="fa-solid fa-bolt text-amber"></i> Active Model Signals Summary</h3>
                         <table class="data-table" id="table-overview-signals">
                             <thead>
                                 <tr>
-                                    <th>Ticker</th>
+                                    <th>Symbol</th>
                                     <th>Signal</th>
                                     <th>5D Forecast</th>
-                                    <th>Confidence</th>
+                                    <th>Model Confidence</th>
                                     <th>Alpha Score</th>
-                                    <th>Agreement</th>
+                                    <th>Lineage</th>
                                     <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- JS Populated -->
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- 2. MARKETS RESEARCH VIEW -->
-                <section id="view-markets" class="view-panel">
-                    <div class="view-header">
-                        <h2><i class="fa-solid fa-chart-candlestick text-blue"></i> Asset Market Analytics: <span id="mkt-selected-ticker">AAPL</span></h2>
-                        <div>
-                            <select id="tickerSelect" class="form-select" onchange="switchTicker(this.value)">
-                                <option value="AAPL">AAPL — Apple Inc.</option>
-                                <option value="NVDA">NVDA — NVIDIA Corp.</option>
-                                <option value="MSFT">MSFT — Microsoft Corp.</option>
-                                <option value="AMZN">AMZN — Amazon.com Inc.</option>
-                                <option value="GOOGL">GOOGL — Alphabet Inc.</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid-4 mb-4">
-                        <div class="metric-card">
-                            <div class="metric-label">CURRENT PRICE</div>
-                            <div class="metric-value">$238.42</div>
-                            <div class="metric-change positive">+0.84% (1D)</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">5D AI FORECAST</div>
-                            <div class="metric-value text-green">+2.84%</div>
-                            <div class="metric-change positive">Prob Up: 68%</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">CONFIDENCE SCORE</div>
-                            <div class="metric-value text-blue">87%</div>
-                            <div class="metric-change neutral">Model Agreement: 5/5</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">RECOMMENDED SIGNAL</div>
-                            <div class="metric-value text-green">BUY</div>
-                            <div class="metric-change positive">Target Delta: +3.8%</div>
-                        </div>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3>Historical Price & AI Forecast Cone</h3>
-                        </div>
-                        <div class="chart-container-large">
-                            <canvas id="chart-market-candlestick"></canvas>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 3. MULTI-MODAL AI VIEW -->
-                <section id="view-multimodal" class="view-panel">
-                    <div class="view-header">
-                        <h2><i class="fa-solid fa-network-wired text-purple"></i> Multi-Modal Neural Fusion Network (`MultiModalQuantNet`)</h2>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3>Modality Layer Contributions</h3>
-                            </div>
-                            <div class="chart-container">
-                                <canvas id="chart-multimodal-bars"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3>Neural Encoder Architecture Summary</h3>
-                            </div>
-                            <div class="architecture-flow">
-                                <div class="node">Market OHLCV & Technicals (82D) &rarr; LSTM Market Encoder (32D)</div>
-                                <div class="node">Financial News & NLP (54D) &rarr; FinBERT News Encoder (16D)</div>
-                                <div class="node">Quarterly Fundamentals (43D) &rarr; Statement Fundamental Encoder (16D)</div>
-                                <div class="fusion-box">Learned Softmax Attention Fusion Layer</div>
-                                <div class="node output">Ensemble Output Head: 5D Forecast Return (+0.0284) | Signal BUY</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 4. SIGNALS VIEW -->
-                <section id="view-signals" class="view-panel">
-                    <div class="view-header">
-                        <h2><i class="fa-solid fa-signal text-green"></i> Alpha Signal Center</h2>
-                    </div>
-                    <div class="panel">
-                        <table class="data-table" id="table-signals-full">
-                            <thead>
-                                <tr>
-                                    <th>Ticker</th>
-                                    <th>Horizon</th>
-                                    <th>Signal</th>
-                                    <th>Forecast Return</th>
-                                    <th>Confidence</th>
-                                    <th>Alpha Score</th>
-                                    <th>Regime</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -261,34 +159,81 @@
                     </div>
                 </section>
 
+                <!-- 2. MARKETS VIEW -->
+                <section id="view-markets" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-chart-candlestick text-blue"></i> Market Data & Technical Research (<span id="mkt-selected-ticker">AAPL</span>)</h2>
+                        <div class="header-controls">
+                            <select id="tickerSelect" onchange="switchTicker(this.value)" class="select-input">
+                                <option value="AAPL">AAPL - Apple Inc.</option>
+                                <option value="NVDA">NVDA - NVIDIA Corp.</option>
+                                <option value="MSFT">MSFT - Microsoft Corp.</option>
+                                <option value="AMZN">AMZN - Amazon.com Inc.</option>
+                                <option value="GOOGL">GOOGL - Alphabet Inc.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel mb-4">
+                        <div class="chart-container" style="height: 380px;">
+                            <canvas id="chart-market-candlestick"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. SIGNALS & LINEAGE VIEW -->
+                <section id="view-signals" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-signal text-green"></i> Signal Center & Provenance Lineage</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <table class="data-table" id="table-signals-full">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Horizon</th>
+                                    <th>Signal</th>
+                                    <th>5D Forecast</th>
+                                    <th>Confidence</th>
+                                    <th>Alpha Score</th>
+                                    <th>Regime</th>
+                                    <th>Provenance</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="panel" id="signal-lineage-card" style="display:none;">
+                        <h3><i class="fa-solid fa-diagram-next text-purple"></i> Signal Traceability Lineage Chain (<span id="lineage-target-id">SIG-001</span>)</h3>
+                        <ul class="lineage-list" id="lineage-chain-list"></ul>
+                    </div>
+                </section>
+
+                <!-- 4. MULTI-MODAL VIEW -->
+                <section id="view-multimodal" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-network-wired text-purple"></i> Multi-Modal AI Fusion Analysis</h2>
+                    </div>
+                    <div class="panel">
+                        <div class="chart-container">
+                            <canvas id="chart-multimodal-bars"></canvas>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- 5. NEWS & SENTIMENT VIEW -->
                 <section id="view-news" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-newspaper text-blue"></i> News Intelligence & FinBERT Sentiment</h2>
-                    </div>
-                    <div class="grid-3 mb-4">
-                        <div class="metric-card">
-                            <div class="metric-label">COMPOSITE SENTIMENT</div>
-                            <div class="metric-value text-green">+0.68</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">ARTICLE VOLUME (24H)</div>
-                            <div class="metric-value">42</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">NLP POINT-IN-TIME ALIGNMENT</div>
-                            <div class="metric-value text-blue">ENFORCED (T+1)</div>
-                        </div>
+                        <h2><i class="fa-solid fa-newspaper text-amber"></i> News Sentiment & NLP Stream</h2>
                     </div>
                     <div class="panel">
                         <table class="data-table" id="table-news-full">
                             <thead>
                                 <tr>
                                     <th>Timestamp</th>
-                                    <th>Ticker</th>
+                                    <th>Symbol</th>
                                     <th>Source</th>
                                     <th>Headline</th>
-                                    <th>Sentiment</th>
+                                    <th>FinBERT Sentiment</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -299,21 +244,21 @@
                 <!-- 6. FUNDAMENTALS VIEW -->
                 <section id="view-fundamentals" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-file-invoice-dollar text-green"></i> Fundamental Financial Statements & Ratios</h2>
+                        <h2><i class="fa-solid fa-file-invoice-dollar text-green"></i> Fundamental Statement Analysis</h2>
                     </div>
                     <div class="panel">
                         <table class="data-table" id="table-fundamentals-full">
                             <thead>
                                 <tr>
-                                    <th>Ticker</th>
+                                    <th>Symbol</th>
                                     <th>Quarter End</th>
                                     <th>Release Date</th>
-                                    <th>Revenue ($M)</th>
-                                    <th>EPS ($)</th>
-                                    <th>ROE (%)</th>
+                                    <th>Revenue</th>
+                                    <th>EPS</th>
+                                    <th>ROE</th>
                                     <th>P/E</th>
                                     <th>P/B</th>
-                                    <th>FCF ($M)</th>
+                                    <th>Free Cash Flow</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -324,17 +269,17 @@
                 <!-- 7. PORTFOLIO VIEW -->
                 <section id="view-portfolio" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-wallet text-blue"></i> Portfolio Construction & Target Positions</h2>
+                        <h2><i class="fa-solid fa-wallet text-blue"></i> Portfolio Construction & Allocations</h2>
                     </div>
                     <div class="panel">
                         <table class="data-table" id="table-portfolio-full">
                             <thead>
                                 <tr>
-                                    <th>Ticker</th>
+                                    <th>Symbol</th>
                                     <th>Current Weight</th>
                                     <th>Target Weight</th>
-                                    <th>Rebalance Change</th>
-                                    <th>Action</th>
+                                    <th>Delta</th>
+                                    <th>Rebalance Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -342,40 +287,26 @@
                     </div>
                 </section>
 
-                <!-- 8. RISK ENGINE VIEW -->
+                <!-- 8. RISK VIEW -->
                 <section id="view-risk" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-shield-halved text-amber"></i> Risk Monitor & Exposure Limits</h2>
+                        <h2><i class="fa-solid fa-shield-halved text-red"></i> Risk Engine & Limits Dashboard</h2>
                     </div>
                     <div class="grid-4 mb-4">
-                        <div class="metric-card">
-                            <div class="metric-label">VOLATILITY (ANN)</div>
-                            <div class="metric-value">14.8%</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">VAR (95%)</div>
-                            <div class="metric-value text-amber">-1.82%</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">EXPECTED SHORTFALL</div>
-                            <div class="metric-value text-red">-2.74%</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">PORTFOLIO BETA</div>
-                            <div class="metric-value">0.94</div>
-                        </div>
+                        <div class="metric-card"><div class="metric-label">VOLATILITY (ANN)</div><div class="metric-value">14.8%</div></div>
+                        <div class="metric-card"><div class="metric-label">VAR (95%)</div><div class="metric-value text-amber">-1.82%</div></div>
+                        <div class="metric-card"><div class="metric-label">EXPECTED SHORTFALL</div><div class="metric-value text-red">-2.74%</div></div>
+                        <div class="metric-card"><div class="metric-label">PORTFOLIO BETA</div><div class="metric-value">0.94</div></div>
                     </div>
                 </section>
 
-                <!-- 9. BACKTESTER VIEW -->
+                <!-- 9. BACKTEST VIEW -->
                 <section id="view-backtest" class="view-panel">
                     <div class="view-header">
                         <h2><i class="fa-solid fa-clock-rotate-left text-green"></i> Event-Driven Backtesting Engine</h2>
                     </div>
                     <div class="panel mb-4">
-                        <div class="form-row">
-                            <button class="btn btn-primary" onclick="runBacktestUI()"><i class="fa-solid fa-play"></i> Execute Backtest Simulation</button>
-                        </div>
+                        <button class="btn btn-primary" onclick="runBacktestUI()"><i class="fa-solid fa-play"></i> Execute Backtest Simulation</button>
                     </div>
                     <div class="panel">
                         <div class="chart-container">
@@ -384,7 +315,36 @@
                     </div>
                 </section>
 
-                <!-- 10. MODEL LAB VIEW -->
+                <!-- 10. PAPER TRADING VIEW -->
+                <section id="view-paper-trading" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-robot text-purple"></i> Paper-Trading Order Execution Workstation</h2>
+                        <span class="badge badge-paper"><i class="fa-solid fa-flask"></i> SIMULATION ONLY</span>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="paper-session-summary">Loading paper session status...</div>
+                    </div>
+                    <div class="panel">
+                        <h3>Open Paper Orders & Fills</h3>
+                        <table class="data-table" id="table-paper-orders">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Symbol</th>
+                                    <th>Side</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Fill Price</th>
+                                    <th>Slippage</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 11. MODEL LAB VIEW -->
                 <section id="view-models" class="view-panel">
                     <div class="view-header">
                         <h2><i class="fa-solid fa-brain text-purple"></i> Model Registry & Architecture Lab</h2>
@@ -403,10 +363,30 @@
                     </div>
                 </section>
 
-                <!-- 11. RESEARCH & ABLATION VIEW -->
-                <section id="view-research" class="view-panel">
+                <!-- 12. FEATURE REGISTRY VIEW -->
+                <section id="view-features" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-flask text-blue"></i> Modality Ablation Study & Research Experiments</h2>
+                        <h2><i class="fa-solid fa-sliders text-blue"></i> Feature Store & Permutation Importance</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="feature-groups-container">Loading feature registry...</div>
+                    </div>
+                </section>
+
+                <!-- 13. EXPERIMENTS VIEW -->
+                <section id="view-experiments" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-flask text-green"></i> Experiment Tracking & Registry</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="experiments-list-container">Loading registered experiments...</div>
+                    </div>
+                </section>
+
+                <!-- 14. ABLATION VIEW -->
+                <section id="view-ablation" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-layer-group text-blue"></i> Feature Modality Ablation Study</h2>
                     </div>
                     <div class="panel">
                         <div class="chart-container">
@@ -415,25 +395,82 @@
                     </div>
                 </section>
 
-                <!-- 12. DATA QUALITY VIEW -->
-                <section id="view-data-quality" class="view-panel">
+                <!-- 15. ROBUSTNESS VIEW -->
+                <section id="view-robustness" class="view-panel">
                     <div class="view-header">
-                        <h2><i class="fa-solid fa-database text-green"></i> Feature Store & Data Quality Monitor</h2>
+                        <h2><i class="fa-solid fa-vial-circle-check text-amber"></i> Parameter & Regime Robustness Stress</h2>
                     </div>
-                    <div class="grid-3">
-                        <div class="metric-card"><div class="metric-label">MARKET DATA INTEGRITY</div><div class="metric-value text-green">99.8%</div></div>
-                        <div class="metric-card"><div class="metric-label">NEWS SENTIMENT INTEGRITY</div><div class="metric-value text-green">97.2%</div></div>
-                        <div class="metric-card"><div class="metric-label">FUNDAMENTAL INTEGRITY</div><div class="metric-value text-green">95.7%</div></div>
+                    <div class="panel">
+                        <div id="robustness-matrix-container">Loading robustness stress parameters...</div>
                     </div>
                 </section>
 
-                <!-- 13. SYSTEM HEALTH VIEW -->
+                <!-- 16. RESEARCH WORKSPACE VIEW -->
+                <section id="view-research" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-lightbulb text-purple"></i> Research Intelligence Workspace</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="research-overview-container">Loading research workspace metrics...</div>
+                    </div>
+                </section>
+
+                <!-- 17. DATA QUALITY VIEW -->
+                <section id="view-data-quality" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-database text-green"></i> Data Quality & Feed Health</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="data-health-container">Loading data health indicators...</div>
+                    </div>
+                </section>
+
+                <!-- 18. MLOPS VIEW -->
+                <section id="view-mlops" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-diagram-project text-blue"></i> MLOps Drift & Registry Control</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="mlops-container">Monitoring prediction and feature drift...</div>
+                    </div>
+                </section>
+
+                <!-- 19. REPORTS VIEW -->
+                <section id="view-reports" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-file-lines text-green"></i> Research Reports & Exports</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="reports-list-container">Loading reports directory...</div>
+                    </div>
+                    <div class="panel" id="report-content-panel" style="display:none;">
+                        <h3 id="report-content-title">Report Content</h3>
+                        <pre id="report-content-body" style="background:#0F172A; padding:1rem; border-radius:6px; color:#E2E8F0; white-space:pre-wrap;"></pre>
+                    </div>
+                </section>
+
+                <!-- 20. SYSTEM HEALTH VIEW -->
                 <section id="view-system" class="view-panel">
                     <div class="view-header">
                         <h2><i class="fa-solid fa-server text-blue"></i> System Health & Service Status</h2>
                     </div>
                     <div class="panel">
                         <div id="system-health-status">Checking services...</div>
+                    </div>
+                </section>
+
+                <!-- 21. SETTINGS VIEW -->
+                <section id="view-settings" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-gear text-muted"></i> Workstation Settings & Safety Controls</h2>
+                    </div>
+                    <div class="panel">
+                        <div class="setting-item">
+                            <strong>Paper Trading Environment:</strong> <span class="badge badge-success">ACTIVE</span>
+                        </div>
+                        <div class="setting-item mt-2">
+                            <strong>Live Real-Money Execution:</strong> <span class="badge badge-warning">HARD-DISABLED</span>
+                        </div>
                     </div>
                 </section>
 
@@ -446,7 +483,7 @@
             <div class="terminal-item"><span class="dot green"></span> NEWS PIPELINE: LIVE</div>
             <div class="terminal-item"><span class="dot green"></span> FUNDAMENTALS: UPDATED</div>
             <div class="terminal-item"><span class="dot green"></span> FEATURE STORE: READY</div>
-            <div class="terminal-item"><span class="dot green"></span> ML MODELS: 6 ONLINE</div>
+            <div class="terminal-item"><span class="dot green"></span> ML MODELS: ONLINE</div>
             <div class="terminal-item"><span class="dot green"></span> RISK ENGINE: NORMAL</div>
             <div class="terminal-item"><span class="dot green"></span> BACKTEST ENGINE: READY</div>
             <div class="terminal-item"><span class="dot green"></span> DATABASE: CONNECTED</div>

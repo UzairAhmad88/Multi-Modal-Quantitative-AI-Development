@@ -356,3 +356,49 @@ body.dark-theme {
 .btn-primary:hover {
     background-color: #2563EB;
 }
+
+/* Badges & Special Tokens */
+.badge-paper {
+    background-color: #8B5CF6;
+    color: #FFF;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+.badge-warning {
+    background-color: #F59E0B;
+    color: #111827;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+/* Lineage List Styles */
+.lineage-list {
+    list-style: none;
+    margin-top: 10px;
+    padding-left: 0;
+}
+.lineage-list li {
+    padding: 8px 12px;
+    background: var(--bg-surface);
+    border-left: 3px solid var(--color-purple);
+    margin-bottom: 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.lineage-list li strong {
+    color: var(--color-blue);
+}
+
+.setting-item {
+    padding: 10px 14px;
+    background: var(--bg-surface);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+

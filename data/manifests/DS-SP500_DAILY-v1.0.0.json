@@ -3,7 +3,7 @@
   "name": "sp500_daily",
   "version": "v1.0.0",
   "source": "yfinance",
-  "created_at": "2026-09-16T14:44:27.705311+00:00",
+  "created_at": "2026-09-16T16:50:59.445888+00:00",
   "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "row_count": 5030,
   "column_count": 8,
