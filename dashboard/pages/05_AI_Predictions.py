@@ -1,14 +1,21 @@
 import streamlit as st
 import pandas as pd
+from dashboard.components.charts import plot_multimodal_breakdown
 
-st.header("🤖 AI Returns & Probability Predictions")
+st.header("🤖 Multi-Modal AI Predictions & Feature Fusion")
 
-preds = pd.DataFrame([
-    {"Ticker": "AAPL", "Horizon": "5 Days", "Expected Return": "+2.45%", "Direction Prob": "68%", "Confidence": "HIGH", "Model": "Multi-Modal Fusion v1.0"},
-    {"Ticker": "MSFT", "Horizon": "5 Days", "Expected Return": "+1.82%", "Direction Prob": "61%", "Confidence": "MEDIUM", "Model": "Ensemble v1.0"},
-    {"Ticker": "NVDA", "Horizon": "5 Days", "Expected Return": "+4.12%", "Direction Prob": "74%", "Confidence": "HIGH", "Model": "XGBoost v1.0"},
-    {"Ticker": "AMZN", "Horizon": "5 Days", "Expected Return": "-0.95%", "Direction Prob": "42%", "Confidence": "MEDIUM", "Model": "Transformer v1.0"},
-    {"Ticker": "TSLA", "Horizon": "5 Days", "Expected Return": "-2.10%", "Direction Prob": "35%", "Confidence": "HIGH", "Model": "LSTM v1.0"}
-])
+c1, c2 = st.columns([1.2, 1])
 
-st.dataframe(preds, use_container_width=True)
+with c1:
+    st.subheader("Asset Prediction Matrix")
+    preds = pd.DataFrame([
+        {"Ticker": "AAPL", "Horizon": "5 Days", "Expected Return": "+2.84%", "Direction Prob": "68%", "Confidence": "87%", "Model": "MultiModalQuantNet v2.4"},
+        {"Ticker": "NVDA", "Horizon": "5 Days", "Expected Return": "+4.12%", "Direction Prob": "74%", "Confidence": "91%", "Model": "MultiModalQuantNet v2.4"},
+        {"Ticker": "MSFT", "Horizon": "5 Days", "Expected Return": "+2.15%", "Direction Prob": "64%", "Confidence": "84%", "Model": "Ensemble v2.4"},
+        {"Ticker": "AMZN", "Horizon": "5 Days", "Expected Return": "+2.65%", "Direction Prob": "62%", "Confidence": "82%", "Model": "Transformer v2.4"},
+        {"Ticker": "GOOGL", "Horizon": "5 Days", "Expected Return": "+0.42%", "Direction Prob": "51%", "Confidence": "65%", "Model": "XGBoost v2.4"}
+    ])
+    st.dataframe(preds, use_container_width=True)
+
+with c2:
+    st.plotly_chart(plot_multimodal_breakdown(), use_container_width=True)
