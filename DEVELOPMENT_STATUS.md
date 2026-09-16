@@ -36,6 +36,8 @@
 | **Phase 24** | Statistical Validation & Research Integrity OS | Stationary Block Bootstrap, Hypothesis testing, Bonferroni/Holm/BH Multiple Testing, Overfitting Diagnostics, Integrity Flags | **COMPLETED** |
 | **Phase 25** | Portfolio Construction & Optimization Engine OS | Mean-Variance, Risk Parity, Min-Variance, Equal-Weight, Signal-Weighted, Max Diversification, Constrained Quadratic Solvers, Position Sizing, Risk Attribution (MCR/PCR), Concentration (HHI/N_eff), Rebalancing Scheduler, 4 CLI tools, Page 32 Dashboard | **COMPLETED** |
 | **Phase 26** | Advanced Quantitative Risk & Stress Testing Engine OS | RiskSnapshot, Volatility (Hist/Roll/EWMA), Asset/Portfolio Beta, Covariance Audit, Correlation Instability, Factor Risk, MCR/CCR/PCR Reconciliation, Concentration (HHI, N_eff), VaR (Hist/Param/MC), CVaR (Expected Shortfall), Drawdowns, ScenarioRegistry, Historical/Hypothetical/Volatility/Correlation/Liquidity/Cost Stress, Monte Carlo Engine (Cholesky, seed=42), Risk Limit Breach Engine, 5 CLI tools, Page 33 Dashboard | **COMPLETED** |
+| **Phase 27** | Walk-Forward Validation & Anti-Overfitting Research OS | TimelineValidator, Date-based splits, Expanding/Rolling/Anchored Window Generators, Purged CV & Embargo Excluder (López de Prado), 6-Stage Leakage Detector, Preprocessing Leakage Audit, OOS Prediction Storage & Metrics, Stability & Parameter Sensitivity Grids, Regime OOS Analysis, Test-Set Lock Protection (`TEST_SET_LOCKED`), 2 CLI tools, Page 34 Dashboard | **COMPLETED** |
+
 
 ---
 

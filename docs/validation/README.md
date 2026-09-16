@@ -1,37 +1,52 @@
-# Phase 24: Statistical Validation & Research Integrity OS
+# Phase 24 & Phase 27: Statistical Validation, Walk-Forward & Out-of-Sample Research OS
 
-The **Statistical Validation & Research Integrity Engine** evaluates whether quantitative research results are statistically meaningful, stable, and reproducible. It consumes return series and evaluation metrics from existing engines (`backtests/`, `research_evaluation/`) without duplicating logic.
+The **Statistical & Walk-Forward Validation OS** evaluates whether quantitative research results are statistically meaningful, stable, reproducible, and robust against out-of-sample temporal degradation. It consumes return series, feature matrices, and evaluation metrics from existing engines (`backtests/`, `research_evaluation/`, `portfolio/`, `risk/`) without duplicating logic.
 
-## Key Features
+---
 
-1. **Basic Moments & Parametric Confidence Intervals (`validation/statistics/`)**:
-   - Higher-order moments (mean, std, skewness, kurtosis) and parametric confidence intervals.
+## Phase 27: Walk-Forward Validation & Anti-Overfitting OS Features
 
-2. **Stationary Block Bootstrap (`validation/bootstrap/`)**:
-   - `BootstrapAnalyzer`: Stationary block bootstrap preserving time-series temporal dependence structure with configurable `block_size` and `iterations`.
+1. **Temporal Timeline & Date-Based Splitting (`validation/temporal/`)**:
+   - `TimelineValidator`: Validates non-overlapping decision boundaries, timestamp sorting, point-in-time availability timestamps, and horizon compatibility.
+   - Date-based explicit date ranges take precedence over percentage split ratios.
 
-3. **Significance Testing & Effect Sizes (`validation/significance/`)**:
-   - `HypothesisTester`: 1-sample, 2-sample paired t-tests, p-values, and Cohen's d effect sizes.
+2. **Walk-Forward Generators (`validation/walk_forward/`)**:
+   - `ExpandingWindowGenerator`: Anchored start date with expanding train periods.
+   - `RollingWindowGenerator`: Fixed rolling train window moved sequentially across the timeline.
+   - `AnchoredWindowGenerator`: Fixed training window start with sliding validation/test horizons.
+   - `WalkForwardEngine`: Automated execution across repeated train/validation/test cycles.
 
-4. **Multiple Testing Adjustments (`validation/multiple_testing/`)**:
-   - `MultipleTestingCorrector`: Bonferroni, Holm-Bonferroni, and Benjamini-Hochberg (FDR) adjustments for multiple hypothesis testing.
+3. **Purged & Embargoed Cross-Validation (`validation/purged/`)**:
+   - `LabelHorizonPurger`: Marcos López de Prado style label overlap purger removing training samples overlapping evaluation label horizons (`t` to `t+k`).
+   - `EmbargoExcluder`: Excludes post-evaluation observations to eliminate autocorrelation contamination.
+   - `PurgedTimeSeriesSplitter`: Integrates purging and embargo into sklearn-compatible CV splitters.
 
-5. **Temporal Stability Analysis (`validation/stability/`)**:
-   - `StabilityAnalyzer`: Subperiod window breakdown, rolling metric dispersion, and stability scoring ($0$ to $100$).
+4. **6-Stage Data Leakage Detection (`validation/leakage/`)**:
+   - `FeatureLeakageAuditor`: Detects future-derived indicators, look-ahead features, and correlation anomalies ($r > 0.99$).
+   - `LabelLeakageAuditor`: Detects direct/indirect label target contamination in feature matrices.
+   - `TemporalLeakageAuditor`: Verifies strict chronological ordering (`train_end <= val_start`).
+   - `AvailabilityAuditor`: Audits point-in-time availability timestamps (`availability <= decision`).
+   - `PreprocessingLeakageAuditor`: Enforces feature scalers, imputers, PCA, and encoders are fit *only* on training folds.
+   - `LeakageDetector`: Master 6-stage leakage orchestrator generating markdown leakage reports.
 
-6. **Overfitting Diagnostics & Assumption Checker (`validation/diagnostics/`)**:
-   - `OverfittingDiagnostics`: Train/test Sharpe gap degradation and generalization gap analysis.
-   - `AssumptionChecker`: Normality and minimum sample size verification.
+5. **Out-of-Sample (OOS) Prediction Storage & Metrics (`validation/oos/`)**:
+   - `OOSPredictionStore`: Structured storage for OOS predictions, actuals, windows, and symbols.
+   - `OOSMetricsCalculator`: Computes regression (MAE, MSE, RMSE, MAPE) and classification (Accuracy, Precision, Recall, F1) metrics across concatenated OOS windows.
+   - `OOSEvaluator`: Links OOS predictions to signal generation, portfolio optimization, execution simulation, and backtesting.
 
-7. **Research Integrity Flags (`validation/schemas/`)**:
-   - Structured technical flags (`LOOK_AHEAD_RISK`, `DATA_LEAKAGE`, `MULTIPLE_TESTING`, `SMALL_SAMPLE`, `PARAMETER_INSTABILITY`, `REGIME_INSTABILITY`, `HIGH_COST_SENSITIVITY`, `TRAIN_TEST_GAP`) with `INFO`, `WARNING`, or `CRITICAL` severity.
+6. **Robustness & Stability Analysis (`validation/robustness/`)**:
+   - `StabilityAnalyzer`: Analyzes cross-window performance dispersion, drawdown stability, and worst/best window spread.
+   - `ParameterSensitivityEngine`: Grid evaluations across lookbacks, thresholds, rebalance frequencies, and model sizes.
+   - `RegimeOOSAnalyzer`: Maps OOS metrics to macro market regimes without look-ahead bias.
 
-8. **CLI Tools (`validation/cli/`)**:
-   - `run.py`, `inspect.py`, `compare.py`, `bootstrap.py`, `significance.py`, `stability.py`, `multiple_testing.py`, `report.py`.
+7. **Test-Set Lock Mechanism (`validation/core/test_lock.py`)**:
+   - `TestSetLockEngine`: Enables `TEST_SET_LOCKED` protection to prevent post-hoc hyperparameter tuning or silent reuse of final out-of-sample test evaluation data. Maintains audit trail access logs.
 
-9. **REST API & Dashboard Page**:
-   - Endpoints at `/validation/run`, `/validation/{id}`, `/validation/{id}/bootstrap`, `/validation/{id}/significance`, `/validation/{id}/stability`, `/validation/{id}/multiple-testing`, `/validation/{id}/report`, `/validation/compare`, `/validation/health`.
-   - **31st Streamlit Workspace Page**: `dashboard/pages/31_Statistical_Validation_OS.py`.
+8. **REST API & Dashboard Page**:
+   - Endpoints at `/validation/walk-forward/run`, `/validation/walk-forward/{id}`, `/validation/walk-forward/{id}/windows`, `/validation/walk-forward/{id}/predictions`, `/validation/walk-forward/{id}/metrics`, `/validation/walk-forward/{id}/leakage`, `/validation/walk-forward/{id}/robustness`, `/validation/walk-forward/{id}/report`, `/validation/walk-forward/leakage-check`, `/validation/walk-forward/health`.
+   - **34th Streamlit Workspace Page**: `dashboard/pages/34_Walk_Forward_Validation_OS.py`.
+
+---
 
 ## Quick Start CLI Usage
 
@@ -39,8 +54,11 @@ The **Statistical Validation & Research Integrity Engine** evaluates whether qua
 # Execute statistical validation for experiment
 python validation/cli/run.py --experiment EXP-001 --seed 42
 
-# Inspect validation results
-python validation/cli/inspect.py --validation VAL-EXP-001
+# Execute Walk-Forward Validation Engine
+python validation/cli/run.py --experiment EXP-001 --method expanding --train 504 --test 63
+
+# Perform 6-Stage Data Leakage Audit
+python validation/cli/leakage.py --experiment EXP-001
 
 # Inspect stationary block bootstrap confidence intervals
 python validation/cli/bootstrap.py --validation VAL-EXP-001
@@ -48,3 +66,4 @@ python validation/cli/bootstrap.py --validation VAL-EXP-001
 # Generate Markdown validation report
 python validation/cli/report.py --validation VAL-EXP-001
 ```
+

@@ -1,29 +1,15 @@
-statistical_validation:
-  enabled: true
-  confidence_level: 0.95
-  min_observations: 126
-  random_seed: 42
-
-  bootstrap:
-    enabled: true
-    iterations: 1000
-    block_size: 20
-    method: "stationary_block"
-
-  significance:
-    enabled: true
-    alpha: 0.05
-    test_type: "one_sample_t_test"
-
-  multiple_testing:
-    enabled: true
-    method: "benjamini_hochberg"
-
-  stability:
-    enabled: true
-    num_subperiods: 5
-
-  integrity_checks:
-    check_small_sample: true
-    check_normality: true
-    check_overfitting_gap: true
+validation:
+  experiment_id: "EXP-001"
+  method: "EXPANDING"
+  train_window_size: 250
+  val_window_size: 50
+  test_window_size: 50
+  step_size: 50
+  purge_period: 5
+  embargo_period: 5
+  lock_test_set: false
+  leakage_checks:
+    check_feature_timestamps: true
+    check_target_correlation: true
+    check_scaler_leakage: true
+    check_index_overlap: true

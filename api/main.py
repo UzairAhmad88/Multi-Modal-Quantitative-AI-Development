@@ -40,6 +40,7 @@ from api.routes.orchestrator_routes import router as orchestrator_router
 from api.routes.knowledge_routes import router as knowledge_router
 from api.routes.portfolio_construction_routes import router as portfolio_construction_router
 from api.routes.risk_engine_routes import router as risk_engine_router
+from api.routes.walk_forward_validation_routes import router as walk_forward_validation_router
 
 app = FastAPI(
     title="QUANT AI - Multi-Modal Quantitative Intelligence API",
@@ -65,6 +66,7 @@ app.include_router(orchestrator_router)
 app.include_router(knowledge_router)
 app.include_router(portfolio_construction_router)
 app.include_router(risk_engine_router)
+app.include_router(walk_forward_validation_router)
 
 
 

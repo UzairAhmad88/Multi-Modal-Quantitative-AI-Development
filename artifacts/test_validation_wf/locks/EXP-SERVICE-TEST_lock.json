@@ -1,0 +1,75 @@
+{
+  "experiment_id": "EXP-SERVICE-TEST",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 11,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T02:08:03.783691",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:08:23.799167",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:09:31.126375",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:10:05.550778",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:10:50.417827",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:11:23.733098",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:12:09.460914",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:13:48.375367",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:14:20.055654",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:15:18.740152",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T02:16:17.102716",
+      "incoming_config_hash": "987b92294642066d",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}
