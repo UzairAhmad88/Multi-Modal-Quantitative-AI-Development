@@ -27,11 +27,12 @@ from api.routes.realtime import router as realtime_router
 from api.routes.portfolio_routes import router as portfolio_router
 from api.routes.mlops import router as mlops_router
 from api.routes.research_intelligence_routes import router as research_intelligence_router
+from api.routes.validation_routes import router as validation_router
 
 app = FastAPI(
     title="QUANT AI - Multi-Modal Quantitative Intelligence API",
     description="Institutional-grade Quantitative AI Research Platform API",
-    version="2.4.1"
+    version="2.5.0"
 )
 
 app.include_router(research_router)
@@ -39,6 +40,8 @@ app.include_router(realtime_router)
 app.include_router(portfolio_router)
 app.include_router(mlops_router)
 app.include_router(research_intelligence_router)
+app.include_router(validation_router)
+
 
 
 
