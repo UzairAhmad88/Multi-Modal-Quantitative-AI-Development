@@ -1,0 +1,8 @@
+modality,ic,directional_accuracy,sharpe,cagr,max_drawdown,runtime_seconds
+Market Only,0.052,0.548,1.12,0.118,-0.162,1.2
+News Only,0.041,0.532,0.95,0.094,-0.185,2.4
+Fundamentals Only,0.038,0.528,0.88,0.082,-0.198,1.8
+Market + News,0.089,0.612,1.42,0.154,-0.134,3.5
+Market + Fundamentals,0.076,0.584,1.28,0.138,-0.145,2.8
+News + Fundamentals,0.065,0.568,1.15,0.121,-0.158,3.9
+Market + News + Fundamentals,0.112,0.648,1.64,0.187,-0.112,5.2

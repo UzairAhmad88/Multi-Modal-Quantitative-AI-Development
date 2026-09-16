@@ -22,12 +22,15 @@ from src.alpha.signal_generator import AlphaEngine, generate_signal
 from src.portfolio.allocator import equal_weight, alpha_weighted
 from src.risk.risk_manager import RiskEngine
 from src.backtesting.engine import BacktestEngine, BacktestConfig
+from api.routes.research import router as research_router
 
 app = FastAPI(
     title="QUANT AI - Multi-Modal Quantitative Intelligence API",
     description="Institutional-grade Quantitative AI Research Platform API",
     version="2.4.1"
 )
+
+app.include_router(research_router)
 
 
 # Pydantic Schemas

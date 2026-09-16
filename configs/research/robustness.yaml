@@ -1,0 +1,9 @@
+experiment_id: robustness_sweep_run
+ticker: AAPL
+cost_scenarios_bps: [0.0, 5.0, 10.0, 20.0, 50.0, 100.0]
+slippage_scenarios_bps: [0.0, 2.5, 5.0, 10.0, 25.0, 50.0]
+parameter_grid:
+  signal_threshold: [0.0, 0.05, 0.10, 0.20]
+  lookback_period: [5, 10, 20, 60]
+  rebalance_frequency: ["daily", "weekly"]
+regime_eval: true

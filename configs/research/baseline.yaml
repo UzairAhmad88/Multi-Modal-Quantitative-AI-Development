@@ -1,0 +1,13 @@
+experiment_id: baseline_research_run
+ticker: AAPL
+start_date: '2022-01-01'
+end_date: '2024-01-01'
+quantiles: 5
+signal_col: predicted_signal
+target_col: forward_return
+transaction_cost_bps: 10.0
+slippage_bps: 5.0
+bootstrap_iterations: 1000
+neutralization:
+  market_neutral: true
+  sector_neutral: false

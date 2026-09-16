@@ -1,0 +1,7 @@
+experiment_id: purged_walk_forward_run
+ticker: AAPL
+train_pct: 0.70
+purge_window: 5
+embargo_window: 5
+n_splits: 5
+rolling: true

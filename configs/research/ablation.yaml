@@ -1,0 +1,16 @@
+experiment_id: multimodal_ablation_run
+ticker: AAPL
+modalities:
+  - Market Only
+  - News Only
+  - Fundamentals Only
+  - Market + News
+  - Market + Fundamentals
+  - News + Fundamentals
+  - Market + News + Fundamentals
+metrics:
+  - IC
+  - directional_accuracy
+  - sharpe
+  - cagr
+  - max_drawdown
