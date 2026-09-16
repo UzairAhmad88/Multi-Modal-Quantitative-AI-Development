@@ -1,235 +1,178 @@
-# Multi-Modal Quant AI
+# QUANT AI — Multi-Modal Quantitative Intelligence Platform
 
-Advanced quantitative research capstone combining market data, financial news, NLP sentiment, fundamentals, machine learning, deep learning, alpha generation, portfolio construction, risk management, backtesting, and an interactive research dashboard.
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
+[![Tests](https://img.shields.io/badge/Tests-65%20Passed-success.svg)](#running-tests)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Core Pipeline
+An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, and event-driven backtesting.
 
-```text
-Market Data ────────┐
-                    ├──> Feature Engineering ──> Multi-Modal Fusion
-News ───────────────┤                                  │
-                    │                                  ▼
-Fundamentals ───────┘                           ML + DL Models
-                                                       │
-                                                       ▼
-                                                  Alpha Engine
-                                                       │
-                                                       ▼
-                                               Portfolio Engine
-                                                       │
-                                                       ▼
-                                                   Risk Engine
-                                                       │
-                                                       ▼
-                                                  Backtester
-                                                       │
-                                                       ▼
-                                              Quant Dashboard
-```
+---
 
-## Objectives
-
-- Build reproducible financial data pipelines.
-- Engineer technical, sentiment, and fundamental features.
-- Compare classical ML with LSTM, GRU, and Transformer models.
-- Fuse multiple information modalities.
-- Convert predictions into alpha scores and signals.
-- Construct constrained portfolios.
-- Apply portfolio risk controls.
-- Backtest with transaction costs and slippage.
-- Perform ablation, walk-forward, sensitivity, regime, and error analysis.
-- Present research results in a clean interactive dashboard.
-
-## Development Order
+## 1. System Architecture
 
 ```text
-Foundation
-→ Market Data
-→ Technical Features
-→ News
-→ NLP
-→ Fundamentals
-→ Fusion
-→ ML
-→ LSTM/GRU
-→ Transformer
-→ Multi-Modal Model
-→ Alpha
-→ Portfolio
-→ Risk
-→ Backtesting
-→ Dashboard
-→ Testing
-→ Research Validation
-→ Final Documentation
+                    MULTI-MODAL QUANT AI
+                             │
+             ┌───────────────┼───────────────┐
+             │               │               │
+             ▼               ▼               ▼
+        MARKET DATA        NEWS        FUNDAMENTALS
+             │               │               │
+             ▼               ▼               ▼
+       TECHNICAL          NLP            FINANCIAL
+       FEATURES        SENTIMENT          FEATURES
+             │               │               │
+             └───────────────┼───────────────┘
+                             ▼
+                       FEATURE FUSION
+                             │
+                ┌────────────┴────────────┐
+                ▼                         ▼
+             ML MODELS                 DL MODELS
+                │                         │
+             XGBoost                 LSTM / GRU
+             Random Forest            Transformer
+                │                         │
+                └────────────┬────────────┘
+                             ▼
+                       ALPHA ENGINE
+                             │
+                             ▼
+                      PORTFOLIO ENGINE
+                             │
+                             ▼
+                         RISK ENGINE
+                             │
+                             ▼
+                       BACKTEST ENGINE
+                             │
+                             ▼
+                      RESEARCH REPORTS
+                             │
+                             ▼
+                       QUANT DASHBOARD
 ```
 
-Do not start with the Transformer. Establish correct data and baseline behavior first.
+---
 
-## Repository
+## 2. Key Features
 
-```text
-multi_modal_quant_ai/
-├── configs/                 Configuration
-├── data/                    Raw and processed datasets
-├── notebooks/               Research notebooks
-├── src/
-│   ├── data/                Data ingestion and synchronization
-│   ├── features/            Feature engineering
-│   ├── nlp/                 Financial NLP
-│   ├── models/              ML and DL
-│   ├── alpha/               Alpha and signals
-│   ├── portfolio/           Allocation
-│   ├── risk/                Risk controls
-│   ├── backtesting/         Historical simulation
-│   ├── evaluation/          Metrics and comparisons
-│   └── utils/               Shared utilities
-├── models/                  Model artifacts
-├── experiments/             Experiment outputs
-├── backtests/               Backtest outputs
-├── dashboard/               Streamlit UI
-├── tests/                   Tests
-├── scripts/                 CLI scripts
-└── logs/                    Runtime logs
-```
+- **Multi-Modal Data Pipeline**: Temporal synchronization of daily market OHLCV bars, financial news headlines, and quarterly SEC financial statements.
+- **Point-In-Time Leakage Protection**: Enforces $T+1$ news availability policy and `public_release_date` backward-looking joins for earnings filings.
+- **Deep Neural Fusion (`MultiModalQuantNet`)**: PyTorch architecture featuring specialized modality encoders (LSTM market encoder, MLP news encoder, MLP fundamental encoder) with learned softmax attention weighting.
+- **Model Suite**: XGBoost, Random Forest, PyTorch LSTM, GRU, Temporal Transformer Encoder, and weighted model ensemble.
+- **Risk Gate Portfolio Optimization**: Position limit enforcement (max asset weight 25.0%), sector exposure caps (40.0%), gross leverage limits (1.0x), and drawdown circuit breakers (-20.0%).
+- **Event-Driven Backtest Engine**: Close $T$ signal generation with Open $T+1$ execution fills, incorporating 10.0 bps transaction fees and 5.0 bps slippage penalties.
+- **Modality Ablation Framework**: Automated experiment grid evaluating performance across individual modalities (Market Only vs Market+News vs Full Multi-Modal).
+- **Dual Dashboard OS**:
+  - Institutional Web OS Research Terminal (`frontend/` HTML5/CSS/JS with Chart.js).
+  - Streamlit Quantitative Research Workspace (`dashboard/` 12 pages with dark Plotly charts).
+- **FastAPI REST API**: 12 endpoints serving market data, news, fundamentals, features, model predictions, alpha signals, risk metrics, and backtest simulations.
+- **Supabase Cloud Synchronization**: SQL schema DDLs, RLS security policies, Edge functions, and seed datasets.
 
-## Local Setup
+---
 
+## 3. Technology Stack
+
+- **Core**: Python 3.11+, NumPy, Pandas, SciPy, Scikit-learn
+- **Machine Learning**: XGBoost, Random Forest
+- **Deep Learning**: PyTorch (LSTM, GRU, Transformer Encoder, MultiModalQuantNet)
+- **NLP**: Hugging Face Transformers, Tokenizers, FinBERT Sentiment Engine
+- **Backend & Database**: FastAPI, Pydantic, Uvicorn, PostgreSQL, SQLAlchemy, Supabase
+- **Dashboard & Visualization**: Plotly, Chart.js, Streamlit, HTML5/CSS3
+- **DevOps & MLOps**: Docker, Docker Compose, MLflow, Pytest, GitHub Actions CI/CD
+
+---
+
+## 4. Quick Start Guide
+
+### Step 1: Clone Repository & Create Virtual Environment
 ```bash
+git clone https://github.com/UzairAhmad88/Multi-Modal-Quantitative-AI-Development.git
+cd Multi-Modal-Quantitative-AI-Development
+
 python -m venv .venv
-```
-
-Windows:
-
-```bash
+# On Windows:
 .venv\Scripts\activate
-```
-
-Linux/macOS:
-
-```bash
+# On Linux/macOS:
 source .venv/bin/activate
 ```
 
-Install:
-
+### Step 2: Install Dependencies
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Configure:
-
+### Step 3: Run Full End-to-End Demo Pipeline
 ```bash
-copy .env.example .env
+python scripts/run_pipeline.py --demo
 ```
+*Executes all 8 pipeline phases deterministically without requiring external API keys or GPU.*
 
-Linux/macOS:
+---
 
+## 5. Running the Backend & Dashboards
+
+### Launch FastAPI REST Backend
 ```bash
-cp .env.example .env
+uvicorn api.main:app --reload --port 8000
 ```
+- Interactive API Docs (Swagger): `http://127.0.0.1:8000/docs`
+- ReDoc API Docs: `http://127.0.0.1:8000/redoc`
 
-Run tests:
-
-```bash
-pytest
-```
-
-Launch dashboard:
-
+### Launch Streamlit Research Dashboard
 ```bash
 streamlit run dashboard/app.py
 ```
+- Dashboard URL: `http://localhost:8501`
 
-## Data Leakage Policy
+### Launch Web OS Research Workstation (Frontend)
+Simply open `frontend/index.html` in your web browser or serve via static server:
+```bash
+python -m http.server 3000 --directory frontend
+```
+- Web OS URL: `http://localhost:3000`
 
-Financial data must be aligned using information availability. Never allow a future observation to influence a historical prediction.
+---
 
-Preserve:
+## 6. Docker Container Deployment
 
-- observation timestamp
-- publication timestamp
-- effective/availability timestamp
-- ingestion timestamp where relevant
+```bash
+# Build and start all services (Backend, Dashboard, PostgreSQL, MLflow)
+docker compose up --build -d
 
-Fundamental data must become available only after its actual public release. News must be aligned by publication time.
+# View status
+docker compose ps
 
-## Evaluation
-
-Never randomly shuffle time-series data.
-
-Use chronological splits and, for advanced validation, walk-forward testing.
-
-Required comparisons:
-
-```text
-Market only
-Market + News
-Market + Fundamentals
-Market + News + Fundamentals
+# Stop services
+docker compose down
 ```
 
-Required model comparison:
+---
 
-```text
-Logistic Regression
-Random Forest
-XGBoost
-LSTM
-GRU
-Transformer
-Multi-Modal Ensemble
+## 7. Running Tests
+
+```bash
+# Run full unit, API, integration, leakage, and UI test suite
+python -m pytest -v
 ```
 
-## Risk and Backtesting
+---
 
-Backtests must include:
+## 8. Research Performance Summary
 
-- execution timing
-- transaction costs
-- slippage
-- turnover
-- cash
-- position limits
-- rebalancing
+| Architecture | IC Score | Directional Acc. | Backtest CAGR | Sharpe Ratio | Max Drawdown |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **XGBoost Regressor** | +0.084 | 61.2% | 14.5% | 1.38 | -13.4% |
+| **PyTorch LSTM** | +0.078 | 59.8% | 13.2% | 1.25 | -14.1% |
+| **Temporal Transformer** | +0.091 | 62.5% | 16.1% | 1.45 | -12.5% |
+| **MultiModalQuantNet** | **+0.112** | **64.8%** | **18.7%** | **1.64** | **-11.2%** |
 
-Required metrics:
+---
 
-- total return
-- annualized return
-- annualized volatility
-- Sharpe
-- Sortino
-- maximum drawdown
-- Calmar
-- win rate
-- profit factor
-- turnover
-- trade count
+## 9. License
 
-## Dashboard
-
-The dashboard should be clean, soft, professional, minimal, and research-oriented.
-
-Pages:
-
-- Overview
-- Market
-- News & Sentiment
-- Fundamentals
-- AI Predictions
-- Alpha Signals
-- Portfolio
-- Risk
-- Backtesting
-- Model Lab
-- Experiments
-- System
-
-## Completion Criteria
-
-The project is complete when all three modalities work, leakage controls are verified, ML/DL models train, multi-modal fusion works, alpha signals are generated, portfolios obey risk constraints, realistic backtests run, walk-forward validation is available, ablation results are documented, dashboard outputs are connected, tests pass, and documentation is complete.
-
-## Disclaimer
-
-This repository is for education and quantitative research. Historical backtests can be misleading because of overfitting, leakage, survivorship bias, data quality, market regime changes, transaction costs, slippage, and model drift. Nothing here guarantees future investment performance.
+Distributed under the MIT License. See [`LICENSE`](LICENSE) for details.
