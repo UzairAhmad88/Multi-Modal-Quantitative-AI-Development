@@ -162,7 +162,30 @@ python -m pytest -v
 
 ---
 
-## 8. Research Performance Summary
+## 8. Real-Time Research & Paper Trading
+
+> [!NOTE]
+> The default system operates in **Paper Trading Mode** (`TRADING_ENABLED=False` safety lock default). Real-money execution is completely disabled by default.
+
+### Run Paper Trading CLI Runner
+```bash
+python scripts/run_realtime_paper.py --asset AAPL --duration 10 --replay
+```
+
+### Run Quantitative Research Lab Experiments
+```bash
+python scripts/run_research.py --config configs/research/baseline.yaml --demo
+```
+
+### Key Real-Time Capabilities:
+- **Provider Abstraction**: Normalizes live quotes & 15-minute intraday bars into UTC schemas.
+- **Pre-Trade Risk Control Gate**: Checks single-position caps (25.0%), daily loss limits (-5.0%), drawdown halts (-15.0%), and capital availability.
+- **Order State Machine**: `CREATED` $\rightarrow$ `VALIDATING` $\rightarrow$ `APPROVED` $\rightarrow$ `SUBMITTED` $\rightarrow$ `FILLED` / `REJECTED`.
+- **Deterministic Replay**: Replays historical bars through feature, signal, risk, and paper execution engines.
+
+---
+
+## 9. Research Performance Summary
 
 | Architecture | IC Score | Directional Acc. | Backtest CAGR | Sharpe Ratio | Max Drawdown |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -173,6 +196,6 @@ python -m pytest -v
 
 ---
 
-## 9. License
+## 10. License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) for details.
