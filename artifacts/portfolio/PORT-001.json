@@ -55,6 +55,6 @@
   "optimization_method": "risk_parity",
   "risk_model": "sample_covariance",
   "total_value": 100000.0,
-  "created_at": "2026-09-16T20:23:28.191046Z",
-  "updated_at": "2026-09-16T20:23:28.231874Z"
+  "created_at": "2026-09-16T20:51:27.124288Z",
+  "updated_at": "2026-09-16T20:51:27.158917Z"
 }

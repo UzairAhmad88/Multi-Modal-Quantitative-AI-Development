@@ -1,0 +1,11 @@
+{
+  "scenario_id": "LIQUIDITY_COST_CRUNCH",
+  "scenario_version": "v1.0.0",
+  "scenario_type": "hypothetical",
+  "description": "2.0x bid-ask spread expansion and transaction cost multiplier",
+  "parameters": {
+    "liquidity_spread_multiplier": 2.0,
+    "transaction_cost_multiplier": 2.0
+  },
+  "created_at": "2026-09-16T20:51:27.330210Z"
+}

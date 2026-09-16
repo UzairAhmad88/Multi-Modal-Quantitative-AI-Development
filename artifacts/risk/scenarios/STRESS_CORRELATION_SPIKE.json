@@ -1,0 +1,10 @@
+{
+  "scenario_id": "STRESS_CORRELATION_SPIKE",
+  "scenario_version": "v1.0.0",
+  "scenario_type": "hypothetical",
+  "description": "Correlation matrix convergence toward 1.0",
+  "parameters": {
+    "correlation_warp": 0.5
+  },
+  "created_at": "2026-09-16T20:51:27.329033Z"
+}

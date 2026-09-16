@@ -1,0 +1,31 @@
+{
+  "risk_id": "RISK-PORT-TEST-FULL-20260916205127",
+  "portfolio_id": "PORT-TEST-FULL",
+  "experiment_id": "EXP-001",
+  "timestamp": "2026-09-16T20:51:27.348590Z",
+  "portfolio_value": 100000.0,
+  "volatility": 0.13060297030682524,
+  "beta": -0.006573635911347992,
+  "var_95": 0.013216689451717967,
+  "cvar_95": 0.016836292791750564,
+  "maximum_drawdown": 0.10784779245296283,
+  "gross_exposure": 1.0,
+  "net_exposure": 1.0,
+  "leverage": 1.0,
+  "concentration": {
+    "hhi": 0.33499999999999996,
+    "effective_n": 2.985074626865672,
+    "largest_position": 0.35,
+    "top5_exposure": 1.0,
+    "top10_exposure": 1.0,
+    "sector_exposures": {}
+  },
+  "risk_contributions": {
+    "AAPL": 0.32452929366706823,
+    "MSFT": 0.39577099759868084,
+    "GOOGL": 0.2796997087342507
+  },
+  "limit_breaches": [],
+  "warnings": [],
+  "configuration_version": "v1.0.0"
+}

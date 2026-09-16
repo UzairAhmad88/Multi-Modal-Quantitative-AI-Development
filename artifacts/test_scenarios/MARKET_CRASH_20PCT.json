@@ -1,0 +1,11 @@
+{
+  "scenario_id": "MARKET_CRASH_20PCT",
+  "scenario_version": "v1.0.0",
+  "scenario_type": "hypothetical",
+  "description": "20% sudden equity market crash with 1.5x volatility spike",
+  "parameters": {
+    "equity_market_shock": -0.2,
+    "volatility_multiplier": 1.5
+  },
+  "created_at": "2026-09-16T20:51:27.273466Z"
+}

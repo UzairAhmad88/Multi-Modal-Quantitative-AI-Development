@@ -1,0 +1,61 @@
+{
+  "risk_id": "RISK-PORT-API-TEST-20260916204955",
+  "portfolio_id": "PORT-API-TEST",
+  "market_risk": {
+    "historical_volatility": 0.13060297030682524,
+    "ewma_volatility": 0.13316498870649143,
+    "beta": -0.006573635911347992,
+    "correlation": {
+      "avg_correlation": -0.029131167932051356,
+      "max_correlation": 0.03753223860790975,
+      "min_correlation": -0.0762499714722849,
+      "high_correlation_pairs": [],
+      "correlation_matrix": [
+        [
+          0.9999999999999999,
+          0.03753223860790975,
+          -0.04867577093177891
+        ],
+        [
+          0.03753223860790975,
+          0.9999999999999999,
+          -0.0762499714722849
+        ],
+        [
+          -0.04867577093177892,
+          -0.0762499714722849,
+          1.0
+        ]
+      ]
+    },
+    "covariance_audit": {
+      "is_square": true,
+      "has_nan": false,
+      "is_symmetric": true,
+      "min_eigenvalue": 0.0001783378864806611,
+      "max_eigenvalue": 0.00025662865712718276,
+      "is_positive_semidefinite": true,
+      "condition_number": 1.4390024587120553
+    }
+  },
+  "portfolio_risk": {
+    "contributions": {
+      "portfolio_volatility": 0.008227213807576492,
+      "portfolio_variance": 6.768704703557727e-05,
+      "marginal_contributions": {
+        "AAPL": 0.007628491102345002,
+        "MSFT": 0.00930312176023483,
+        "GOOGL": 0.007670497685578504
+      },
+      "component_contributions": {
+        "AAPL": 0.0026699718858207502,
+        "MSFT": 0.00325609261608219,
+        "GOOGL": 0.002301149305673551
+      },
+      "percentage_contributions": {
+        "AAPL": 0.32452929366706823,
+        "MSFT": 0.39577099759868084,
+        "GOOGL": 0.2796997087342507
+      },
+      "sum_ccr": 0.00822721380757649,
+      "reconciled": 
