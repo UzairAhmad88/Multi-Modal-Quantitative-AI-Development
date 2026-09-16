@@ -1,0 +1,44 @@
+# Real-Time Paper Trading Configuration
+mode: paper
+real_trading: false
+
+trading_mode_env_var: "TRADING_MODE"
+expected_env: "paper"
+
+symbols:
+  - AAPL
+  - MSFT
+  - GOOGL
+  - AMZN
+  - NVDA
+
+session:
+  update_interval_sec: 1.0
+  warmup_bars: 50
+  max_staleness_sec: 300.0
+  allow_off_hours_trading: false
+
+model:
+  registry_name: "MultiModalQuantNet"
+  version: "v1.0.0"
+  min_confidence: 0.60
+  long_threshold: 0.01
+  short_threshold: -0.01
+
+portfolio:
+  initial_capital: 100000.0
+  max_asset_weight: 0.25
+  min_rebalance_weight_diff: 0.02
+  rebalance_frequency_min: 5
+
+risk:
+  max_drawdown_pct: 0.10
+  max_gross_exposure: 1.00
+  max_net_exposure: 0.50
+  max_single_position_pct: 0.30
+  kill_switch_on_stale: true
+
+execution:
+  slippage_bps: 5.0
+  commission_bps: 10.0
+  fill_probability: 1.0

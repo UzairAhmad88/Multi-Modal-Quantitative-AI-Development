@@ -1,186 +1,144 @@
 """
-FastAPI Real-Time & Paper Trading Router
-Provides REST API endpoints and WebSockets for session management, live quotes, real-time signals,
-paper orders, risk monitoring, and trade ledger snapshots.
+Real-Time Paper Trading & System Monitoring API Routes
+Provides REST endpoints for session status, signals, portfolio mark-to-market, risk gate, kill switch, and session control.
 """
 
-from fastapi import APIRouter, HTTPException, Query, WebSocket, WebSocketDisconnect
-from pydantic import BaseModel, Field
-from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional
-import asyncio
-import json
+from typing import Dict, Any, List, Optional
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 
-from src.realtime.ingestion.provider import MockMarketDataProvider
-from src.realtime.signal_engine.engine import RealtimeSignalEngine
-from src.realtime.risk.pretrade_risk import PreTradeRiskChecker
-from src.realtime.execution.paper_engine import PaperExecutionEngine
-from src.realtime.storage.ledger import TradeLedger
-from src.realtime.monitoring.event_bus import RealtimeEventBus
+from src.realtime.scheduler.session_runner import PaperTradingSession
+from src.realtime.replay.replay_engine import RealtimeReplayEngine
 
-router = APIRouter(prefix="/realtime", tags=["Real-Time & Paper Trading"])
+router = APIRouter(prefix="/realtime", tags=["Real-Time Paper Trading & Monitoring"])
 
-# Shared Session State
-event_bus = RealtimeEventBus()
-provider = MockMarketDataProvider()
-risk_checker = PreTradeRiskChecker(trading_enabled=False)  # Safety lock default False
-execution_engine = PaperExecutionEngine()
-ledger = TradeLedger(100000.0)
-
-active_session = {
-    "session_id": "SESSION-OFFLINE",
-    "status": "STOPPED",  # RUNNING, PAUSED, STOPPED
-    "trading_mode": "PAPER_TRADING",
-    "symbol": "AAPL",
-    "start_time": None,
-}
-
-
-class SessionStartRequest(BaseModel):
-    symbol: str = Field("AAPL", example="AAPL")
-    initial_capital: float = Field(100000.0, example=100000.0)
-    enable_paper_execution: bool = Field(True, example=True)
+# Active singleton paper session
+global_session = PaperTradingSession()
 
 
 @router.get("/status")
-@router.get("/health", include_in_schema=False)
-def get_realtime_status():
-    """Retrieve real-time health and session status (GET /health/realtime)."""
+def get_session_status():
     return {
-        "status": "HEALTHY",
-        "session": active_session,
-        "health": event_bus.get_health_status(),
-        "safety_lock": {"trading_enabled": risk_checker.trading_enabled},
+        "status": "success",
+        "session_id": global_session.session_id,
+        "session_status": global_session.status,
+        "kill_switch": global_session.kill_switch.get_status(),
+        "health": global_session.health_monitor.get_health_status(),
+        "market_calendar": global_session.calendar.get_session_status()
     }
-
-
-@router.post("/session/start")
-def start_session(req: SessionStartRequest):
-    """Start or resume a real-time paper trading session."""
-    active_session["session_id"] = f"SESSION-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
-    active_session["status"] = "RUNNING"
-    active_session["symbol"] = req.symbol.upper()
-    active_session["start_time"] = datetime.now(timezone.utc).isoformat()
-    risk_checker.trading_enabled = req.enable_paper_execution
-
-    event_bus.publish("SESSION_START", active_session)
-    return {"status": "success", "session": active_session}
-
-
-@router.post("/session/pause")
-def pause_session():
-    """Pause active real-time paper trading session."""
-    active_session["status"] = "PAUSED"
-    event_bus.publish("SESSION_PAUSE", active_session)
-    return {"status": "success", "session": active_session}
-
-
-@router.post("/session/stop")
-def stop_session():
-    """Stop active real-time paper trading session."""
-    active_session["status"] = "STOPPED"
-    risk_checker.trading_enabled = False
-    event_bus.publish("SESSION_STOP", active_session)
-    return {"status": "success", "session": active_session}
-
-
-@router.post("/session/reset")
-def reset_session():
-    """Reset session state, ledger, orders, and risk checker."""
-    global ledger, execution_engine, risk_checker
-    active_session["status"] = "STOPPED"
-    risk_checker = PreTradeRiskChecker(trading_enabled=False)
-    execution_engine = PaperExecutionEngine()
-    ledger = TradeLedger(100000.0)
-    event_bus.publish("SESSION_RESET", active_session)
-    return {"status": "success", "message": "Real-time session state reset successfully"}
 
 
 @router.get("/signals")
-def get_realtime_signals(symbol: str = Query("AAPL")):
-    """Get latest real-time alpha signals."""
-    quote = provider.get_quote(symbol)
+def get_realtime_signals():
     return {
         "status": "success",
-        "symbol": symbol.upper(),
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "last_price": quote["last"],
-        "predicted_return": 0.0245,
-        "confidence": 0.84,
-        "signal": "BUY",
-        "modality_status": {"market": True, "news": True, "fundamentals": True},
-    }
-
-
-@router.get("/orders")
-def get_orders():
-    """Retrieve list of all paper orders."""
-    return {
-        "status": "success",
-        "order_count": len(execution_engine.orders),
-        "orders": list(execution_engine.orders.values()),
-    }
-
-
-@router.get("/positions")
-def get_positions():
-    """Retrieve active paper portfolio positions."""
-    return {
-        "status": "success",
-        "positions": ledger.positions,
-        "cash": ledger.cash,
-        "realized_pnl": ledger.realized_pnl,
+        "signals": list(global_session.signal_engine.last_signals.values())
     }
 
 
 @router.get("/portfolio")
 def get_realtime_portfolio():
-    """Get portfolio equity snapshot and accounting metrics."""
-    quote = provider.get_quote(active_session.get("symbol", "AAPL"))
-    snap = ledger.take_snapshot({active_session.get("symbol", "AAPL"): quote["last"]})
-    return {"status": "success", "portfolio": snap}
+    return {
+        "status": "success",
+        "session_id": global_session.session_id,
+        "equity": global_session.equity,
+        "cash": global_session.cash,
+        "gross_exposure": sum(p["weight"] for p in global_session.positions.values()),
+        "net_exposure": sum(p["weight"] for p in global_session.positions.values()),
+        "unrealized_pnl": sum(p["unrealized_pnl"] for p in global_session.positions.values())
+    }
+
+
+@router.get("/positions")
+def get_realtime_positions():
+    return {
+        "status": "success",
+        "positions": list(global_session.positions.values())
+    }
+
+
+@router.get("/orders")
+def get_realtime_orders():
+    return {
+        "status": "success",
+        "orders": global_session.execution_engine.get_orders()
+    }
+
+
+@router.get("/fills")
+def get_realtime_fills():
+    return {
+        "status": "success",
+        "fills": global_session.execution_engine.get_fills()
+    }
 
 
 @router.get("/risk")
 def get_realtime_risk():
-    """Get pre-trade risk engine state and limits."""
     return {
         "status": "success",
-        "trading_enabled": risk_checker.trading_enabled,
-        "is_halted": risk_checker.is_halted,
-        "max_position_pct": risk_checker.max_position_pct,
-        "max_daily_loss_pct": risk_checker.max_daily_loss_pct,
-        "max_drawdown_limit": risk_checker.max_drawdown_limit,
+        "kill_switch": global_session.kill_switch.get_status(),
+        "risk_limits": {
+            "max_position_pct": global_session.risk_gate.max_position_pct,
+            "max_gross_exposure": global_session.risk_gate.max_gross_exposure,
+            "max_drawdown_pct": global_session.risk_gate.max_drawdown_pct
+        }
     }
 
 
 @router.get("/events")
-def get_event_log(limit: int = Query(50, ge=1, le=200)):
-    """Retrieve event log from pub/sub bus."""
+def get_realtime_events():
     return {
         "status": "success",
-        "count": len(event_bus.event_log[-limit:]),
-        "events": event_bus.event_log[-limit:],
+        "events": global_session.event_log
     }
 
 
-@router.websocket("/ws")
-async def websocket_realtime_stream(websocket: WebSocket):
-    """WebSocket stream emitting real-time quotes, signals, and portfolio updates."""
-    await websocket.accept()
-    try:
-        while True:
-            sym = active_session.get("symbol", "AAPL")
-            quote = provider.get_quote(sym)
-            payload = {
-                "type": "REALTIME_TICK",
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "session_status": active_session["status"],
-                "quote": quote,
-                "signal": "BUY" if quote["last"] % 2 == 0 else "HOLD",
-                "equity": round(ledger.cash, 2),
-            }
-            await websocket.send_json(payload)
-            await asyncio.sleep(2.0)
-    except WebSocketDisconnect:
-        pass
+@router.get("/alerts")
+def get_realtime_alerts(severity: Optional[str] = None):
+    return {
+        "status": "success",
+        "alerts": global_session.alert_engine.get_alerts(severity_filter=severity)
+    }
+
+
+@router.post("/start")
+def start_realtime_session():
+    res = global_session.start_session()
+    return {"status": "success", "session": res}
+
+
+@router.post("/stop")
+def stop_realtime_session():
+    res = global_session.stop_session()
+    return {"status": "success", "session": res}
+
+
+@router.post("/pause")
+def pause_realtime_session():
+    global_session.status = "PAUSED"
+    return {"status": "success", "session_status": "PAUSED"}
+
+
+@router.post("/resume")
+def resume_realtime_session():
+    if not global_session.kill_switch.is_active:
+        global_session.status = "RUNNING"
+    return {"status": "success", "session_status": global_session.status}
+
+
+class KillSwitchRequest(BaseModel):
+    action: str = "activate"  # activate | deactivate
+    reason: str = "Manual API kill switch request"
+
+
+@router.post("/kill-switch")
+def toggle_kill_switch(req: KillSwitchRequest):
+    if req.action.lower() == "activate":
+        global_session.kill_switch.activate(req.reason)
+    else:
+        try:
+            global_session.kill_switch.deactivate()
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))
+    return {"status": "success", "kill_switch": global_session.kill_switch.get_status()}

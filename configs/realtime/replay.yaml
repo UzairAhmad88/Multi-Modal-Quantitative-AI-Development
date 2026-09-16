@@ -1,0 +1,24 @@
+# Real-Time Market Data Replay Configuration
+mode: replay
+real_trading: false
+
+replay:
+  start_date: "2023-01-01"
+  end_date: "2023-01-15"
+  speed_multiplier: 10
+  symbols:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - AMZN
+    - NVDA
+
+pipeline:
+  run_feature_parity_check: true
+  inject_failures: false
+  failure_rate: 0.0
+
+execution:
+  initial_capital: 100000.0
+  slippage_bps: 5.0
+  commission_bps: 10.0

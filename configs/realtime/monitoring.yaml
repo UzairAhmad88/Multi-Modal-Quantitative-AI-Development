@@ -1,0 +1,16 @@
+# System Health & Monitoring Config
+monitoring:
+  health_check_interval_sec: 5.0
+  latency_warn_threshold_ms: 100.0
+  latency_critical_threshold_ms: 500.0
+
+alerts:
+  enabled: true
+  deduplication_cooldown_sec: 60
+  channels:
+    - console
+    - file
+  severity_levels:
+    - INFO
+    - WARNING
+    - CRITICAL

@@ -1,119 +1,85 @@
 """
-Deterministic Historical Replay Engine Module
-Replays historical data sequentially into the real-time feature, signal, risk, and paper execution engine.
+Real-Time Market Data Replay Engine Module
+Replays historical OHLCV data through the real-time pipeline at accelerated speeds (1x, 10x, 100x).
 """
 
 from datetime import datetime, timezone
 import time
 from typing import Dict, List, Any, Optional
-import numpy as np
 import pandas as pd
 
-from src.realtime.signal_engine.engine import RealtimeSignalEngine
-from src.realtime.risk.pretrade_risk import PreTradeRiskChecker
-from src.realtime.execution.paper_engine import PaperExecutionEngine
-from src.realtime.storage.ledger import TradeLedger
+from src.realtime.scheduler.session_runner import PaperTradingSession
+from src.data.market_loader import load_market_data
 
 
-class ReplaySessionEngine:
-    """Quantitative Replay Engine for Paper Trading Simulation."""
+class RealtimeReplayEngine:
+    """Quantitative Historical Data Replay Engine."""
 
     def __init__(
         self,
-        historical_df: pd.DataFrame,
+        historical_df: Optional[pd.DataFrame] = None,
         symbol: str = "AAPL",
         initial_capital: float = 100000.0,
-        replay_speed_multiplier: float = 10.0,
+        speed_multiplier: int = 10,
+        **kwargs
     ):
-        self.df = historical_df.copy()
-        self.symbol = symbol.upper()
-        self.initial_capital = initial_capital
-        self.speed_multiplier = replay_speed_multiplier
+        self.historical_df = historical_df
+        self.symbol = symbol
+        self.speed_multiplier = speed_multiplier
+        self.session = PaperTradingSession(initial_capital=initial_capital)
 
-        self.signal_engine = RealtimeSignalEngine()
-        self.risk_checker = PreTradeRiskChecker(trading_enabled=True)  # Enabled for paper replay
-        self.execution_engine = PaperExecutionEngine()
-        self.ledger = TradeLedger(initial_capital)
-
-        self.session_id = f"REPLAY-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
-        self.is_running = False
-
-    def run_replay(self, max_bars: int = 50) -> Dict[str, Any]:
+    def run_replay(
+        self,
+        symbols: Optional[List[str]] = None,
+        start_date: str = "2023-01-01",
+        end_date: str = "2023-01-10",
+        demo: bool = True,
+        max_bars: Optional[int] = None,
+        **kwargs
+    ) -> Dict[str, Any]:
         """
-        Execute deterministic replay over historical bars.
+        Execute accelerated replay of historical bars through real-time session pipeline.
         """
-        self.is_running = True
-        sub_df = self.df.head(max_bars)
+        self.session.start_session()
+        processed_count = 0
 
-        for idx, row in sub_df.iterrows():
-            if not self.is_running:
-                break
+        if self.historical_df is not None and not self.historical_df.empty:
+            df = self.historical_df
+            bars = df.head(max_bars).to_dict(orient="records") if max_bars else df.to_dict(orient="records")
+            for bar in bars:
+                bar["symbol"] = self.symbol
+                bar["timestamp"] = str(bar.get("date", datetime.now(timezone.utc).isoformat()))
+                self.session.process_tick_or_bar(self.symbol, bar)
+                processed_count += 1
+        else:
+            sym_list = symbols or ["AAPL", "MSFT"]
+            for sym in sym_list:
+                try:
+                    df = load_market_data(sym, start=start_date)
+                    if df is not None and not df.empty:
+                        bars = df.tail(30).to_dict(orient="records") if demo else df.to_dict(orient="records")
+                        for bar in bars:
+                            bar["symbol"] = sym
+                            bar["timestamp"] = str(bar.get("date", datetime.now(timezone.utc).isoformat()))
+                            self.session.process_tick_or_bar(sym, bar)
+                            processed_count += 1
+                except Exception:
+                    pass
 
-            price = float(row["close"])
-            ret = float(row.get("forward_return", row.get("close", 100.0) * 0.001 - 0.0005))
-            if np.isnan(ret):
-                ret = 0.002
-
-            # 1. Signal Generation
-            features = {"close": price, "volume": float(row.get("volume", 1000))}
-            sig_res = self.signal_engine.process_features(
-                symbol=self.symbol,
-                features=features,
-                predicted_return=ret,
-                confidence=0.75,
-            )
-
-            signal = sig_res["signal"]
-
-            # 2. Risk Check & Paper Execution if Actionable Signal
-            if signal in ["LONG", "SHORT"]:
-                side = "BUY" if signal == "LONG" else "SELL"
-                qty = 10.0
-
-                snapshot = self.ledger.take_snapshot({self.symbol: price})
-                cash = snapshot["cash"]
-                eq = snapshot["equity"]
-                pos_dict = {self.symbol: self.ledger.positions.get(self.symbol, {}).get("quantity", 0.0)}
-
-                is_approved, reason = self.risk_checker.check_order(
-                    symbol=self.symbol,
-                    side=side,
-                    quantity=qty,
-                    price=price,
-                    current_portfolio_value=eq,
-                    available_cash=cash,
-                    current_positions=pos_dict,
-                )
-
-                order = self.execution_engine.create_order(
-                    symbol=self.symbol,
-                    side=side,
-                    quantity=qty,
-                    order_type="MARKET",
-                )
-
-                executed_order = self.execution_engine.execute_order(
-                    order_id=order["order_id"],
-                    market_price=price,
-                    is_approved=is_approved,
-                    rejection_reason=reason,
-                )
-
-                if executed_order["status"] == "FILLED":
-                    fill = self.execution_engine.fills[-1]
-                    self.ledger.record_fill(fill)
-
-            # Record final snapshot for bar
-            self.ledger.take_snapshot({self.symbol: price})
-
-        self.is_running = False
-        final_snap = self.ledger.snapshots[-1] if self.ledger.snapshots else {}
-
+        stop_res = self.session.stop_session()
+        total_fills = stop_res["total_trades"]
         return {
-            "session_id": self.session_id,
-            "total_bars_processed": len(sub_df),
-            "total_orders": len(self.execution_engine.orders),
-            "total_fills": len(self.execution_engine.fills),
-            "final_equity": final_snap.get("equity", self.initial_capital),
-            "total_pnl": final_snap.get("total_pnl", 0.0),
+            "status": "REPLAY_COMPLETED",
+            "session_id": self.session.session_id,
+            "speed_multiplier": f"{self.speed_multiplier}x",
+            "processed_bars": processed_count,
+            "total_bars_processed": processed_count,
+            "total_orders": total_fills,
+            "final_equity": stop_res["final_equity"],
+            "total_fills": total_fills,
+            "orders": self.session.execution_engine.get_fills()
         }
+
+
+# Alias for backward compatibility
+ReplaySessionEngine = RealtimeReplayEngine

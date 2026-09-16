@@ -1,0 +1,14 @@
+# Paper Execution Simulation Config
+execution_engine:
+  environment: "paper"
+  real_money_trading: false
+  broker: "simulated"
+  order_types:
+    - MARKET
+    - LIMIT
+  latency_ms: 15
+  slippage_model: "volatility_scaled"
+  base_slippage_bps: 5.0
+  commission_model: "flat_per_share"
+  commission_per_share: 0.005
+  min_commission_usd: 1.00

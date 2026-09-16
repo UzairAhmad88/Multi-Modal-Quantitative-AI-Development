@@ -1,0 +1,14 @@
+# Pre-Trade Risk Gate & Circuit Breakers Config
+risk_engine:
+  max_portfolio_drawdown: 0.10
+  max_gross_exposure: 1.00
+  max_net_exposure: 0.50
+  max_position_size_pct: 0.25
+  max_turnover_per_day: 0.50
+  max_allowed_data_staleness_sec: 120.0
+
+kill_switch:
+  auto_trigger_on_drawdown: true
+  auto_trigger_on_data_stale: true
+  auto_trigger_on_inference_error: true
+  cooldown_seconds: 300
