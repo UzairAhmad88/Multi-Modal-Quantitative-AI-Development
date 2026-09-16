@@ -1,0 +1,11 @@
+{
+  "experiment_id": "EXP-20260916-98E1",
+  "stage": "BACKTEST",
+  "data": {
+    "cagr": 0.187,
+    "sharpe": 1.64,
+    "sortino": 2.21,
+    "max_drawdown": 0.112,
+    "turnover": 0.35
+  }
+}

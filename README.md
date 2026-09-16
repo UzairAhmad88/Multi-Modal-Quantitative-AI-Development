@@ -3,72 +3,74 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-120%20Passed-success.svg)](#running-tests)
+[![Tests](https://img.shields.io/badge/Tests-159%20Passed-success.svg)](#running-tests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, MLOps model registry, pre-trade risk controls, and real-time paper trading execution.
+An institutional-grade quantitative finance research operating system that combines **Market Price & Volume**, **FinBERT News Sentiment NLP**, and **Quarterly SEC Statement Fundamentals** using PyTorch deep neural fusion networks (`MultiModalQuantNet`), risk-gated portfolio optimization, MLOps model registry, pre-trade risk controls, real-time paper trading execution, and an **Automated 17-Stage Research Pipeline & Orchestration Engine**.
 
 ---
 
 ## 1. System Architecture
 
 ```text
-                               MULTI-MODAL QUANT AI
-                                        │
-             ┌──────────────────────────┼──────────────────────────┐
-             ▼                          ▼                          ▼
-        MARKET DATA                   NEWS                   FUNDAMENTALS
-             │                          │                          │
-             └──────────────────────────┼──────────────────────────┘
-                                        ▼
-                              DATA QUALITY VALIDATOR
-                                        │
-                                        ▼
-                              ONLINE FEATURE ENGINE
-                                        │
-                                        ▼
-                               MULTI-MODAL FUSION
-                                        │
-                           ┌────────────┴────────────┐
-                           ▼                         ▼
-                        ML MODELS                 DL MODELS
-                           │                         │
-                        XGBoost                 LSTM / GRU
-                        Random Forest            Transformer
-                           │                         │
-                           └────────────┬────────────┘
-                                        ▼
-                                  ALPHA ENGINE
-                                        │
-                                        ▼
-                              PORTFOLIO REBALANCER
-                                        │
-                                        ▼
-                               PRE-TRADE RISK GATE
-                                        │
-                             ┌──────────┴──────────┐
-                             ▼                     ▼
-                        APPROVED                REJECTED
-                             │
-                             ▼
-                       PAPER EXECUTION ENGINE
-                             │
-                             ▼
-                      PORTFOLIO & ACCOUNTING
-                             │
-                    ┌────────┴────────┐
-                    ▼                 ▼
-                MONITORING          ALERTS
-                    │                 │
-                    └────────┬────────┘
-                             ▼
-                   MLOPS & RESEARCH REPORT
+                 RESEARCH HYPOTHESIS
+                         │
+                         ▼
+                  EXPERIMENT CONFIG
+                         │
+                         ▼
+                    DATA LOAD
+                         │
+                         ▼
+                  DATA VALIDATION
+                         │
+                         ▼
+                  FEATURE ENGINE
+                         │
+                         ▼
+                 TEMPORAL SPLIT
+                         │
+                         ▼
+                    MODEL TRAIN
+                         │
+                         ▼
+                   PREDICTION
+                         │
+                         ▼
+                  SIGNAL ENGINE
+                         │
+                         ▼
+                PORTFOLIO ENGINE
+                         │
+                         ▼
+                     BACKTEST
+                         │
+                         ▼
+                    VALIDATION
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+      STATISTICS     ROBUSTNESS      STRESS
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                  RESEARCH ANALYSIS
+                         │
+                         ▼
+                  RESEARCH FINDING
+                         │
+                         ▼
+                       REPORT
+                         │
+                         ▼
+                  ARTIFACT REGISTRY
 ```
 
 ---
 
 ## 2. Key Features
 
+- **Automated Research Pipeline & Orchestration (Phase 14)**: 17-stage configuration-driven workflow with DAG dependency graph, JSON stage checkpointing, zero-recomputation resume, and reproducible experiment lineage.
 - **Multi-Modal Data Pipeline**: Temporal synchronization of daily market OHLCV bars, financial news headlines, and quarterly SEC financial statements.
 - **Point-In-Time Leakage Protection**: Enforces $T+1$ news availability policy and `public_release_date` backward-looking joins for earnings filings (`DataLeakageAuditor`).
 - **Deep Neural Fusion (`MultiModalQuantNet`)**: PyTorch architecture featuring specialized modality encoders (LSTM market encoder, MLP news encoder, MLP fundamental encoder) with learned softmax attention weighting.
@@ -77,8 +79,8 @@ An institutional-grade quantitative finance research operating system that combi
 - **Pre-Trade Risk Gate & Kill Switch**: Position limit enforcement (max asset weight 25.0%), gross leverage limits (1.0x), drawdown circuit breakers (-10.0%), and `TradingKillSwitch`.
 - **MLOps & Model Registry**: `ExperimentManager`, `DatasetRegistry` (SHA-256 manifests), `FeatureRegistry`, `ModelRegistry` (`EXPERIMENTAL` $\rightarrow$ `VALIDATED` $\rightarrow$ `PAPER` $\rightarrow$ `ARCHIVED`), and Lineage DAGs.
 - **Real-Time Paper Trading & Replay**: Continuous paper-trading simulation with 5 bps slippage, 10 bps commission, and 100x accelerated historical market replay engine (`RealtimeReplayEngine`).
-- **17-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, and Paper Trading Command Center.
-- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, and paper trading controls.
+- **21-Page Quant Workspace**: Streamlit dashboard workspace (`dashboard/`) covering Overview, Market, News/NLP, Fundamentals, Predictions, Signals, Portfolio, Risk, Backtesting, Experiments, MLOps Registry, Paper Trading, Research Intelligence, Research Validation, and **Research Orchestration Pipeline**.
+- **FastAPI REST Backend**: REST API endpoints serving market data, news, fundamentals, features, predictions, signals, risk metrics, portfolio allocations, MLOps registry, paper trading controls, and research orchestration.
 
 ---
 

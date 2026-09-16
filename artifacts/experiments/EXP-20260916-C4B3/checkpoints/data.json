@@ -1,0 +1,11 @@
+{
+  "experiment_id": "EXP-20260916-C4B3",
+  "stage": "DATA",
+  "data": {
+    "rows": 1000,
+    "dataset_id": "DS-SP500-DAILY-v1.0.0",
+    "symbols": [
+      "AAPL"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "experiment_id": "EXP-20260916-2736",
+  "stage": "CONFIGURATION",
+  "data": {
+    "status": "COMPLETED",
+    "config": {
+      "experiment": {
+        "name": "unit_test_experiment",
+        "description": "Test experiment",
+        "seed": 42
+      },
+      "data": {
+        "symbols": [
+          "AAPL"
+        ],
+        "start": "2021-01-01",
+        "end": "2023-01-01"
+      },
+      "features": {
+        "market": true,
+        "news": true,
+        "fundamentals": true
+      },
+      "model": {
+        "type": "multimodal",
+        "version": "1.0"
+      },
+      "backtest": {
+        "initial_capital": 100000.0,
+        "transaction_cost": 0.001,
+        "slippage": 0.0005
+      },
+      "validation": {
+        "walk_forward": true,
+        "leakage_detection": true,
+        "bootstrap": true
+      },
+      "report": {
+        "generate": true
+      }
+    }
+  }
+}

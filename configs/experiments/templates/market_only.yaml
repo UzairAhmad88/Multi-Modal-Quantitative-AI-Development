@@ -1,0 +1,35 @@
+experiment:
+  name: market_only_experiment
+  description: Market-only baseline quantitative experiment
+  seed: 42
+
+data:
+  symbols:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - NVDA
+  start: "2020-01-01"
+  end: "2025-01-01"
+
+features:
+  market: true
+  news: false
+  fundamentals: false
+
+model:
+  type: market_only
+  version: "1.0"
+
+backtest:
+  initial_capital: 100000.0
+  transaction_cost: 0.001
+  slippage: 0.0005
+
+validation:
+  walk_forward: true
+  leakage_detection: true
+  bootstrap: true
+
+report:
+  generate: true

@@ -1,0 +1,35 @@
+experiment:
+  name: multimodal_transformer
+  description: Multi-modal Transformer Fusion Experiment
+  seed: 42
+
+data:
+  symbols:
+    - AAPL
+    - NVDA
+    - MSFT
+    - AMZN
+  start: "2021-01-01"
+  end: "2026-01-01"
+
+features:
+  market: true
+  news: true
+  fundamentals: true
+
+model:
+  type: Transformer
+  version: "2.4.1"
+
+backtest:
+  initial_capital: 100000
+  transaction_cost: 0.001
+  slippage: 0.0005
+
+validation:
+  walk_forward: true
+  leakage_detection: true
+  bootstrap: true
+
+report:
+  generate: true

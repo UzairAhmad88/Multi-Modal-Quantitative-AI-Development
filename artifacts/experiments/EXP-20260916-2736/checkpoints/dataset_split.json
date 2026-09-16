@@ -1,0 +1,10 @@
+{
+  "experiment_id": "EXP-20260916-2736",
+  "stage": "DATASET_SPLIT",
+  "data": {
+    "train_samples": 600,
+    "val_samples": 200,
+    "test_samples": 200,
+    "purge_window": 5
+  }
+}

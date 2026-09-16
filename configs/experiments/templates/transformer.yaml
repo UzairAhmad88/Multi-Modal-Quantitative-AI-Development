@@ -1,0 +1,35 @@
+experiment:
+  name: transformer_experiment
+  description: Multi-head attention transformer quantitative model experiment
+  seed: 42
+
+data:
+  symbols:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - NVDA
+  start: "2020-01-01"
+  end: "2025-01-01"
+
+features:
+  market: true
+  news: true
+  fundamentals: true
+
+model:
+  type: transformer
+  version: "1.0"
+
+backtest:
+  initial_capital: 100000.0
+  transaction_cost: 0.001
+  slippage: 0.0005
+
+validation:
+  walk_forward: true
+  leakage_detection: true
+  bootstrap: true
+
+report:
+  generate: true

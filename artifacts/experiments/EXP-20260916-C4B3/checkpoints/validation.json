@@ -1,0 +1,26 @@
+{
+  "experiment_id": "EXP-20260916-C4B3",
+  "stage": "VALIDATION",
+  "data": {
+    "validation_id": "VAL-2026-168F6A",
+    "experiment_id": "EXP-20260916-C4B3",
+    "status": "PASSED",
+    "validation_hash": "e9eb5748b2827ffee1ed478c162903a485e567cb49b25847ef18cabcb56d5cdd",
+    "quality_status": "PASSED",
+    "quality_violations": 0,
+    "leakage_status": "PASSED",
+    "leakage_alert": "CLEAN",
+    "temporal_status": "PASSED",
+    "walk_forward_status": "WARNING",
+    "walk_forward_sharpe": 0.0,
+    "statistical_status": "NOT_SIGNIFICANT",
+    "p_value": 0.1514,
+    "bootstrap_status": "PASSED",
+    "sharpe_ci_low": -1.0,
+    "sharpe_ci_high": 2.88,
+    "cost_stress_status": "PASSED",
+    "overfitting_status": "WARNING",
+    "gen_gap": 0.45,
+    "reproducibility_status": "PASSED"
+  }
+}

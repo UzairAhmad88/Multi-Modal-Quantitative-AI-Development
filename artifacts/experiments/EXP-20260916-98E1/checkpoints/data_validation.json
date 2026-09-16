@@ -1,0 +1,14 @@
+{
+  "experiment_id": "EXP-20260916-98E1",
+  "stage": "DATA_VALIDATION",
+  "data": {
+    "status": "PASSED",
+    "passed": true,
+    "total_rows": 2,
+    "high_violations": 0,
+    "low_violations": 0,
+    "negative_volume_rows": 0,
+    "missing_entries": 0,
+    "issues": []
+  }
+}

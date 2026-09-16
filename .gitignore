@@ -22,7 +22,10 @@ backtests/trades/*
 backtests/equity_curves/*
 
 logs/*.log
+logs/runs/
+artifacts/runs/
 .ipynb_checkpoints/
 
 !**/.gitkeep
 !**/README.md
+

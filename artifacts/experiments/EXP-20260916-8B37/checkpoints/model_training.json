@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-20260916-8B37",
+  "stage": "MODEL_TRAINING",
+  "data": {
+    "model_type": "multimodal",
+    "weights_fitted": true
+  }
+}

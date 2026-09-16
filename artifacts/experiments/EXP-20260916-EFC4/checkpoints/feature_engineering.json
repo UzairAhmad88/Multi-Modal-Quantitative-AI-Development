@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-20260916-EFC4",
+  "stage": "FEATURE_ENGINEERING",
+  "data": {
+    "extracted_features": 247,
+    "feature_version": "v2.1"
+  }
+}
