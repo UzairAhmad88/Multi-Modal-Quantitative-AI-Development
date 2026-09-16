@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-20260916-27CE",
+  "stage": "PREDICTION",
+  "data": {
+    "directional_accuracy": 0.584,
+    "rmse": 0.016
+  }
+}

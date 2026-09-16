@@ -1,0 +1,16 @@
+experiment:
+  name: multimodal_fusion_lab_experiment
+  template: multimodal
+  dataset_id: DS-SP500_MULTIMODAL
+  feature_version: v2.5.0
+  model_version: MultiModalQuantNet
+  strategy_id: MULTIMODAL_FUSION_ALPHA
+  portfolio:
+    method: target_volatility
+    target_volatility: 0.15
+  execution:
+    algorithm: VWAP
+    slippage_bps: 4.0
+  evaluation:
+    walk_forward: true
+    ablation: true

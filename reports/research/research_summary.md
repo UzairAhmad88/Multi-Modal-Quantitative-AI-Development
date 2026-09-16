@@ -7,7 +7,7 @@
 * **Logged Experiment Failures:** 0
 
 ## Observed Findings
-- [FND-2026-2D4575] Observed Sharpe ratio of 1.72 for model Transformer on dataset market_sp500.
+- [FND-2026-1CF4A7] Observed Sharpe ratio of 1.72 for model Transformer on dataset market_sp500.
 
 ## Key Disclaimers
 * All metrics represent historical simulated backtest or paper-trading results.
