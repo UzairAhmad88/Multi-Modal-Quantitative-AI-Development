@@ -16,13 +16,13 @@
         "date_start": "2023-01-02",
         "date_end": "2026-09-09",
         "hash": "9cddacd2c7d57b7c9c11b09105d58a4d36412c56b631a5b4b59c8e5a837b36b5",
-        "file_path": "C:\\Users\\Dell\\AppData\\Local\\Temp\\tmpf5hrde2a\\DATASET-20260916-9F06.parquet",
-        "created_at": "2026-09-16T18:20:56.066285",
+        "file_path": "C:\\Users\\Dell\\AppData\\Local\\Temp\\tmpypxgc_ij\\DATASET-20260916-9F06.parquet",
+        "created_at": "2026-09-16T18:29:22.775639",
         "config": {
           "name": "test_ds"
         }
       },
-      "recorded_at": "2026-09-16T18:20:56.115871"
+      "recorded_at": "2026-09-16T18:29:22.804034"
     },
     "RAW_AAPL": {
       "id": "RAW_AAPL",
@@ -30,7 +30,7 @@
       "metadata": {
         "symbol": "AAPL"
       },
-      "recorded_at": "2026-09-16T18:20:56.710361"
+      "recorded_at": "2026-09-16T18:29:23.104611"
     },
     "RAW_MSFT": {
       "id": "RAW_MSFT",
@@ -38,7 +38,7 @@
       "metadata": {
         "symbol": "MSFT"
       },
-      "recorded_at": "2026-09-16T18:20:56.711058"
+      "recorded_at": "2026-09-16T18:29:23.114477"
     },
     "DATASET-20260916-02A5": {
       "id": "DATASET-20260916-02A5",
@@ -57,12 +57,12 @@
         "date_end": "2026-09-09",
         "hash": "e5068dcc59a46e14d62a09d5a31c75cf0050a062a81ba5f94b214b7e1410465f",
         "file_path": "data\\datasets\\DATASET-20260916-02A5.parquet",
-        "created_at": "2026-09-16T18:20:56.654146",
+        "created_at": "2026-09-16T18:29:23.082554",
         "config": {
           "name": "e2e_test"
         }
       },
-      "recorded_at": "2026-09-16T18:20:56.709770"
+      "recorded_at": "2026-09-16T18:29:23.104611"
     }
   },
   "edges": [

@@ -1,0 +1,10 @@
+execution:
+  algorithm: market
+  liquidity:
+    max_participation_rate: 0.20
+  slippage:
+    model: fixed_bps
+    fixed_bps: 2.0
+  costs:
+    commission_bps: 0.5
+    exchange_fee_bps: 0.05

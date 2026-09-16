@@ -1,0 +1,24 @@
+execution:
+  algorithm: market
+  order:
+    type: market
+    time_in_force: DAY
+  latency:
+    signal_ms: 50
+    decision_ms: 20
+    submission_ms: 30
+    execution_ms: 100
+  liquidity:
+    max_participation_rate: 0.10
+    default_adv: 1000000.0
+  slippage:
+    model: fixed_bps
+    fixed_bps: 5.0
+  costs:
+    commission_bps: 1.0
+    exchange_fee_bps: 0.1
+  benchmark:
+    primary: arrival_price
+    secondary:
+      - vwap
+      - twap

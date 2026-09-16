@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-20260916-C769",
+  "stage": "STRESS_TESTING",
+  "data": {
+    "survives_10bps_cost": true,
+    "stressed_sharpe": 1.54
+  }
+}

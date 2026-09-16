@@ -1,0 +1,17 @@
+execution:
+  algorithm: twap
+  order:
+    type: market
+  latency:
+    signal_ms: 100
+    decision_ms: 50
+    submission_ms: 50
+    execution_ms: 200
+  liquidity:
+    max_participation_rate: 0.05
+  slippage:
+    model: volatility_based
+    fixed_bps: 8.0
+  costs:
+    commission_bps: 2.0
+    exchange_fee_bps: 0.2

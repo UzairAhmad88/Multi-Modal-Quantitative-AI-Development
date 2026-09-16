@@ -1,0 +1,9 @@
+execution:
+  algorithm: vwap
+  vwap:
+    volume_profile: [0.25, 0.15, 0.10, 0.15, 0.35]
+  liquidity:
+    max_participation_rate: 0.10
+  slippage:
+    model: fixed_bps
+    fixed_bps: 4.0

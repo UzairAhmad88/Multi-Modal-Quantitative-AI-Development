@@ -1,0 +1,9 @@
+execution:
+  algorithm: twap
+  twap:
+    num_intervals: 5
+  liquidity:
+    max_participation_rate: 0.10
+  slippage:
+    model: fixed_bps
+    fixed_bps: 4.0

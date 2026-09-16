@@ -1,0 +1,10 @@
+execution:
+  algorithm: pov
+  liquidity:
+    max_participation_rate: 0.02
+  slippage:
+    model: volume_based
+    fixed_bps: 15.0
+  costs:
+    commission_bps: 2.5
+    exchange_fee_bps: 0.3

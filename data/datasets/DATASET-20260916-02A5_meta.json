@@ -12,7 +12,7 @@
   "date_end": "2026-09-09",
   "hash": "e5068dcc59a46e14d62a09d5a31c75cf0050a062a81ba5f94b214b7e1410465f",
   "file_path": "data\\datasets\\DATASET-20260916-02A5.parquet",
-  "created_at": "2026-09-16T18:20:56.654146",
+  "created_at": "2026-09-16T18:29:23.082554",
   "config": {
     "name": "e2e_test"
   }

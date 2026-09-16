@@ -1,0 +1,9 @@
+execution:
+  algorithm: pov
+  pov:
+    target_participation_rate: 0.05
+  liquidity:
+    max_participation_rate: 0.05
+  slippage:
+    model: volume_based
+    fixed_bps: 5.0
