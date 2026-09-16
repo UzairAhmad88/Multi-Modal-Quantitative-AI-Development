@@ -26,6 +26,7 @@ from api.routes.research import router as research_router
 from api.routes.realtime import router as realtime_router
 from api.routes.portfolio_routes import router as portfolio_router
 from api.routes.mlops import router as mlops_router
+from api.routes.research_intelligence_routes import router as research_intelligence_router
 
 app = FastAPI(
     title="QUANT AI - Multi-Modal Quantitative Intelligence API",
@@ -37,6 +38,8 @@ app.include_router(research_router)
 app.include_router(realtime_router)
 app.include_router(portfolio_router)
 app.include_router(mlops_router)
+app.include_router(research_intelligence_router)
+
 
 
 # Pydantic Schemas
