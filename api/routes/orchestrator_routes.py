@@ -7,8 +7,7 @@ from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 from orchestrator.core.orchestrator import ResearchOrchestrator
-from orchestrator.planner.research_plan import ResearchPlan
-from orchestrator.planner.experiment_planner import ExperimentPlanner
+from orchestrator.planner.experiment_planner import ExperimentPlanner, ResearchPlan
 from orchestrator.campaigns.campaign_manager import CampaignManager
 from orchestrator.monitoring.workflow_monitor import WorkflowMonitor
 

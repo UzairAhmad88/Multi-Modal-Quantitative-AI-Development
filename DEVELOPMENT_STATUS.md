@@ -33,7 +33,8 @@
 | **Phase 21** | Research Laboratory OS & Experiment Tracking | ExperimentManager, HypothesisManager, Config SHA256 Hashing, Lineage DAGs, ComparisonEngine, ExperimentDiff, ResearchKnowledgeBase, ReproducibilityChecker, 5 CLI tools, Page 28 | **COMPLETED** |
 | **Phase 22** | Automated Quant Research Orchestrator OS | ResearchOrchestrator, DAGValidator, Task Contracts, ExperimentPlanner Matrix, Validation Gates, PolicyEngine, JobQueue, CheckpointManager, FailureHandler, CampaignManager, 9 CLI tools, Page 29 | **COMPLETED** |
 | **Phase 23** | Quant Research Knowledge & Intelligence OS | KnowledgeRepository, ResearchLineageService, ResearchKnowledgeGraph, EmbeddingProvider, KnowledgeSearchEngine, ExperimentComparisonEngine, ResearchSummaryEngine, ReproducibilityCards, 8 CLI tools, Page 30 | **COMPLETED** |
-| **Phase 24** | Statistical Validation & Research Integrity OS | StatisticalValidationManager, BasicStatisticsCalculator, BootstrapAnalyzer (Block Bootstrap), HypothesisTester (1-Sample & Paired t-test, Cohen's d), MultipleTestingCorrector (Bonferroni, Holm, Benjamini-Hochberg), StabilityAnalyzer, OverfittingDiagnostics, AssumptionChecker, IntegrityFlags, 8 CLI tools, Page 31 | **COMPLETED** |
+| **Phase 24** | Statistical Validation & Research Integrity OS | Stationary Block Bootstrap, Hypothesis testing, Bonferroni/Holm/BH Multiple Testing, Overfitting Diagnostics, Integrity Flags | **COMPLETED** |
+| **Phase 25** | Portfolio Construction & Optimization Engine OS | Mean-Variance, Risk Parity, Min-Variance, Equal-Weight, Signal-Weighted, Max Diversification, Constrained Quadratic Solvers, Position Sizing, Risk Attribution (MCR/PCR), Concentration (HHI/N_eff), Rebalancing Scheduler, 4 CLI tools, Page 32 Dashboard | **COMPLETED** |
 
 ---
 

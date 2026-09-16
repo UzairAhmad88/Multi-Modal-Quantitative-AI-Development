@@ -1,0 +1,63 @@
+{
+  "portfolio_id": "PORT-001",
+  "name": "Test Flow",
+  "base_currency": "USD",
+  "assets": [
+    "AAPL",
+    "MSFT",
+    "GOOGL"
+  ],
+  "weights": {
+    "AAPL": 0.3333333333333333,
+    "MSFT": 0.3333333333333333,
+    "GOOGL": 0.3333333333333333
+  },
+  "positions": {
+    "AAPL": {
+      "symbol": "AAPL",
+      "quantity": 333.33333333333326,
+      "price": 100.0,
+      "market_value": 33333.33333333333,
+      "weight": 0.3333333333333333,
+      "side": "LONG",
+      "sector": "Unassigned",
+      "asset_class": "EQUITY",
+      "volatility": 0.0,
+      "liquidity": 0.0
+    },
+    "MSFT": {
+      "symbol": "MSFT",
+      "quantity": 333.33333333333326,
+      "price": 100.0,
+      "market_value": 33333.33333333333,
+      "weight": 0.3333333333333333,
+      "side": "LONG",
+      "sector": "Unassigned",
+      "asset_class": "EQUITY",
+      "volatility": 0.0,
+      "liquidity": 0.0
+    },
+    "GOOGL": {
+      "symbol": "GOOGL",
+      "quantity": 333.33333333333326,
+      "price": 100.0,
+      "market_value": 33333.33333333333,
+      "weight": 0.3333333333333333,
+      "side": "LONG",
+      "sector": "Unassigned",
+      "asset_class": "EQUITY",
+      "volatility": 0.0,
+      "liquidity": 0.0
+    }
+  },
+  "cash_weight": 0.0,
+  "gross_exposure": 1.0,
+  "net_exposure": 1.0,
+  "leverage": 1.0,
+  "constraints": {},
+  "optimization_method": "mean_variance",
+  "risk_model": "sample_covariance",
+  "total_value": 100000.0,
+  "created_at": "2026-09-16T20:23:27.611597Z",
+  "updated_at": "2026-09-16T20:23:27.624604Z"
+}
