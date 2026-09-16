@@ -454,3 +454,54 @@ body.dark-theme {
     border-radius: 6px;
     border: 1px solid var(--border-color);
 }
+
+/* Toast Notifications */
+.toast-msg {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    min-width: 320px;
+    max-width: 480px;
+    animation: slideIn 0.25s ease;
+    margin-top: 6px;
+}
+@keyframes slideIn {
+    from { transform: translateX(40px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.fa-spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Positive / Negative metric change */
+.metric-change.positive { color: var(--color-green); }
+.metric-change.negative { color: var(--color-red); }
+.metric-change.neutral  { color: var(--text-muted); }
+.positive { color: var(--color-green); }
+.negative { color: var(--color-red); }
+
+/* Text color helpers */
+.text-cyan { color: var(--color-cyan); }
+.text-secondary { color: var(--text-secondary); }
+.mt-2 { margin-top: 8px; }
+
+/* Model table extra columns */
+.data-table th, .data-table td {
+    white-space: nowrap;
+}

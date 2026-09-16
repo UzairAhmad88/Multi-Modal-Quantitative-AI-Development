@@ -45,6 +45,9 @@
             </div>
         </header>
 
+        <!-- Toast Notification Container -->
+        <div id="toast-container" style="position:fixed;bottom:36px;right:16px;z-index:9999;"></div>
+
         <!-- Main Body Layout -->
         <div class="shell-body">
 
@@ -174,8 +177,22 @@
                         </div>
                     </div>
                     <div class="panel mb-4">
-                        <div class="chart-container" style="height: 380px;">
+                        <div class="chart-container" style="height: 340px;">
                             <canvas id="chart-market-candlestick"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid-2 mb-4">
+                        <div class="panel">
+                            <div class="panel-header"><h3><i class="fa-solid fa-gauge-high text-amber"></i> RSI (14)</h3></div>
+                            <div class="chart-container" style="height:140px;">
+                                <canvas id="chart-rsi"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header"><h3><i class="fa-solid fa-wave-square text-blue"></i> MACD</h3></div>
+                            <div class="chart-container" style="height:140px;">
+                                <canvas id="chart-macd"></canvas>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -280,6 +297,8 @@
                                     <th>Target Weight</th>
                                     <th>Delta</th>
                                     <th>Rebalance Action</th>
+                                    <th>Sharpe (OOS)</th>
+                                    <th>CAGR (OOS)</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -356,6 +375,11 @@
                                     <th>Model Name</th>
                                     <th>Version</th>
                                     <th>Status</th>
+                                    <th>Sharpe (OOS)</th>
+                                    <th>CAGR (OOS)</th>
+                                    <th>Dir. Accuracy</th>
+                                    <th>OOS n</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
