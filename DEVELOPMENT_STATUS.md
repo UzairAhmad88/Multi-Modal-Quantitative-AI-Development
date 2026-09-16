@@ -6,7 +6,7 @@
 
 ---
 
-## Complete Development Roadmap Summary (Phases 1 – 24)
+## Complete Development Roadmap Summary (Phases 1 – 30)
 
 | Phase | Description | Key Deliverables | Status |
 | :--- | :--- | :--- | :--- |
@@ -39,31 +39,36 @@
 | **Phase 27** | Walk-Forward Validation & Anti-Overfitting Research OS | TimelineValidator, Date-based splits, Expanding/Rolling/Anchored Window Generators, Purged CV & Embargo Excluder (López de Prado), 6-Stage Leakage Detector, Preprocessing Leakage Audit, OOS Prediction Storage & Metrics, Stability & Parameter Sensitivity Grids, Regime OOS Analysis, Test-Set Lock Protection (`TEST_SET_LOCKED`), 2 CLI tools, Page 34 Dashboard | **COMPLETED** |
 | **Phase 28** | Model Monitoring, Data Drift & Research Health OS | DataDriftDetector (PSI, KS, Wasserstein), Feature & Correlation Shift, Output Monitor, Concept Drift (DDM, EDDM, Page-Hinkley), Alpha IC Decay Tracker, Volatility Jump & Markov Regime Transition, Composite Research Health Score (0-100), AlertManager, 3 CLI tools, Page 35 Dashboard | **COMPLETED** |
 | **Phase 29** | End-to-End Research Orchestration & Workflow OS | 14-Stage DAG Pipeline Engine (`DATA` → `REPORT`), `PipelineContext`, `PipelineRunState`, `StageRegistry`, Checkpoint Manager, Zero-Recomputation Recovery Engine, Leakage Gate, Risk Audit Gate, Research Health Gate, Lineage Tracer, Markdown Research Report Generator (`research_report.md`), CLI Runner & Resume, FastAPI REST Router (`/pipeline/*`), Page 36 Streamlit Workspace | **COMPLETED** |
+| **Phase 30** | Final Integration, Hardening & Release Preparation | Complete Project Inventory (`docs/final/PROJECT_INVENTORY.md`), Environment check (`scripts/check_environment.py`), Windows PowerShell automation (`setup.ps1`, `health_check.ps1`, `run_dev.ps1`, `test.ps1`, `clean.ps1`), Golden dataset (`tests/data/golden_dataset.py`), E2E pipeline test suite (`tests/e2e/test_complete_quant_pipeline.py`), Master Manifest (`artifacts/MANIFEST.json`), Documentation Package (`docs/final/`) | **COMPLETED** |
 
 ---
 
 ## Operational Commands
 
 ```bash
-# Run system integrity check
-python scripts/system_check.py
+# Environment & Health Checks
+python scripts/check_environment.py
+.\scripts\health_check.ps1
 
-# Execute 13-step deterministic end-to-end pipeline demo
-python scripts/demo.py
-
-# Run Phase 29 End-to-End Orchestration Pipeline
+# Run Phase 29/30 End-to-End Orchestration Pipeline
 python orchestration/cli/run.py --config orchestration/configs/development.yaml --symbols AAPL MSFT --experiment-id EXP-PROD-001
 
-# Run complete automated test suite
-python -m pytest -v
+# Execute Development Profile Experiment via PowerShell
+.\scripts\run_dev.ps1
 
-# Start FastAPI backend API
+# Run Master Test Suite
+.\scripts\test.ps1
+
+# Safe Cache Clean
+.\scripts\clean.ps1
+
+# Start FastAPI Backend API
 uvicorn api.main:app --reload
 
-# Launch Streamlit 36-page Quant Workspace
+# Launch Streamlit 36-Page Quant Workspace
 streamlit run dashboard/app.py
 ```
 
 ---
 
-*All Phase 1–29 code, unit tests, configurations, reports, and documentation are committed and pushed to GitHub main branch.*
+*All Phase 1–30 code, unit tests, configurations, reports, and documentation package are committed and pushed to GitHub main branch.*

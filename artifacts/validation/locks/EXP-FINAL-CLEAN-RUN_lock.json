@@ -1,0 +1,21 @@
+{
+  "experiment_id": "EXP-FINAL-CLEAN-RUN",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 2,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:19:47.777696",
+      "incoming_config_hash": "e335eb2eb082235a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:20:07.916961",
+      "incoming_config_hash": "e335eb2eb082235a",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

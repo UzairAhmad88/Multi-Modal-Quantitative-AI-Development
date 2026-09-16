@@ -1,0 +1,31 @@
+{
+  "risk_id": "RISK-PORT-001-20260916222029",
+  "portfolio_id": "PORT-001",
+  "experiment_id": "EXP-001",
+  "timestamp": "2026-09-16T22:20:29.249932Z",
+  "portfolio_value": 100000.0,
+  "volatility": 0.8016557339507272,
+  "beta": 0.1667906107814835,
+  "var_95": 0.003218060744996901,
+  "cvar_95": 0.0058693726422077664,
+  "maximum_drawdown": 0.017999007738342152,
+  "gross_exposure": 1.0,
+  "net_exposure": 1.0,
+  "leverage": 1.0,
+  "concentration": {
+    "hhi": 1.0,
+    "effective_n": 1.0,
+    "largest_position": 1.0,
+    "top5_exposure": 1.0,
+    "top10_exposure": 1.0,
+    "sector_exposures": {}
+  },
+  "risk_contributions": {
+    "AAPL": 1.0
+  },
+  "limit_breaches": [
+    "RISK_LIMIT_BREACH: Volatility 80.17% exceeds limit 25.00%"
+  ],
+  "warnings": [],
+  "configuration_version": "v1.0.0"
+}

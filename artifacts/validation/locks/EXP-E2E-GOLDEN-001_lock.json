@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-E2E-GOLDEN-001",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 3,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:18:12.778849",
+      "incoming_config_hash": "bb34e1abda3e2c37",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:18:41.731090",
+      "incoming_config_hash": "bb34e1abda3e2c37",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:20:28.787785",
+      "incoming_config_hash": "bb34e1abda3e2c37",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}

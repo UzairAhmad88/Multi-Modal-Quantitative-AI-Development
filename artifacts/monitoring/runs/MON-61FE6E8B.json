@@ -1,0 +1,194 @@
+{
+  "monitoring_id": "MON-61FE6E8B",
+  "experiment_id": "EXP-E2E-REP-2",
+  "timestamp": "2026-09-16T22:20:29.393885+00:00",
+  "baseline_dataset_id": "BASELINE-001",
+  "target_dataset_id": "TARGET-001",
+  "data_drift_results": [
+    {
+      "feature_name": "market_volatility",
+      "psi_score": 1.9990082265869364,
+      "ks_statistic": 0.66,
+      "ks_pvalue": 8.025064889976886e-52,
+      "wasserstein_distance": 0.010249039078425051,
+      "is_drifted": true,
+      "severity": "SIGNIFICANT",
+      "evidence": {
+        "baseline_mean": 0.014987885479392345,
+        "target_mean": 0.025186578531085288,
+        "baseline_std": 0.004820598262301622,
+        "target_std": 0.007754534331290073
+      }
+    },
+    {
+      "feature_name": "news_sentiment",
+      "psi_score": 0.11833829559369412,
+      "ks_statistic": 0.12,
+      "ks_pvalue": 0.05456740040448037,
+      "wasserstein_distance": 0.047405110711271806,
+      "is_drifted": true,
+      "severity": "MODERATE",
+      "evidence": {
+        "baseline_mean": 0.10321977865976519,
+        "target_mean": 0.0680487649017922,
+        "baseline_std": 0.19921508039548358,
+        "target_std": 0.2497458978553797
+      }
+    },
+    {
+      "feature_name": "sec_pe_ratio",
+      "psi_score": 0.06672671193151489,
+      "ks_statistic": 0.116,
+      "ks_pvalue": 0.06913382718790878,
+      "wasserstein_distance": 0.6255974166177789,
+      "is_drifted": false,
+      "severity": "NONE",
+      "evidence": {
+        "baseline_mean": 19.797988246472922,
+        "target_mean": 20.422765617960867,
+        "baseline_std": 2.9622273403764945,
+        "target_std": 3.2248181473034685
+      }
+    },
+    {
+      "feature_name": "alpha_score",
+      "psi_score": 0.3986465558597928,
+      "ks_statistic": 0.24,
+      "ks_pvalue": 9.967579934511887e-7,
+      "wasserstein_distance": 0.005814562979607962,
+      "is_drifted": true,
+      "severity": "SIGNIFICANT",
+      "evidence": {
+        "baseline_mean": 0.021309894852876998,
+        "target_mean": 0.015801886740085286,
+        "baseline_std": 0.009562884548855686,
+        "target_std": 0.01200642273473666
+      }
+    }
+  ],
+  "concept_drift_results": [
+    {
+      "method": "DDM",
+      "drift_detected": false,
+      "warning_detected": false,
+      "change_point_index": null,
+      "metric_name": "prediction_error_rate",
+      "current_value": 0.392,
+      "threshold": 0.5,
+      "evidence": {
+        "drift_index": -1
+      }
+    },
+    {
+      "method": "PAGE_HINKLEY",
+      "drift_detected": false,
+      "warning_detected": false,
+      "change_point_index": null,
+      "metric_name": "cumulative_return_shift",
+      "current_value": -0.00045354103096961995,
+      "threshold": 50.0,
+      "evidence": {
+        "change_point_index": -1
+      }
+    }
+  ],
+  "alpha_decay": {
+    "rolling_ic": 0.01364166342790517,
+    "rank_ic": 0.01364166342790517,
+    "ic_half_life_days": 2.0,
+    "ic_decay_pct": 0.6272777471010491,
+    "rolling_sharpe": -0.4869284809267169,
+    "sharpe_decay_pct": 1.2557727150165368,
+    "max_drawdown_pct": 0.3245322498750921,
+    "is_decay_flagged": true
+  },
+  "regime_shift": {
+    "current_regime": "BEAR",
+    "regime_transition_prob": 0.85,
+    "volatility_jump_ratio": 1.5217474754657743,
+    "is_regime_shift_detected": true
+  },
+  "health_score": {
+    "overall_health_score": 66.45,
+    "data_quality_score": 100.0,
+    "feature_stability_score": 25.0,
+    "concept_stability_score": 100.0,
+    "alpha_retention_score": 37.27,
+    "risk_compliance_score": 70.0,
+    "status": "WARNING",
+    "summary": "Research system shows MODERATE DRIFT/DECAY with composite score 66.5/100."
+  },
+  "alerts": [
+    {
+      "alert_id": "ALT-325c80",
+      "component": "DATA_DRIFT",
+      "severity": "CRITICAL",
+      "message": "Significant data drift detected in feature 'market_volatility' (PSI=1.9990, KS p=8.0251e-52)",
+      "timestamp": "2026-09-16T22:20:29.330809+00:00",
+      "metric_name": "psi_market_volatility",
+      "observed_value": 1.9990082265869364,
+      "threshold": 0.25,
+      "evidence": {
+        "baseline_mean": 0.014987885479392345,
+        "target_mean": 0.025186578531085288,
+        "baseline_std": 0.004820598262301622,
+        "target_std": 0.007754534331290073
+      }
+    },
+    {
+      "alert_id": "ALT-939f58",
+      "component": "DATA_DRIFT",
+      "severity": "WARNING",
+      "message": "Moderate data drift detected in feature 'news_sentiment' (PSI=0.1183)",
+      "timestamp": "2026-09-16T22:20:29.330809+00:00",
+      "metric_name": "psi_news_sentiment",
+      "observed_value": 0.11833829559369412,
+      "threshold": 0.1,
+      "evidence": {
+        "baseline_mean": 0.10321977865976519,
+        "target_mean": 0.0680487649017922,
+        "baseline_std": 0.19921508039548358,
+        "target_std": 0.2497458978553797
+      }
+    },
+    {
+      "alert_id": "ALT-91de41",
+      "component": "DATA_DRIFT",
+      "severity": "CRITICAL",
+      "message": "Significant data drift detected in feature 'alpha_score' (PSI=0.3986, KS p=9.9676e-07)",
+      "timestamp": "2026-09-16T22:20:29.330809+00:00",
+      "metric_name": "psi_alpha_score",
+      "observed_value": 0.3986465558597928,
+      "threshold": 0.25,
+      "evidence": {
+        "baseline_mean": 0.021309894852876998,
+        "target_mean": 0.015801886740085286,
+        "baseline_std": 0.009562884548855686,
+        "target_std": 0.01200642273473666
+      }
+    },
+    {
+      "alert_id": "ALT-d63932",
+      "component": "ALPHA_DECAY",
+      "severity": "CRITICAL",
+      "message": "Alpha decay detected: IC dropped 62.73%, Sharpe dropped 125.58%",
+      "timestamp": "2026-09-16T22:20:29.393885+00:00",
+      "metric_name": "ic_decay_pct",
+      "observed_value": 0.6272777471010491,
+      "threshold": 0.3,
+      "evidence": {}
+    },
+    {
+      "alert_id": "ALT-1e34d5",
+      "component": "REGIME_SHIFT",
+      "severity": "WARNING",
+      "message": "Macro regime shift detected: BEAR (Vol Ratio=1.52)",
+      "timestamp": "2026-09-16T22:20:29.393885+00:00",
+      "metric_name": "volatility_jump_ratio",
+      "observed_value": 1.5217474754657743,
+      "threshold": 2.0,
+      "evidence": {}
+    }
+  ],
+  "artifacts": {}
+}

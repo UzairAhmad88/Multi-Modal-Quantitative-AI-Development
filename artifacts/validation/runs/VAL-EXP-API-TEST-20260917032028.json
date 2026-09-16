@@ -1,0 +1,238 @@
+{
+  "validation_id": "VAL-EXP-API-TEST-20260917032028",
+  "experiment_id": "EXP-API-TEST",
+  "method": "EXPANDING",
+  "status": "COMPLETED",
+  "config_hash": "7be4598f1a184d69",
+  "windows": [
+    {
+      "window_id": "FOLD-EXP-001",
+      "fold_index": 1,
+      "train_start": "2022-01-03",
+      "train_end": "2022-12-16",
+      "validation_start": "2022-12-26",
+      "validation_end": "2023-03-03",
+      "test_start": "2023-03-13",
+      "test_end": "2023-05-19",
+      "purge_period": 5,
+      "embargo_period": 5,
+      "train_samples": 250,
+      "val_samples": 50,
+      "test_samples": 50,
+      "purged_samples": 5,
+      "embargoed_samples": 5,
+      "status": "VALID",
+      "bound_check": {
+        "is_valid": true,
+        "errors": [],
+        "status": "VALID"
+      },
+      "evaluation": {
+        "fold_id": "FOLD-EXP-001",
+        "prediction_count": 50,
+        "prediction_metrics": {
+          "mae": 0.003511,
+          "rmse": 0.004445,
+          "mape_pct": 49.16,
+          "directional_accuracy_pct": 90.0
+        },
+        "trading_metrics": {
+          "cumulative_return": 0.1676,
+          "annualized_return": 0.813,
+          "volatility": 0.2525,
+          "sharpe_ratio": 3.22,
+          "sortino_ratio": 7.58,
+          "max_drawdown": 0.0538
+        }
+      }
+    },
+    {
+      "window_id": "FOLD-EXP-002",
+      "fold_index": 2,
+      "train_start": "2022-01-03",
+      "train_end": "2023-02-24",
+      "validation_start": "2023-03-06",
+      "validation_end": "2023-05-12",
+      "test_start": "2023-05-22",
+      "test_end": "2023-07-28",
+      "purge_period": 5,
+      "embargo_period": 5,
+      "train_samples": 300,
+      "val_samples": 50,
+      "test_samples": 50,
+      "purged_samples": 5,
+      "embargoed_samples": 5,
+      "status": "VALID",
+      "bound_check": {
+        "is_valid": true,
+        "errors": [],
+        "status": "VALID"
+      },
+      "evaluation": {
+        "fold_id": "FOLD-EXP-002",
+        "prediction_count": 50,
+        "prediction_metrics": {
+          "mae": 0.003806,
+          "rmse": 0.004808,
+          "mape_pct": 54.66,
+          "directional_accuracy_pct": 90.0
+        },
+        "trading_metrics": {
+          "cumulative_return": -0.0649,
+          "annualized_return": -0.3063,
+          "volatility": 0.2532,
+          "sharpe_ratio": -1.21,
+          "sortino_ratio": -2.08,
+          "max_drawdown": 0.17
+        }
+      }
+    },
+    {
+      "window_id": "FOLD-EXP-003",
+      "fold_index": 3,
+      "train_start": "2022-01-03",
+      "train_end": "2023-05-05",
+      "validation_start": "2023-05-15",
+      "validation_end": "2023-07-21",
+      "test_start": "2023-07-31",
+      "test_end": "2023-10-06",
+      "purge_period": 5,
+      "embargo_period": 5,
+      "train_samples": 350,
+      "val_samples": 50,
+      "test_samples": 50,
+      "purged_samples": 5,
+      "embargoed_samples": 5,
+      "status": "VALID",
+      "bound_check": {
+        "is_valid": true,
+        "errors": [],
+        "status": "VALID"
+      },
+      "evaluation": {
+        "fold_id": "FOLD-EXP-003",
+        "prediction_count": 50,
+        "prediction_metrics": {
+          "mae": 0.003357,
+          "rmse": 0.004455,
+          "mape_pct": 56.65,
+          "directional_accuracy_pct": 98.0
+        },
+        "trading_metrics": {
+          "cumulative_return": -0.1636,
+          "annualized_return": -0.8707,
+          "volatility": 0.239,
+          "sharpe_ratio": -3.64,
+          "sortino_ratio": -6.8,
+          "max_drawdown": 0.1747
+        }
+      }
+    }
+  ],
+  "oos_metrics": {
+    "total_folds": 3,
+    "mean_out_of_sample_sharpe": -0.54,
+    "std_out_of_sample_sharpe": 2.84,
+    "min_out_of_sample_sharpe": -3.64,
+    "max_out_of_sample_sharpe": 3.22,
+    "positive_fold_pct": 33.33,
+    "mean_annualized_return": -0.1213,
+    "mean_mae": 0.003558,
+    "mean_rmse": 0.004569
+  },
+  "leakage_audit": {
+    "status": "CLEAN",
+    "has_leakage": false,
+    "total_issues": 0,
+    "feature_leakage_result": {
+      "status": "PASSED",
+      "has_feature_leakage": false,
+      "violations_by_feature": {},
+      "issues": []
+    },
+    "label_leakage_result": {
+      "status": "PASSED",
+      "has_label_leakage": false,
+      "correlation_threshold": 0.95,
+      "suspicious_features": [],
+      "issues": []
+    },
+    "availability_result": {
+      "status": "PASSED",
+      "availability_violations": 0,
+      "min_filing_lag_days": 45,
+      "issues": []
+    },
+    "scaler_leakage_result": {
+      "status": "SKIPPED",
+      "reason": "Scaler parameters not provided"
+    },
+    "issues": []
+  },
+  "robustness_metrics": {
+    "performance_stability": {
+      "mean_sharpe": -0.54,
+      "std_sharpe": 2.84,
+      "coefficient_of_variation": 5.23,
+      "positive_fold_ratio": 0.33,
+      "stability_score": 0.05,
+      "status": "UNSTABLE"
+    },
+    "parameter_sensitivity": {
+      "parameter_name": "train_window_size",
+      "grid_size": 3,
+      "max_sharpe": -0.44,
+      "min_sharpe": -0.55,
+      "sharpe_spread": 0.11,
+      "is_sensitive": false,
+      "grid_results": [
+        {
+          "parameter_value": "126",
+          "out_of_sample_sharpe": -0.45,
+          "annualized_return": -0.1007
+        },
+        {
+          "parameter_value": "250",
+          "out_of_sample_sharpe": -0.55,
+          "annualized_return": -0.1242
+        },
+        {
+          "parameter_value": "504",
+          "out_of_sample_sharpe": -0.44,
+          "annualized_return": -0.0999
+        }
+      ]
+    }
+  },
+  "regime_analysis": {
+    "status": "COMPLETED",
+    "total_observations": 500,
+    "regimes_detected": [
+      "BEAR_MARKET",
+      "BULL_MARKET",
+      "NORMAL_VOL"
+    ],
+    "regime_breakdown": {
+      "BEAR_MARKET": {
+        "sample_count": 142,
+        "mean_return": -0.003031,
+        "sharpe_ratio": -0.3,
+        "win_rate_pct": 38.73
+      },
+      "BULL_MARKET": {
+        "sample_count": 228,
+        "mean_return": 0.003315,
+        "sharpe_ratio": 0.27,
+        "win_rate_pct": 60.09
+      },
+      "NORMAL_VOL": {
+        "sample_count": 130,
+        "mean_return": 0.00089,
+        "sharpe_ratio": 0.08,
+        "win_rate_pct": 57.69
+      }
+    }
+  },
+  "warnings": [],
+  "timestamp": "2026-09-17T03:20:28.536717"
+}

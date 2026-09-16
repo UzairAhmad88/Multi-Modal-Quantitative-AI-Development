@@ -3,7 +3,7 @@
   "is_locked": false,
   "locked_at": null,
   "locked_by": null,
-  "access_count": 9,
+  "access_count": 10,
   "access_log": [
     {
       "timestamp": "2026-09-17T03:02:54.551502",
@@ -55,6 +55,12 @@
     },
     {
       "timestamp": "2026-09-17T03:14:01.663684",
+      "incoming_config_hash": "c9c7b858fd156449",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:20:27.787762",
       "incoming_config_hash": "c9c7b858fd156449",
       "purpose": "FINAL_OOS_EVALUATION",
       "status": "GRANTED"

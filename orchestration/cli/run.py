@@ -4,7 +4,11 @@ CLI for executing the End-to-End Quantitative Research Pipeline.
 
 import argparse
 import sys
+import os
 import yaml
+
+sys.path.insert(0, os.getcwd())
+
 from orchestration.services.orchestration_service import OrchestrationService
 from orchestration.reports.generator import ResearchReportGenerator
 

@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-E2E-REP-2",
+  "is_locked": false,
+  "locked_at": null,
+  "locked_by": null,
+  "access_count": 3,
+  "access_log": [
+    {
+      "timestamp": "2026-09-17T03:18:15.275682",
+      "incoming_config_hash": "ecaef842e02168ce",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:18:44.709709",
+      "incoming_config_hash": "ecaef842e02168ce",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    },
+    {
+      "timestamp": "2026-09-17T03:20:29.159838",
+      "incoming_config_hash": "ecaef842e02168ce",
+      "purpose": "FINAL_OOS_EVALUATION",
+      "status": "GRANTED"
+    }
+  ]
+}
