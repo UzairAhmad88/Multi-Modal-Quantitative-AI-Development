@@ -1,0 +1,10 @@
+storage:
+  base_dir: "data"
+  raw_dir: "data/raw"
+  normalized_dir: "data/normalized"
+  features_dir: "data/features"
+  datasets_dir: "data/datasets"
+  snapshots_dir: "data/snapshots"
+  metadata_dir: "data/metadata"
+  format: "parquet"
+  fallback_format: "csv"

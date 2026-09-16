@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "row_count": 1077,
+  "symbol_count": 2,
+  "issues": [],
+  "checks": {
+    "null_ratio": 0.0,
+    "invalid_high_low_count": 0,
+    "invalid_price_range_count": 0,
+    "negative_price_count": 0,
+    "negative_volume_count": 0,
+    "duplicate_records": 0
+  },
+  "timestamp": "2026-09-16T18:07:29.333707"
+}

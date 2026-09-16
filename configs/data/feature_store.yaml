@@ -1,0 +1,26 @@
+feature_store:
+  registry_file: "artifacts/feature_store_registry.json"
+  cache_dir: "artifacts/feature_cache"
+  enable_caching: true
+  feature_sets:
+    technical_v1:
+      - RSI_14
+      - SMA_20
+      - EMA_20
+      - MACD
+    volatility_v1:
+      - ATR_14
+      - Volatility_20
+    fundamental_v1:
+      - PE_Ratio
+      - Revenue_Growth
+      - Debt_to_Equity
+    sentiment_v1:
+      - News_Sentiment_7D
+      - News_Volume_7D
+    multimodal_v1:
+      - RSI_14
+      - Volatility_20
+      - PE_Ratio
+      - Revenue_Growth
+      - News_Sentiment_7D

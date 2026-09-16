@@ -1,0 +1,8 @@
+quality:
+  price_checks:
+    require_positive: true
+    require_high_gte_low: true
+    max_daily_jump_pct: 0.50
+  null_threshold_pct: 0.05
+  duplicate_action: "deduplicate_keep_first"
+  anomaly_z_score: 4.0

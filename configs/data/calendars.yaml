@@ -1,0 +1,9 @@
+calendar:
+  exchange: "NYSE"
+  timezone: "America/New_York"
+  internal_timezone: "UTC"
+  session_start: "09:30:00"
+  session_end: "16:00:00"
+  weekends:
+    - 5  # Saturday
+    - 6  # Sunday

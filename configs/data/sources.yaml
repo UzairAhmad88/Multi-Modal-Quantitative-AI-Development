@@ -1,0 +1,29 @@
+sources:
+  market:
+    provider: "yfinance_simulated"
+    format: "OHLCV"
+    frequency: "daily"
+    timezone: "UTC"
+  news:
+    provider: "financial_news_api"
+    format: "headline_sentiment"
+    fields:
+      - article_id
+      - headline
+      - published_at
+      - available_at
+      - symbol
+      - sentiment
+  fundamentals:
+    provider: "sec_edgar_simulated"
+    format: "financial_statements"
+    fields:
+      - symbol
+      - period_end
+      - announcement_date
+      - available_at
+      - revenue
+      - net_income
+      - eps
+      - total_assets
+      - total_liabilities
