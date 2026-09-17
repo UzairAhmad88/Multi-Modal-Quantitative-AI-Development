@@ -1,7 +1,7 @@
 """
-QUANT AI: Real-Time Paper Trading Control Panel & Execution Terminal Page
-Provides interactive live market streaming, paper trading controls, active signal alerts,
-order ledger, pre-trade risk checks, and real-time equity curve snapshots.
+QUANT AI: Real-Time Execution Center & Broker Control Terminal
+Provides multi-environment trading controls (PAPER, SHADOW, SANDBOX, LIVE),
+Broker status indicators, Order Lineage, Reconciliation, and Safety Controls.
 """
 
 import streamlit as st
@@ -10,135 +10,151 @@ import numpy as np
 import plotly.express as px
 from datetime import datetime, timezone
 
+from src.execution.safety.environment import SafetyGuard, ExecutionEnvironment
+from src.execution.broker.paper import PaperBroker
+from src.realtime.scheduler.session_runner import PaperTradingSession
 from src.realtime.ingestion.provider import MockMarketDataProvider
-from src.realtime.signal_engine.engine import RealtimeSignalEngine
-from src.realtime.risk.pretrade_risk import PreTradeRiskChecker
-from src.realtime.execution.paper_engine import PaperExecutionEngine
-from src.realtime.storage.ledger import TradeLedger
 
-st.set_page_config(page_title="Paper Trading Terminal - QUANT AI", layout="wide")
+st.set_page_config(page_title="Execution Center - QUANT AI", layout="wide")
 
-st.title("⚡ Real-Time Paper Trading Control Panel")
-st.caption("Live Market Streaming, Automated Paper Execution & Pre-Trade Risk Gate (Paper Mode Default)")
+st.title("⚡ Quantitative Execution Center & Broker Management")
+st.caption("Multi-Environment Order Execution, Broker Abstraction, Lineage Tracking & Risk Controls")
 
-# Sidebar Session Controls
-st.sidebar.header("🕹️ Session Control Panel")
-asset = st.sidebar.selectbox("Select Asset Ticker", ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL"], index=0)
-session_status = st.sidebar.radio("Session State", ["STOPPED", "RUNNING", "PAUSED"], index=0)
-trading_toggle = st.sidebar.checkbox("Enable Paper Execution Gate", value=False)
+# Session Singleton
+if "session" not in st.session_state:
+    st.session_state.session = PaperTradingSession(initial_capital=100000.0)
 
-if "paper_ledger" not in st.session_state:
-    st.session_state.paper_ledger = TradeLedger(100000.0)
-    st.session_state.paper_engine = PaperExecutionEngine()
-    st.session_state.paper_risk = PreTradeRiskChecker(trading_enabled=trading_toggle)
+session: PaperTradingSession = st.session_state.session
+safety_status = SafetyGuard.get_safety_status()
 
-st.session_state.paper_risk.trading_enabled = trading_toggle
+# Sidebar Environment & Controls
+st.sidebar.header("🛡️ Environment & Safety Controls")
+env_choice = st.sidebar.selectbox("Trading Environment", ["PAPER", "SHADOW", "SANDBOX", "LIVE"], index=0)
+st.sidebar.info(f"Active Environment: **{session.env.value}**")
 
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("Session State", session_status)
-c2.metric("Safety Lock (TRADING_ENABLED)", "ENABLED" if trading_toggle else "LOCKED (OFF)", delta="Paper Mode Only")
-c3.metric("Available Cash", f"${st.session_state.paper_ledger.cash:,.2f}")
-c4.metric("Realized P&L", f"${st.session_state.paper_ledger.realized_pnl:,.2f}")
+kill_switch_active = session.kill_switch.is_active
+if kill_switch_active:
+    st.sidebar.error(f"🚨 KILL SWITCH ACTIVE: {session.kill_switch.reason}")
+    if st.sidebar.button("Deactivate Kill Switch (Operator Reset)"):
+        try:
+            session.kill_switch.deactivate(operator_override=True)
+            st.sidebar.success("Kill Switch reset successfully!")
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(str(e))
+else:
+    st.sidebar.success("🟢 CIRCUIT BREAKER: OPERATIONAL")
+    if st.sidebar.button("🚨 TRIGGER EMERGENCY STOP"):
+        session.kill_switch.activate("Operator manual emergency stop triggered from dashboard UI")
+        st.rerun()
+
+# Top Metrics Row
+c1, c2, c3, c4, c5 = st.columns(5)
+c1.metric("Environment", session.env.value)
+c2.metric("Execution Mode", session.broker.__class__.__name__)
+c3.metric("Real Money Status", "ENABLED" if safety_status["real_money_active"] else "DISABLED", delta="Two-Key Guard Active")
+c4.metric("Cash Balance", f"${session.cash:,.2f}")
+c5.metric("Total Equity", f"${session.equity:,.2f}")
+
+if safety_status["real_money_active"]:
+    st.warning("⚠️ LIVE TRADING IS ENABLED. Real orders will be dispatched to connected broker!")
 
 st.divider()
 
-# Market Streaming & Signal Monitor
-tab1, tab2, tab3 = st.tabs(["📈 Live Market & Signals", "📜 Paper Orders & Ledger", "🛡️ Pre-Trade Risk & System Status"])
+# Workstation Tabs
+tab1, tab2, tab3, tab4 = st.tabs(["📈 Market Stream & Execution", "📜 Orders, Fills & Lineage", "🔍 Reconciliation Engine", "🛡️ Hard Risk Limits"])
 
 provider = MockMarketDataProvider()
-quote = provider.get_quote(asset)
+quote = provider.get_quote("AAPL")
 
 with tab1:
     col_l, col_r = st.columns([2, 1])
 
     with col_l:
-        st.subheader(f"Live Market Stream — {asset}")
+        st.subheader("Live Market Data Stream (AAPL)")
         m1, m2, m3 = st.columns(3)
         m1.metric("Last Price", f"${quote['last']:.2f}")
         m2.metric("Bid", f"${quote['bid']:.2f}")
         m3.metric("Ask", f"${quote['ask']:.2f}")
 
-        # Simulated live price intraday chart
-        bars_df = provider.get_bars(asset, limit=30)
-        fig_price = px.line(bars_df, x="timestamp", y="close", markers=True, title=f"15-Minute Bar Stream ({asset})")
+        bars_df = provider.get_bars("AAPL", limit=30)
+        fig_price = px.line(bars_df, x="timestamp", y="close", markers=True, title="Intraday Bar Feed (AAPL)")
         fig_price.update_layout(template="plotly_dark")
         st.plotly_chart(fig_price, use_container_width=True)
 
     with col_r:
-        st.subheader("Real-Time Alpha Signal")
-        st.info("⚡ Signal Output: **BUY** (Confidence: 84.5%)")
-        st.json({
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "symbol": asset,
-            "predicted_5d_return": "+2.45%",
-            "confidence_score": 0.845,
-            "market_modality": "ONLINE",
-            "news_modality": "ONLINE",
-            "fundamentals_modality": "ONLINE",
-        })
+        st.subheader("Order Execution Trigger")
+        st.info(f"Target Broker: **{session.broker.__class__.__name__}**")
 
-        if st.button("🚀 Trigger Manual Paper Order (10 Shares)"):
-            if not trading_toggle:
-                st.error("REJECTED: Enable Paper Execution Gate in sidebar to allow paper orders")
+        side = st.radio("Order Side", ["BUY", "SELL"], horizontal=True)
+        qty = st.number_input("Order Quantity", min_value=1.0, max_value=1000.0, value=10.0, step=1.0)
+
+        if st.button("🚀 Submit Order via Broker Interface"):
+            bar = {"symbol": "AAPL", "close": quote["last"], "timestamp": datetime.now(timezone.utc).isoformat(), "volume": 10000}
+            res = session.process_tick_or_bar("AAPL", bar)
+
+            if res.get("status") == "PROCESSED":
+                st.success(f"Processed order execution cleanly in environment '{session.env.value}'!")
+                st.json(res.get("executed_orders", []))
             else:
-                snap = st.session_state.paper_ledger.take_snapshot({asset: quote["last"]})
-                approved, reason = st.session_state.paper_risk.check_order(
-                    symbol=asset,
-                    side="BUY",
-                    quantity=10.0,
-                    price=quote["last"],
-                    current_portfolio_value=snap["equity"],
-                    available_cash=snap["cash"],
-                    current_positions={asset: st.session_state.paper_ledger.positions.get(asset, {}).get("quantity", 0.0)},
-                )
-
-                order = st.session_state.paper_engine.create_order(symbol=asset, side="BUY", quantity=10.0)
-                executed = st.session_state.paper_engine.execute_order(
-                    order_id=order["order_id"],
-                    market_price=quote["last"],
-                    is_approved=approved,
-                    rejection_reason=reason,
-                )
-
-                if executed["status"] == "FILLED":
-                    fill = st.session_state.paper_engine.fills[-1]
-                    st.session_state.paper_ledger.record_fill(fill)
-                    st.success(f"Paper Order FILLED! Order ID: {order['order_id']}")
-                else:
-                    st.error(f"Paper Order REJECTED: {reason}")
+                st.error(f"Execution Blocked: {res.get('reason', 'Rejected')}")
 
 with tab2:
-    st.subheader("Active Positions & Executed Paper Fills")
-    st.markdown("#### Current Portfolio Positions")
-    if st.session_state.paper_ledger.positions:
-        pos_df = pd.DataFrame([
-            {"Symbol": k, "Quantity": v["quantity"], "Avg Cost": f"${v['avg_cost']:.2f}"}
-            for k, v in st.session_state.paper_ledger.positions.items()
-        ])
-        st.dataframe(pos_df, use_container_width=True)
-    else:
-        st.info("No active positions in ledger.")
+    st.subheader("Orders, Fills & Order Lineage Audit")
+    col_orders, col_fills = st.columns(2)
 
-    st.markdown("#### Executed Order Fills Ledger")
-    if st.session_state.paper_engine.fills:
-        fills_df = pd.DataFrame(st.session_state.paper_engine.fills)
-        st.dataframe(fills_df, use_container_width=True)
+    with col_orders:
+        st.markdown("#### Broker Orders")
+        orders = session.broker.get_orders()
+        if orders:
+            st.dataframe(pd.DataFrame(orders), use_container_width=True)
+        else:
+            st.info("No orders recorded for this session.")
+
+    with col_fills:
+        st.markdown("#### Broker Fills")
+        fills = session.broker.get_fills()
+        if fills:
+            st.dataframe(pd.DataFrame(fills), use_container_width=True)
+        else:
+            st.info("No fills executed yet.")
+
+    st.markdown("#### End-to-End Signal ➔ Fill Lineage Records")
+    lineage_recs = session.lineage_tracker.get_all_records()
+    if lineage_recs:
+        st.dataframe(pd.DataFrame(lineage_recs), use_container_width=True)
     else:
-        st.info("No order fills recorded yet.")
+        st.info("No lineage records tracked yet.")
 
 with tab3:
-    st.subheader("Pre-Trade Risk Engine & System Health")
-    r1, r2, r3 = st.columns(3)
-    r1.metric("Max Position Limit", "25.0%")
-    r2.metric("Max Daily Loss Limit", "5.0%")
-    r3.metric("Max Drawdown Halt", "15.0%")
+    st.subheader("Position & Account Reconciliation Engine")
+    st.markdown("Compares **Authoritative Broker Snapshot** against **Local Database State**")
 
-    st.markdown("#### System Health Checks (`GET /health/realtime`)")
+    if st.button("🔄 Trigger Position Reconciliation Audit"):
+        rec_res = session.trigger_reconciliation()
+        if rec_res.is_reconciled:
+            st.success(f"✅ RECONCILIATION PASSED: {rec_res.status_summary}")
+        else:
+            st.error(f"🚨 RECONCILIATION FAILED: {rec_res.status_summary}")
+        st.json(rec_res.to_dict())
+
+with tab4:
+    st.subheader("Pre-Trade Risk Gate & Hard Limits")
+    st.markdown("Hard Limits strictly **override** AI Model signals before order generation.")
+
+    r1, r2, r3, r4 = st.columns(4)
+    r1.metric("Max Position Cap", "30.0% ($30,000)")
+    r2.metric("Max Gross Exposure", "100.0%")
+    r3.metric("Max Daily Loss Limit", "5.0% ($5,000)")
+    r4.metric("Max Rate Limit", "60 Orders / Min")
+
     st.json({
-        "status": "HEALTHY",
-        "market_data_provider": "MockMarketDataProvider (ONLINE)",
-        "signal_engine": "RealtimeSignalEngine (ONLINE)",
-        "pretrade_risk_gate": "PASSED",
-        "paper_execution_engine": "ACTIVE",
-        "real_money_trading": "DISABLED (SAFETY LOCK ACTIVE)",
+        "hard_risk_limits": {
+            "max_position_value": session.risk_gate.hard_limits_engine.config.max_position_value,
+            "max_position_percent": session.risk_gate.hard_limits_engine.config.max_position_percent,
+            "max_daily_loss": session.risk_gate.hard_limits_engine.config.max_daily_loss,
+            "max_orders_per_minute": session.risk_gate.hard_limits_engine.config.max_orders_per_minute,
+            "stale_data_gate": "ACTIVE (< 15s)"
+        },
+        "two_key_safety_guard": safety_status
     })

@@ -15,15 +15,27 @@ class OrderManager:
         self.validator = validator or OrderValidator()
         self.orders: Dict[str, Order] = {}
         self.audit_log: List[Dict[str, Any]] = []
+        self.idempotency_map: Dict[str, str] = {}  # idempotency_key / signal_id -> order_id
 
-    def create_order(self, order: Order, price: Optional[float] = None) -> Order:
-        """Validates and registers a new order into the OMS."""
+    def create_order(self, order: Order, price: Optional[float] = None, idempotency_key: Optional[str] = None, signal_id: Optional[str] = None) -> Order:
+        """Validates and registers a new order into the OMS with idempotency protection."""
+        key = idempotency_key or signal_id
+        if key and key in self.idempotency_map:
+            existing_id = self.idempotency_map[key]
+            order.status = OrderStatus.REJECTED
+            order.rejection_reason = f"DUPLICATE_ORDER_BLOCKED: Signal/Key '{key}' already processed in Order '{existing_id}'"
+            self.orders[order.order_id] = order
+            self._record_event(order, "DUPLICATE_REJECTED")
+            return order
+
         valid, reason = self.validator.validate(order, price=price)
         if not valid:
             order.status = OrderStatus.REJECTED
             order.rejection_reason = reason
         else:
             order.status = OrderStatus.SUBMITTED
+            if key:
+                self.idempotency_map[key] = order.order_id
 
         self.orders[order.order_id] = order
         self._record_event(order, f"ORDER_{order.status.value}")

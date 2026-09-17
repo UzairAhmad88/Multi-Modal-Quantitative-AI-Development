@@ -1,12 +1,14 @@
 """
-Trading Kill Switch Module
-Provides circuit breaker protection. Default state is PAPER TRADING ONLY.
+Trading Kill Switch Module.
+Provides circuit breaker protection across all execution environments (PAPER, SHADOW, SANDBOX, LIVE).
 Safely halts order generation and rebalancing upon risk or system breach.
 """
 
 from datetime import datetime, timezone
 import os
 from typing import Dict, Any, Optional
+
+from src.execution.safety.environment import SafetyGuard, ExecutionEnvironment
 
 
 class TradingKillSwitch:
@@ -18,10 +20,13 @@ class TradingKillSwitch:
         self.reason: Optional[str] = None
         self.activated_at: Optional[str] = None
 
-        # Verify Environment Safety
-        trading_mode = os.getenv(self.mode_env_var, "paper").lower()
-        if trading_mode != "paper":
-            self.activate(f"CRITICAL SAFETY BREACH: {self.mode_env_var} is '{trading_mode}'. REAL-MONEY TRADING IS STRICTLY FORBIDDEN.")
+        # Verify Environment Safety on Initialization
+        permitted, reason = SafetyGuard.verify_live_execution_permitted()
+        curr_env = SafetyGuard.get_current_environment()
+
+        # If environment is configured as LIVE but SafetyGuard blocks it (e.g. LIVE_TRADING_ENABLED=false), activate circuit breaker
+        if curr_env == ExecutionEnvironment.LIVE and not permitted:
+            self.activate(f"SAFETY CIRCUIT BREAKER: {reason}")
 
     def activate(self, reason: str = "Manual kill switch triggered"):
         """Activate Kill Switch to halt signal and order execution."""
@@ -29,11 +34,14 @@ class TradingKillSwitch:
         self.reason = reason
         self.activated_at = datetime.now(timezone.utc).isoformat()
 
-    def deactivate(self):
+    def deactivate(self, operator_override: bool = False):
         """Reset Kill Switch (Operator Override)."""
-        trading_mode = os.getenv(self.mode_env_var, "paper").lower()
-        if trading_mode != "paper":
-            raise PermissionError("Cannot deactivate Kill Switch when real-money trading is configured!")
+        permitted, reason = SafetyGuard.verify_live_execution_permitted()
+        curr_env = SafetyGuard.get_current_environment()
+
+        if curr_env == ExecutionEnvironment.LIVE and not permitted and not operator_override:
+            raise PermissionError("Cannot deactivate Kill Switch while real-money trading is not fully authorized!")
+
         self.is_active = False
         self.reason = None
         self.activated_at = None
@@ -45,5 +53,6 @@ class TradingKillSwitch:
             "status": "HALTED" if self.is_active else "OPERATIONAL",
             "reason": self.reason,
             "activated_at": self.activated_at,
-            "trading_mode": os.getenv(self.mode_env_var, "paper")
+            "trading_env": SafetyGuard.get_current_environment().value,
+            "live_trading_enabled": SafetyGuard.is_live_flag_set()
         }

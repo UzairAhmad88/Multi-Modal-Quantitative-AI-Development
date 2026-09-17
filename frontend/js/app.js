@@ -901,3 +901,85 @@ function _chartOpts(yLabel = "") {
         }
     };
 }
+
+// ── Live Trading Safety & Confirmation UI Handlers ──────────────────────────────
+function openLiveModal() {
+    const modal = document.getElementById("liveModal");
+    if (modal) modal.style.display = "flex";
+}
+
+function closeLiveModal() {
+    const modal = document.getElementById("liveModal");
+    if (modal) modal.style.display = "none";
+}
+
+async function requestLiveTokenUI() {
+    try {
+        const res = await fetch(`${API}/realtime/request-live-confirmation`, { method: "POST" });
+        const data = await res.json();
+        if (data.status === "success") {
+            const tokenInput = document.getElementById("liveTokenInput");
+            if (tokenInput) tokenInput.value = data.confirmation_payload.token;
+            showToast("Live Confirmation Token Generated", "success");
+        } else {
+            showToast(data.detail || "Failed to generate token", "error");
+        }
+    } catch (e) {
+        showToast("Error requesting confirmation token", "error");
+    }
+}
+
+async function confirmLiveEnablementUI() {
+    const token = document.getElementById("liveTokenInput")?.value?.trim();
+    const ack = document.getElementById("userAckCheck")?.checked;
+
+    if (!token) {
+        showToast("Confirmation token required!", "error");
+        return;
+    }
+    if (!ack) {
+        showToast("You must check the confirmation checkbox!", "error");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/realtime/enable-live-trading`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ confirmation_token: token, user_acknowledgement: ack })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+            showToast("LIVE TRADING MODE ACTIVATED", "success");
+            closeLiveModal();
+            updateTopBarBadges(data.safety);
+        } else {
+            showToast(data.detail || "Live activation failed", "error");
+        }
+    } catch (e) {
+        showToast("Failed to enable live trading", "error");
+    }
+}
+
+function updateTopBarBadges(safety) {
+    const envBadge = document.getElementById("badgeExecutionEnv");
+    const moneyBadge = document.getElementById("badgeRealMoney");
+
+    if (envBadge) {
+        envBadge.innerHTML = `<i class="fa-solid fa-microchip"></i> EXECUTION: ${safety.trading_env}`;
+        envBadge.className = safety.trading_env === "LIVE" ? "badge badge-warning" : "badge badge-paper";
+    }
+
+    if (moneyBadge) {
+        if (safety.real_money_active) {
+            moneyBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> REAL MONEY: ENABLED`;
+            moneyBadge.style.background = "#da3633";
+            moneyBadge.style.color = "#ffffff";
+        } else {
+            moneyBadge.innerHTML = `<i class="fa-solid fa-lock"></i> REAL MONEY: DISABLED`;
+            moneyBadge.style.background = "";
+            moneyBadge.style.color = "";
+        }
+    }
+}
+

@@ -1,6 +1,7 @@
 """
-Real-Time Paper Trading & System Monitoring API Routes
-Provides REST endpoints for session status, signals, portfolio mark-to-market, risk gate, kill switch, and session control.
+Real-Time Trading Session & Safety Control API Routes.
+Provides REST endpoints for session status, safety verification, live confirmation tokens,
+reconciliation triggers, order lineage, and circuit breaker kill switch.
 """
 
 from typing import Dict, Any, List, Optional
@@ -8,23 +9,96 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from src.realtime.scheduler.session_runner import PaperTradingSession
-from src.realtime.replay.replay_engine import RealtimeReplayEngine
+from src.execution.safety.environment import SafetyGuard
+from src.execution.safety.live_confirmation import LiveConfirmationManager
 
-router = APIRouter(prefix="/realtime", tags=["Real-Time Paper Trading & Monitoring"])
+router = APIRouter(prefix="/realtime", tags=["Real-Time Paper & Live Trading Monitoring"])
 
-# Active singleton paper session
+# Active singleton trading session
 global_session = PaperTradingSession()
+confirmation_manager = LiveConfirmationManager()
 
 
 @router.get("/status")
 def get_session_status():
+    safety_status = SafetyGuard.get_safety_status()
     return {
         "status": "success",
         "session_id": global_session.session_id,
+        "environment": global_session.env.value,
         "session_status": global_session.status,
+        "broker_name": global_session.broker.__class__.__name__,
+        "broker_connected": global_session.broker.is_connected(),
+        "safety": safety_status,
         "kill_switch": global_session.kill_switch.get_status(),
         "health": global_session.health_monitor.get_health_status(),
         "market_calendar": global_session.calendar.get_session_status()
+    }
+
+
+@router.get("/safety")
+def get_safety_guard_status():
+    return {
+        "status": "success",
+        "safety_guard": SafetyGuard.get_safety_status()
+    }
+
+
+@router.post("/request-live-confirmation")
+def request_live_confirmation(user_id: str = "QUANT_OPERATOR"):
+    payload = confirmation_manager.generate_confirmation_token(user_id=user_id)
+    return {
+        "status": "success",
+        "message": "LIVE TRADING CONFIRMATION TOKEN GENERATED. Require dual-key verification.",
+        "confirmation_payload": payload
+    }
+
+
+class EnableLiveRequest(BaseModel):
+    confirmation_token: str
+    user_acknowledgement: bool = False
+
+
+@router.post("/enable-live-trading")
+def enable_live_trading(req: EnableLiveRequest):
+    if not req.user_acknowledgement:
+        raise HTTPException(status_code=400, detail="User acknowledgement required before live activation!")
+
+    valid, msg = confirmation_manager.validate_and_consume_token(req.confirmation_token)
+    if not valid:
+        raise HTTPException(status_code=403, detail=msg)
+
+    permitted, safety_reason = SafetyGuard.verify_live_execution_permitted(req.confirmation_token)
+    if not permitted:
+        raise HTTPException(status_code=403, detail=safety_reason)
+
+    return {
+        "status": "success",
+        "message": "LIVE TRADING ENVIRONMENT ACTIVATED",
+        "safety": SafetyGuard.get_safety_status()
+    }
+
+
+@router.post("/reconcile")
+def trigger_reconciliation():
+    res = global_session.trigger_reconciliation()
+    return {
+        "status": "success",
+        "reconciliation": res.to_dict()
+    }
+
+
+@router.get("/lineage")
+def get_order_lineage(internal_order_id: Optional[str] = None):
+    if internal_order_id:
+        rec = global_session.lineage_tracker.get_lineage(internal_order_id)
+        if not rec:
+            raise HTTPException(status_code=404, detail=f"Lineage record '{internal_order_id}' not found.")
+        return {"status": "success", "lineage": rec}
+    return {
+        "status": "success",
+        "records_count": len(global_session.lineage_tracker.records),
+        "records": global_session.lineage_tracker.get_all_records()
     }
 
 
@@ -41,6 +115,7 @@ def get_realtime_portfolio():
     return {
         "status": "success",
         "session_id": global_session.session_id,
+        "environment": global_session.env.value,
         "equity": global_session.equity,
         "cash": global_session.cash,
         "gross_exposure": sum(p["weight"] for p in global_session.positions.values()),
@@ -61,7 +136,7 @@ def get_realtime_positions():
 def get_realtime_orders():
     return {
         "status": "success",
-        "orders": global_session.execution_engine.get_orders()
+        "orders": global_session.broker.get_orders()
     }
 
 
@@ -69,7 +144,7 @@ def get_realtime_orders():
 def get_realtime_fills():
     return {
         "status": "success",
-        "fills": global_session.execution_engine.get_fills()
+        "fills": global_session.broker.get_fills()
     }
 
 
