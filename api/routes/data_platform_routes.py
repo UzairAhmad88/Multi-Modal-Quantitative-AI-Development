@@ -27,12 +27,20 @@ class ComputeFeaturesRequest(BaseModel):
     feature_set: str = Field("technical_v1", description="Feature set name")
 
 
+class MarketImportRequest(BaseModel):
+    ticker: str = Field("AAPL", description="Stock ticker symbol to import (e.g. AAPL, MSFT, TSLA, NVDA)")
+    start_date: str = Field("2024-01-01", description="Start date (YYYY-MM-DD)")
+    end_date: Optional[str] = Field(None, description="End date (YYYY-MM-DD) or current date")
+    provider: str = Field("yfinance", description="Market data provider: yfinance, alpaca, auto")
+    force_live_api: bool = Field(True, description="Force downloading from live market API")
+
+
 @router.get("/sources")
 def get_data_sources() -> Dict[str, Any]:
     """Returns catalog of supported quantitative data sources."""
     return {
         "sources": [
-            {"id": "market", "name": "Market OHLCV Prices", "frequency": "daily"},
+            {"id": "market", "name": "Market OHLCV Prices (Yahoo Finance API)", "frequency": "daily"},
             {"id": "news", "name": "FinBERT News Sentiment", "frequency": "intraday"},
             {"id": "fundamentals", "name": "SEC Statement Fundamentals", "frequency": "quarterly"}
         ]
@@ -49,6 +57,123 @@ def get_platform_status() -> Dict[str, Any]:
     }
 
 
+@router.post("/market/import")
+def import_market_data(req: MarketImportRequest) -> Dict[str, Any]:
+    """Imports live stock market data via API (Yahoo Finance / Alpaca), cleans, computes Stochastic Oscillator (%K, %D), and stores."""
+    from src.data.market_loader import load_market_data
+    symbol = req.ticker.strip().upper()
+    try:
+        df = load_market_data(
+            ticker=symbol,
+            start=req.start_date,
+            end=req.end_date,
+            force_live_api=req.force_live_api
+        )
+        if df.empty:
+            raise HTTPException(status_code=404, detail=f"No market data returned for ticker: {symbol}")
+        
+        last_row = df.iloc[-1].to_dict()
+        # Clean timestamp format if necessary
+        last_row["date"] = str(last_row.get("date", ""))
+        
+        stoch_k = float(last_row.get("stoch_k_14", 50.0)) if "stoch_k_14" in last_row else 50.0
+        stoch_d = float(last_row.get("stoch_d_3", 50.0)) if "stoch_d_3" in last_row else 50.0
+        stoch_status = "OVERBOUGHT" if stoch_k > 80 else ("OVERSOLD" if stoch_k < 20 else "NEUTRAL")
+
+        return {
+            "status": "SUCCESS",
+            "ticker": symbol,
+            "provider": req.provider,
+            "rows": len(df),
+            "start_date": str(df["date"].iloc[0]),
+            "end_date": str(df["date"].iloc[-1]),
+            "latest_close": float(last_row.get("close", 0.0)),
+            "stochastic": {
+                "stoch_k": round(stoch_k, 2),
+                "stoch_d": round(stoch_d, 2),
+                "stochastic_status": stoch_status
+            },
+            "technical_indicators": {
+                "rsi_14": round(float(last_row.get("rsi_14", 50.0)), 2),
+                "macd": round(float(last_row.get("macd", 0.0)), 4),
+                "macd_signal": round(float(last_row.get("macd_signal", 0.0)), 4)
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to import market data for {symbol}: {str(e)}")
+
+
+@router.get("/market/stoch/{ticker}")
+def get_stochastic_oscillator(ticker: str, limit: int = Query(30, ge=5, le=365)) -> Dict[str, Any]:
+    """Retrieves Stochastic Oscillator (%K and %D) technical indicators for a specific stock ticker."""
+    from src.data.market_loader import load_market_data
+    symbol = ticker.strip().upper()
+    df = load_market_data(symbol, start="2024-01-01")
+    if df.empty:
+        raise HTTPException(status_code=404, detail=f"No data for symbol {symbol}")
+    
+    recent = df.tail(limit)
+    dates = [str(d)[:10] for d in recent["date"]]
+    stoch_k = [round(float(k), 2) for k in recent.get("stoch_k_14", [50.0]*len(recent))]
+    stoch_d = [round(float(d), 2) for d in recent.get("stoch_d_3", [50.0]*len(recent))]
+    closes = [round(float(c), 2) for c in recent["close"]]
+
+    curr_k = stoch_k[-1]
+    curr_d = stoch_d[-1]
+    condition = "Overbought (>80)" if curr_k > 80 else ("Oversold (<20)" if curr_k < 20 else "Neutral")
+
+    return {
+        "ticker": symbol,
+        "current_stoch_k": curr_k,
+        "current_stoch_d": curr_d,
+        "condition": condition,
+        "history": {
+            "dates": dates,
+            "stoch_k": stoch_k,
+            "stoch_d": stoch_d,
+            "close": closes
+        }
+    }
+
+
+@router.get("/market/candles/{ticker}")
+def get_market_candles(ticker: str, limit: int = Query(60, ge=10, le=500)) -> Dict[str, Any]:
+    """Returns candlestick and line chart series data for stock market charting."""
+    from src.data.market_loader import load_market_data
+    symbol = ticker.strip().upper()
+    df = load_market_data(symbol, start="2024-01-01")
+    if df.empty:
+        raise HTTPException(status_code=404, detail=f"No data for symbol {symbol}")
+    
+    recent = df.tail(limit)
+    candles = []
+    line_series = []
+    
+    for idx, row in recent.iterrows():
+        dt_str = str(row["date"])[:10]
+        c_open = round(float(row["open"]), 2)
+        c_high = round(float(row["high"]), 2)
+        c_low = round(float(row["low"]), 2)
+        c_close = round(float(row["close"]), 2)
+        c_vol = int(row["volume"])
+        
+        candles.append({
+            "x": dt_str,
+            "y": [c_open, c_high, c_low, c_close]
+        })
+        line_series.append({
+            "x": dt_str,
+            "y": c_close
+        })
+
+    return {
+        "ticker": symbol,
+        "count": len(candles),
+        "candlestick": candles,
+        "line": line_series
+    }
+
+
 @router.post("/ingest")
 def ingest_data(req: IngestionRequest) -> Dict[str, Any]:
     """Executes data ingestion pipeline."""
@@ -60,6 +185,7 @@ def ingest_data(req: IngestionRequest) -> Dict[str, Any]:
         return mgr.ingest_fundamental_data(req.symbols)
     else:
         raise HTTPException(status_code=400, detail=f"Invalid data source: {req.source}")
+
 
 
 @router.post("/validate")

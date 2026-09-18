@@ -51,6 +51,19 @@ def compute_atr(
     return atr.bfill().fillna(0.0)
 
 
+def compute_stochastic_oscillator(
+    high: pd.Series, low: pd.Series, close: pd.Series, k_window: int = 14, d_window: int = 3
+) -> tuple[pd.Series, pd.Series]:
+    """Stochastic Oscillator (%K and %D lines)."""
+    lowest_low = low.rolling(window=k_window).min()
+    highest_high = high.rolling(window=k_window).max()
+    denom = highest_high - lowest_low
+    denom = denom.replace(0, 1e-10)
+    stoch_k = 100.0 * ((close - lowest_low) / denom)
+    stoch_d = stoch_k.rolling(window=d_window).mean()
+    return stoch_k.fillna(50.0), stoch_d.fillna(50.0)
+
+
 def add_technical_features(df: pd.DataFrame) -> pd.DataFrame:
     """Compute comprehensive technical analysis features for OHLCV dataframe."""
     out = df.copy()
@@ -82,6 +95,9 @@ def add_technical_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # MACD
     out["macd"], out["macd_signal"], out["macd_hist"] = compute_macd(close)
+
+    # Stochastic Oscillator (%K and %D)
+    out["stoch_k_14"], out["stoch_d_3"] = compute_stochastic_oscillator(high, low, close, 14, 3)
 
     # Bollinger Bands
     out["bollinger_upper"], out["bollinger_lower"], out["bollinger_bw"], out["bollinger_pct_b"] = (

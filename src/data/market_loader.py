@@ -130,7 +130,9 @@ class MarketDataLoader:
         start: str = "2018-01-01",
         end: Optional[str] = None,
         use_cache: bool = True,
-        max_retries: int = 3
+        max_retries: int = 3,
+        force_live_api: bool = False,
+        provider: str = "yfinance"
     ) -> pd.DataFrame:
         if end is None:
             end = pd.Timestamp.now().strftime("%Y-%m-%d")
@@ -139,7 +141,7 @@ class MarketDataLoader:
         cache_path = self.cache_dir / f"{ticker}.parquet"
         csv_cache_path = self.cache_dir / f"{ticker}.csv"
 
-        if use_cache:
+        if use_cache and not force_live_api:
             if cache_path.exists():
                 logger.info(f"Loading cached parquet for {ticker}")
                 df = pd.read_parquet(cache_path)
@@ -149,15 +151,12 @@ class MarketDataLoader:
                 df = pd.read_csv(csv_cache_path)
                 return MarketDataCleaner.clean(df, ticker)
 
-        if data_mode == "demo":
-            logger.info(f"Generating synthetic demo market data for {ticker}")
-            df = generate_demo_market_data(ticker, start, end)
-        else:
-            df = None
+        df = None
+        if force_live_api or data_mode != "demo":
             for attempt in range(max_retries):
                 try:
                     import yfinance as yf
-                    logger.info(f"Downloading {ticker} via yfinance (attempt {attempt + 1})")
+                    logger.info(f"Downloading {ticker} via yfinance API (attempt {attempt + 1})")
                     raw = yf.download(ticker, start=start, end=end, auto_adjust=False, progress=False)
                     if not raw.empty:
                         raw = raw.reset_index()
@@ -170,11 +169,21 @@ class MarketDataLoader:
                     logger.warning(f"Attempt {attempt + 1} failed for {ticker}: {e}")
                     time.sleep(1)
 
-            if df is None or df.empty:
-                logger.warning(f"Could not download market data for {ticker}. Falling back to demo data.")
-                df = generate_demo_market_data(ticker, start, end)
+        if df is None or df.empty:
+            if force_live_api:
+                logger.warning(f"Live API download failed for {ticker}, generating synthetic fallback data.")
+            else:
+                logger.info(f"Generating synthetic demo market data for {ticker}")
+            df = generate_demo_market_data(ticker, start, end)
 
         cleaned = MarketDataCleaner.clean(df, ticker)
+
+        # Compute technical indicators including Stochastic Oscillator
+        try:
+            from src.features.technical import add_technical_features
+            cleaned = add_technical_features(cleaned)
+        except Exception as ex:
+            logger.warning(f"Failed to append technical features: {ex}")
 
         # Save to cache
         try:
@@ -185,7 +194,13 @@ class MarketDataLoader:
         return cleaned
 
 
-def load_market_data(ticker: str, start: str = "2018-01-01", end: Optional[str] = None) -> pd.DataFrame:
+def load_market_data(
+    ticker: str,
+    start: str = "2018-01-01",
+    end: Optional[str] = None,
+    force_live_api: bool = False
+) -> pd.DataFrame:
     """Convenience function wrapper for MarketDataLoader."""
     loader = MarketDataLoader()
-    return loader.load(ticker, start=start, end=end)
+    return loader.load(ticker, start=start, end=end, force_live_api=force_live_api)
+

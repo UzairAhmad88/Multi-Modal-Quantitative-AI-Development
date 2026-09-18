@@ -344,9 +344,157 @@ async function loadMarkets() {
         renderAIDecisionEngine(currentTicker, last);
         renderRSIChart(records);
         renderMACDChart(records);
+        renderStochasticChart(records);
     } catch (e) {
         showToast(`Market data error: ${e.message}`, "error");
     }
+}
+
+function renderStochasticChart(records) {
+    const ctx = document.getElementById("chart-stoch");
+    if (!ctx) return;
+    if (charts.stoch) charts.stoch.destroy();
+
+    const dates = records.map(r => r.date);
+    const stochK = records.map(r => r.stoch_k_14 !== undefined ? r.stoch_k_14 : 50.0);
+    const stochD = records.map(r => r.stoch_d_3 !== undefined ? r.stoch_d_3 : 50.0);
+
+    const lastK = stochK[stochK.length - 1] || 50.0;
+    const lastD = stochD[stochD.length - 1] || 50.0;
+    const badge = document.getElementById("stoch-condition-badge");
+    if (badge) {
+        if (lastK > 80) {
+            badge.textContent = `OVERBOUGHT (%K: ${lastK.toFixed(1)})`;
+            badge.style.background = "#EF5350";
+            badge.style.color = "#FFFFFF";
+        } else if (lastK < 20) {
+            badge.textContent = `OVERSOLD (%K: ${lastK.toFixed(1)})`;
+            badge.style.background = "#26A69A";
+            badge.style.color = "#FFFFFF";
+        } else {
+            badge.textContent = `NEUTRAL (%K: ${lastK.toFixed(1)}, %D: ${lastD.toFixed(1)})`;
+            badge.style.background = "#21262D";
+            badge.style.color = "#38BDF8";
+        }
+    }
+
+    charts.stoch = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: dates,
+            datasets: [
+                { label: "%K (14)", data: stochK, borderColor: "#A855F7", borderWidth: 1.5, fill: false, tension: 0.3, pointRadius: 0 },
+                { label: "%D (3)", data: stochD, borderColor: "#38BDF8", borderWidth: 1.5, fill: false, tension: 0.3, pointRadius: 0, borderDash: [3, 3] }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: "#94A3B8", font: { size: 10 } } } },
+            scales: {
+                x: { ticks: { color: "#64748B", maxTicksLimit: 8 }, grid: { color: "#1E2630" } },
+                y: { min: 0, max: 100, ticks: { color: "#64748B" }, grid: { color: "#1E2630" } }
+            }
+        }
+    });
+}
+
+async function importMarketDataViaApi() {
+    const symbolInput = document.getElementById("mkt-import-symbol");
+    const providerSelect = document.getElementById("mkt-import-provider");
+    const startSelect = document.getElementById("mkt-import-start");
+    const banner = document.getElementById("mkt-import-status-banner");
+    const btn = document.getElementById("btn-import-market-data");
+
+    const ticker = (symbolInput ? symbolInput.value : currentTicker).trim().toUpperCase();
+    if (!ticker) {
+        showToast("Please enter a valid stock ticker symbol", "error");
+        return;
+    }
+
+    const provider = providerSelect ? providerSelect.value : "yfinance";
+    const startDate = startSelect ? startSelect.value : "2024-01-01";
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Ingesting ${ticker}...`;
+    }
+    if (banner) {
+        banner.style.display = "block";
+        banner.style.color = "#38BDF8";
+        banner.innerHTML = `<i class="fa-solid fa-cloud-arrow-down fa-spin"></i> Connecting to ${provider.toUpperCase()} API to download market data for <strong>${ticker}</strong>...`;
+    }
+
+    showToast(`Downloading real market data for ${ticker} via ${provider}...`, "info");
+
+    try {
+        const res = await fetch(`${API}/data/market/import`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                ticker: ticker,
+                start_date: startDate,
+                provider: provider,
+                force_live_api: true
+            })
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || "API Ingestion failed");
+        }
+
+        const data = await res.json();
+        const stoch = data.stochastic || {};
+
+        if (banner) {
+            banner.style.color = "#34D399";
+            banner.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Import Successful!</strong> Ingested <strong>${data.rows}</strong> market candles for <strong>${ticker}</strong> from ${data.start_date} to ${data.end_date}. Latest Close: <strong>$${data.latest_close}</strong> | Stochastic %K: <strong>${stoch.stoch_k}</strong>, %D: <strong>${stoch.stoch_d}</strong> (${stoch.stochastic_status}).`;
+        }
+
+        showToast(`Imported ${data.rows} bars for ${ticker}. Latest close: $${data.latest_close}`, "success");
+
+        currentTicker = ticker;
+        const tickerSel = document.getElementById("tickerSelect");
+        if (tickerSel) {
+            let found = false;
+            for (let opt of tickerSel.options) {
+                if (opt.value === ticker) {
+                    opt.selected = true;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                const opt = document.createElement("option");
+                opt.value = ticker;
+                opt.textContent = `${ticker} - Imported Stock`;
+                opt.selected = true;
+                tickerSel.appendChild(opt);
+            }
+        }
+
+        const mktSelEl = document.getElementById("mkt-selected-ticker");
+        if (mktSelEl) mktSelEl.textContent = ticker;
+
+        await loadMarkets();
+    } catch (e) {
+        if (banner) {
+            banner.style.color = "#F87171";
+            banner.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Import Error:</strong> ${e.message}`;
+        }
+        showToast(`Market Import failed: ${e.message}`, "error");
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-download"></i> Import Market Data via API`;
+        }
+    }
+}
+
+function quickImportTicker(sym) {
+    const symbolInput = document.getElementById("mkt-import-symbol");
+    if (symbolInput) symbolInput.value = sym;
+    importMarketDataViaApi();
 }
 
 function renderAIDecisionEngine(ticker, lastRecord) {

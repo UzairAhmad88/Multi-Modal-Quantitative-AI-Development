@@ -70,12 +70,7 @@ if _has_portfolio_r:
 if _has_mlops:
     app.include_router(mlops_router)
 
-# Serve Frontend static workstation UI
-frontend_path = Path(__file__).resolve().parents[1] / "frontend"
-if frontend_path.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
-
-# Include other routers safely
+# Include optional domain routers safely
 _OPTIONAL_ROUTERS = [
     ("api.routes.research_intelligence_routes",     "router", "research_intelligence_router"),
     ("api.routes.validation_routes",                "router", "validation_router"),
@@ -96,12 +91,29 @@ _OPTIONAL_ROUTERS = [
     ("api.routes.pipeline_routes",                  "router", "pipeline_router"),
 ]
 
+import importlib
+
+# Explicitly register key quantitative data platform router
+try:
+    from api.routes.data_platform_routes import router as data_platform_router
+    app.include_router(data_platform_router)
+    app.include_router(data_platform_router, prefix="/api")
+except Exception as ex:
+    print(f"Data platform router import warning: {ex}")
+
 for module_name, attr, alias in _OPTIONAL_ROUTERS:
     try:
-        mod = __import__(module_name, fromlist=[attr])
-        app.include_router(getattr(mod, attr))
+        mod = importlib.import_module(module_name)
+        r = getattr(mod, attr)
+        app.include_router(r)
+        app.include_router(r, prefix="/api")
     except Exception:
         pass  # Non-critical — skip missing routes gracefully
+
+# Serve Frontend static workstation UI (must be mounted LAST so API routes take precedence)
+frontend_path = Path(__file__).resolve().parents[1] / "frontend"
+if frontend_path.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
 
 
 # ── Pydantic Schemas ───────────────────────────────────────────────────────────
