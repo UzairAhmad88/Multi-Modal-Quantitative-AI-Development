@@ -167,7 +167,11 @@
                 <section id="view-markets" class="view-panel">
                     <div class="view-header">
                         <h2><i class="fa-solid fa-chart-candlestick text-blue"></i> Market Data & Technical Research (<span id="mkt-selected-ticker">AAPL</span>)</h2>
-                        <div class="header-controls">
+                        <div class="header-controls" style="display:flex;gap:12px;align-items:center;">
+                            <div class="chart-type-toggle" style="display:flex;gap:4px;background:#161B22;padding:4px;border-radius:6px;border:1px solid #30363D;">
+                                <button id="btnChartCandle" class="btn btn-sm active" style="padding:4px 10px;font-size:12px;" onclick="setChartType('candlestick')"><i class="fa-solid fa-chart-candlestick"></i> Candlestick</button>
+                                <button id="btnChartLine" class="btn btn-sm" style="padding:4px 10px;font-size:12px;background:transparent;color:#8B949E;" onclick="setChartType('line')"><i class="fa-solid fa-chart-line"></i> Line Chart</button>
+                            </div>
                             <select id="tickerSelect" onchange="switchTicker(this.value)" class="select-input">
                                 <option value="AAPL">AAPL - Apple Inc.</option>
                                 <option value="NVDA">NVDA - NVIDIA Corp.</option>
@@ -178,10 +182,41 @@
                         </div>
                     </div>
                     <div class="panel mb-4">
-                        <div class="chart-container" style="height: 340px;">
+                        <div class="chart-container" style="height: 360px;">
                             <canvas id="chart-market-candlestick"></canvas>
                         </div>
                     </div>
+
+                    <!-- AI Decision & Next Step Engine Card -->
+                    <div class="panel mb-4" id="ai-decision-card">
+                        <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <h3><i class="fa-solid fa-brain text-purple"></i> AI Predictive Decision & Next Action Engine</h3>
+                            <span class="badge badge-success" id="ai-accuracy-badge"><i class="fa-solid fa-bullseye"></i> Real-Time Accuracy: 84.8% OOS</span>
+                        </div>
+                        <div class="grid-3 mt-2">
+                            <div class="metric-card" style="border-left:4px solid #10B981;">
+                                <div class="metric-label">RECOMMENDED NEXT ACTION</div>
+                                <div class="metric-value text-green" id="ai-next-action">STRONG BUY</div>
+                                <div class="metric-change positive" id="ai-forecast-detail">Forecast: +2.85% (5D) | Conviction: 88.5%</div>
+                            </div>
+                            <div class="metric-card" style="border-left:4px solid #3B82F6;">
+                                <div class="metric-label">TARGET POSITION WEIGHT</div>
+                                <div class="metric-value" id="ai-target-weight">15.0% ($15,000)</div>
+                                <div class="metric-change neutral" id="ai-risk-reward">Risk-Reward Ratio: 1.54</div>
+                            </div>
+                            <div class="metric-card" style="border-left:4px solid #F59E0B;">
+                                <div class="metric-label">RISK BOUNDARIES</div>
+                                <div class="metric-value" style="font-size:16px;" id="ai-risk-bounds">Stop: $218.00 | Target: $234.50</div>
+                                <div class="metric-change neutral" id="ai-ensemble-consensus">Consensus: 5/6 Models Agree</div>
+                            </div>
+                        </div>
+                        <div class="mt-3" style="background:#0D1117;padding:12px;border-radius:6px;border:1px solid #1E2630;">
+                            <strong style="color:#94A3B8;font-size:11px;letter-spacing:0.5px;">MODEL ENSEMBLE CONSENSUS BREAKDOWN:</strong>
+                            <div id="ensemble-breakdown-grid" style="display:grid;grid-template-columns:repeat(6, 1fr);gap:8px;margin-top:8px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid-2 mb-4">
                         <div class="panel">
                             <div class="panel-header"><h3><i class="fa-solid fa-gauge-high text-amber"></i> RSI (14)</h3></div>

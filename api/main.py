@@ -59,6 +59,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from fastapi.staticfiles import StaticFiles
+
 if _has_research:
     app.include_router(research_router)
 if _has_realtime:
@@ -67,6 +69,11 @@ if _has_portfolio_r:
     app.include_router(portfolio_router)
 if _has_mlops:
     app.include_router(mlops_router)
+
+# Serve Frontend static workstation UI
+frontend_path = Path(__file__).resolve().parents[1] / "frontend"
+if frontend_path.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
 
 # Include other routers safely
 _OPTIONAL_ROUTERS = [

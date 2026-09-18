@@ -32,23 +32,28 @@ def plot_equity_curve(equity_series: pd.Series, benchmark_series: pd.Series | No
     return fig
 
 
-def plot_candlestick_with_indicators(df: pd.DataFrame, ticker: str) -> go.Figure:
-    """Plot OHLCV Candlestick chart with 20D/50D SMAs and RSI sub-panel."""
+def plot_price_and_indicators(df: pd.DataFrame, ticker: str, chart_type: str = "Candlestick") -> go.Figure:
+    """Plot OHLCV Candlestick or Line Chart with 20D/50D SMAs and RSI sub-panel."""
     fig = make_subplots(
         rows=2, cols=1, shared_xaxes=True,
         vertical_spacing=0.03, row_heights=[0.75, 0.25]
     )
 
-    # Candlesticks
-    fig.add_trace(go.Candlestick(
-        x=df["date"], open=df["open"], high=df["high"], low=df["low"], close=df["close"],
-        name="OHLC", increasing_line_color="#10B981", decreasing_line_color="#EF4444"
-    ), row=1, col=1)
+    if chart_type == "Candlestick":
+        fig.add_trace(go.Candlestick(
+            x=df["date"], open=df["open"], high=df["high"], low=df["low"], close=df["close"],
+            name="OHLC", increasing_line_color="#10B981", decreasing_line_color="#EF4444"
+        ), row=1, col=1)
+    else:
+        fig.add_trace(go.Scatter(
+            x=df["date"], y=df["close"], mode="lines", name=f"{ticker} Close",
+            line=dict(color="#3B82F6", width=2), fill="tozeroy", fillcolor="rgba(59,130,246,0.1)"
+        ), row=1, col=1)
 
     if "sma_20" in df.columns:
-        fig.add_trace(go.Scatter(x=df["date"], y=df["sma_20"], mode="lines", name="SMA 20", line=dict(color="#3B82F6", width=1.5)), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df["date"], y=df["sma_20"], mode="lines", name="SMA 20", line=dict(color="#F59E0B", width=1.5)), row=1, col=1)
     if "sma_50" in df.columns:
-        fig.add_trace(go.Scatter(x=df["date"], y=df["sma_50"], mode="lines", name="SMA 50", line=dict(color="#F59E0B", width=1.5)), row=1, col=1)
+        fig.add_trace(go.Scatter(x=df["date"], y=df["sma_50"], mode="lines", name="SMA 50", line=dict(color="#8B5CF6", width=1.5)), row=1, col=1)
 
     # RSI
     if "rsi_14" in df.columns:
@@ -57,7 +62,7 @@ def plot_candlestick_with_indicators(df: pd.DataFrame, ticker: str) -> go.Figure
         fig.add_hline(y=30, line_dash="dash", line_color="#10B981", row=2, col=1)
 
     fig.update_layout(
-        title=f"{ticker} Institutional Candlestick & RSI Technical Analysis",
+        title=f"{ticker} Technical Analysis ({chart_type})",
         template="plotly_dark",
         paper_bgcolor="#0F172A",
         plot_bgcolor="#0F172A",
@@ -65,6 +70,10 @@ def plot_candlestick_with_indicators(df: pd.DataFrame, ticker: str) -> go.Figure
         xaxis_rangeslider_visible=False
     )
     return fig
+
+
+def plot_candlestick_with_indicators(df: pd.DataFrame, ticker: str) -> go.Figure:
+    return plot_price_and_indicators(df, ticker, chart_type="Candlestick")
 
 
 def plot_drawdown_curve(equity_series: pd.Series) -> go.Figure:
