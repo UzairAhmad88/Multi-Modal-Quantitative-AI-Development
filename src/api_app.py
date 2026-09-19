@@ -10,10 +10,14 @@ from pathlib import Path
 import sys
 
 # Set writable cache directories for serverless environments (Vercel / AWS Lambda)
-_tmp_dir = tempfile.gettempdir()
-os.environ["YFINANCE_CACHE_DIR"] = os.path.join(_tmp_dir, "yfinance")
-os.environ["MPLCONFIGDIR"] = os.path.join(_tmp_dir, "matplotlib")
-os.environ["NUMBA_CACHE_DIR"] = os.path.join(_tmp_dir, "numba")
+os.environ["HOME"] = "/tmp"
+os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
+os.environ["XDG_CONFIG_HOME"] = "/tmp/.config"
+os.environ["XDG_DATA_HOME"] = "/tmp/.data"
+os.environ["TMPDIR"] = "/tmp"
+os.environ["YFINANCE_CACHE_DIR"] = "/tmp/yfinance"
+os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib"
+os.environ["NUMBA_CACHE_DIR"] = "/tmp/numba"
 
 from typing import Dict, Any, List, Optional
 from datetime import datetime
