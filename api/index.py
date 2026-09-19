@@ -14,14 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-try:
-    from .main import app
-except Exception:
-    try:
-        from api.main import app
-    except Exception:
-        import main
-        app = main.app
+from src.api_app import app
 
 # Export app for Vercel Serverless Function
 app = app
