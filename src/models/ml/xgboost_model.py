@@ -32,10 +32,18 @@ class QuantXGBoostModel(BaseModel):
             default_params.update(hyperparams)
 
         if self.mode == "regression":
-            self.model = XGBRegressor(**default_params)
+            try:
+                self.model = XGBRegressor(**default_params)
+            except Exception:
+                from sklearn.ensemble import HistGradientBoostingRegressor
+                self.model = HistGradientBoostingRegressor(random_state=42)
         else:
             default_params.setdefault("eval_metric", "logloss")
-            self.model = XGBClassifier(**default_params)
+            try:
+                self.model = XGBClassifier(**default_params)
+            except Exception:
+                from sklearn.ensemble import HistGradientBoostingClassifier
+                self.model = HistGradientBoostingClassifier(random_state=42)
 
         self.feature_names: list[str] = []
 

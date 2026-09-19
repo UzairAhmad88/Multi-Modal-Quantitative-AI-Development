@@ -4,8 +4,17 @@ Provides high-performance REST APIs backed by real yfinance data,
 XGBoost model training/validation, and live signal generation.
 """
 
+import os
+import tempfile
 from pathlib import Path
 import sys
+
+# Set writable cache directories for serverless environments (Vercel / AWS Lambda)
+_tmp_dir = tempfile.gettempdir()
+os.environ["YFINANCE_CACHE_DIR"] = os.path.join(_tmp_dir, "yfinance")
+os.environ["MPLCONFIGDIR"] = os.path.join(_tmp_dir, "matplotlib")
+os.environ["NUMBA_CACHE_DIR"] = os.path.join(_tmp_dir, "numba")
+
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
