@@ -30,21 +30,31 @@ logger = logging.getLogger("quant_engine")
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parents[2]
-CACHE_DIR = ROOT / "data" / "raw" / "market"
-MODEL_DIR = ROOT / "data" / "models"
+import os
+import tempfile
+
+is_serverless = os.environ.get("VERCEL") == "1" or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is not None
+if is_serverless:
+    CACHE_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "market"
+    MODEL_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "models"
+else:
+    CACHE_DIR = ROOT / "data" / "raw" / "market"
+    MODEL_DIR = ROOT / "data" / "models"
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        MODEL_DIR.mkdir(parents=True, exist_ok=True)
+        test_file = MODEL_DIR / ".write_test"
+        test_file.touch()
+        test_file.unlink()
+    except Exception:
+        CACHE_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "market"
+        MODEL_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "models"
 
 try:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
 except Exception:
-    import tempfile
-    CACHE_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "market"
-    MODEL_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "models"
-    try:
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception:
-        pass
+    pass
 
 UNIVERSE = ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "SPY", "QQQ", "TSLA", "META", "JPM"]
 TRAIN_START = "2020-01-01"
