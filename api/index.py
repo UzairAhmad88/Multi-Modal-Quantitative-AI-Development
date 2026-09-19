@@ -1,9 +1,39 @@
 from http.server import BaseHTTPRequestHandler
 import json
 import urllib.parse
+from pathlib import Path
+import os
+
+ROOT = Path(__file__).resolve().parents[1]
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path.rstrip('/')
+
+        # ── Serve Static Workstation UI Assets ──
+        if path == '' or path == '/' or path == '/index.html':
+            index_file = ROOT / "index.html"
+            if index_file.exists():
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Cache-Control', 'public, max-age=3600')
+                self.end_headers()
+                self.wfile.write(index_file.read_bytes())
+                return
+
+        if path.startswith('/css/') or path.startswith('/js/'):
+            asset_file = ROOT / path.lstrip('/')
+            if asset_file.exists():
+                ct = 'text/css; charset=utf-8' if path.endswith('.css') else 'application/javascript; charset=utf-8'
+                self.send_response(200)
+                self.send_header('Content-Type', ct)
+                self.send_header('Cache-Control', 'public, max-age=86400')
+                self.end_headers()
+                self.wfile.write(asset_file.read_bytes())
+                return
+
+        # ── REST API Endpoints ──
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -11,9 +41,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
 
-        parsed_path = urllib.parse.urlparse(self.path).path.rstrip('/')
-        
-        if parsed_path.endswith('/health') or parsed_path == '/health' or parsed_path == '/api/health':
+        if path.endswith('/health') or path == '/health' or path == '/api/health':
             response = {
                 "status": "HEALTHY",
                 "system": "QUANT AI — Multi-Modal Quantitative Intelligence Platform",
@@ -22,7 +50,7 @@ class handler(BaseHTTPRequestHandler):
                 "models_online": 10,
                 "universe": ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "SPY", "QQQ", "TSLA", "META", "JPM"]
             }
-        elif parsed_path.endswith('/signals') or parsed_path == '/signals' or parsed_path == '/api/signals':
+        elif path.endswith('/signals') or path == '/signals' or path == '/api/signals':
             response = {
                 "status": "success",
                 "regime": "BULLISH",
@@ -35,7 +63,7 @@ class handler(BaseHTTPRequestHandler):
                     {"ticker": "GOOGL", "signal": "NEUTRAL",    "alpha": 0.45, "confidence": 0.65, "forecast_5d": 0.0042, "rsi_14": 47.2, "last_close": 172.88}
                 ]
             }
-        elif parsed_path.endswith('/portfolio') or parsed_path == '/portfolio' or parsed_path == '/api/portfolio':
+        elif path.endswith('/portfolio') or path == '/portfolio' or path == '/api/portfolio':
             response = {
                 "status": "success",
                 "portfolio_value": 1024820.0,
@@ -50,7 +78,7 @@ class handler(BaseHTTPRequestHandler):
                     {"ticker": "AMZN", "weight": 0.25, "signal": "BUY"}
                 ]
             }
-        elif parsed_path.endswith('/risk') or parsed_path == '/risk' or parsed_path == '/api/risk':
+        elif path.endswith('/risk') or path == '/risk' or path == '/api/risk':
             response = {
                 "status": "success",
                 "portfolio_value": 1024820.0,
@@ -62,7 +90,7 @@ class handler(BaseHTTPRequestHandler):
                 "beta": 0.94,
                 "risk_gate_status": "RISK CHECK PASSED"
             }
-        elif parsed_path.endswith('/models') or parsed_path == '/models' or parsed_path == '/api/models':
+        elif path.endswith('/models') or path == '/models' or path == '/api/models':
             response = {
                 "status": "success",
                 "models": [
