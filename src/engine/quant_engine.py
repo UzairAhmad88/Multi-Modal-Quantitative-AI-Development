@@ -29,8 +29,19 @@ logger = logging.getLogger("quant_engine")
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_DIR = ROOT / "data" / "raw" / "market"
 MODEL_DIR = ROOT / "data" / "models"
-CACHE_DIR.mkdir(parents=True, exist_ok=True)
-MODEL_DIR.mkdir(parents=True, exist_ok=True)
+
+try:
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+except Exception:
+    import tempfile
+    CACHE_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "market"
+    MODEL_DIR = Path(tempfile.gettempdir()) / "quant_ai" / "models"
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 UNIVERSE = ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "SPY", "QQQ", "TSLA", "META", "JPM"]
 TRAIN_START = "2020-01-01"
@@ -70,7 +81,10 @@ def download_ticker(ticker: str, start: str = TRAIN_START, force: bool = False) 
         raw["ticker"] = ticker
         raw["date"] = pd.to_datetime(raw["date"])
         raw = raw.sort_values("date").reset_index(drop=True)
-        raw.to_parquet(cp, index=False)
+        try:
+            raw.to_parquet(cp, index=False)
+        except Exception:
+            pass
         return raw
     except Exception as e:
         logger.error(f"[{ticker}] Download failed: {e}")
@@ -256,7 +270,10 @@ def train_model(ticker: str, df: pd.DataFrame) -> Dict[str, Any]:
 
     # Persist
     artifact = {"model": model, "scaler": scaler, "features": features}
-    joblib.dump(artifact, MODEL_DIR / f"{ticker}_xgb.joblib")
+    try:
+        joblib.dump(artifact, MODEL_DIR / f"{ticker}_xgb.joblib")
+    except Exception as je:
+        logger.warning(f"[{ticker}] Model save skipped (read-only filesystem): {je}")
 
     return {
         "ticker": ticker,
@@ -385,11 +402,12 @@ class QuantEngine:
             if cached and "signal" in cached:
                 signals.append(cached["signal"])
             else:
-                mp = MODEL_DIR / f"{t}_xgb.joblib"
-                if mp.exists():
-                    df = download_ticker(t)
-                    if not df.empty:
-                        signals.append(predict_ticker(t, df))
+                try:
+                    res = self.run_ticker(t)
+                    if "signal" in res and res["signal"].get("signal") != "NO MODEL":
+                        signals.append(res["signal"])
+                except Exception as e:
+                    logger.warning(f"Failed to generate signal for {t}: {e}")
         return signals
 
     def get_market_chart(self, ticker: str, periods: int = 252) -> Dict[str, Any]:

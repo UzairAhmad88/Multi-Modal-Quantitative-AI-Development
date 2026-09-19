@@ -4,7 +4,9 @@
  * Train → Validate → Predict → Display.
  */
 
-const API = "http://127.0.0.1:8000";
+const API = (typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"))
+    ? "http://127.0.0.1:8000"
+    : "";
 let currentTicker = "AAPL";
 let charts = {};
 let trainedTickers = new Set();
