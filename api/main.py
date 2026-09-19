@@ -112,8 +112,11 @@ for module_name, attr, alias in _OPTIONAL_ROUTERS:
 
 # Serve Frontend static workstation UI (must be mounted LAST so API routes take precedence)
 frontend_path = Path(__file__).resolve().parents[1] / "frontend"
-if frontend_path.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+if frontend_path.exists() and (frontend_path / "index.html").exists():
+    try:
+        app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+    except Exception as e:
+        print(f"StaticFiles mounting warning: {e}")
 
 
 # ── Pydantic Schemas ───────────────────────────────────────────────────────────
