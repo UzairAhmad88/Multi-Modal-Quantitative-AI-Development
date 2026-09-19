@@ -1,74 +1,12 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/health",
-      "dest": "api/index.py"
+      "source": "/(health|market|signals|model|portfolio|risk|backtest|train|models|features|predict|experiments|news|fundamentals)(.*)",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/signals(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/market/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/news/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/fundamentals/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/portfolio(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/risk(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/models",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/features/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/backtest(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/predict(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/train(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/experiments(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "api/index.py"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     }
   ]
 }

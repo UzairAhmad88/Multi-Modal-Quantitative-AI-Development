@@ -133,6 +133,7 @@ class TrainRequest(BaseModel):
 # ── Core Endpoints ─────────────────────────────────────────────────────────────
 
 @app.get("/health", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
 def health_check():
     try:
         engine = get_engine()
@@ -157,6 +158,7 @@ def health_check():
 # ─── MARKET DATA ───────────────────────────────────────────────────────────────
 
 @app.get("/market/{ticker}", tags=["Market Data"])
+@app.get("/api/market/{ticker}", tags=["Market Data"])
 def get_market_data(ticker: str, start: str = "2020-01-01"):
     """Return real OHLCV + technical indicators for the ticker."""
     engine = get_engine()
@@ -222,6 +224,7 @@ def train_single_ticker(ticker: str):
 # ─── SIGNALS ───────────────────────────────────────────────────────────────────
 
 @app.get("/signals", tags=["Alpha Signals"])
+@app.get("/api/signals", tags=["Alpha Signals"])
 def get_alpha_signals():
     """Live alpha signals from XGBoost model predictions on real data."""
     engine = get_engine()
