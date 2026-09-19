@@ -1,6 +1,7 @@
 import os
 import sys
 import tempfile
+import traceback
 from pathlib import Path
 
 # Set writable cache directories for serverless environments (Vercel / AWS Lambda)
@@ -14,7 +15,20 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from api.main import app
+try:
+    from api.main import app
+except Exception as e:
+    print(f"FATAL ERROR IMPORTING APP: {e}", file=sys.stderr)
+    traceback.print_exc()
+    from fastapi import FastAPI
+    app = FastAPI()
 
-# Export app for Vercel Serverless Function
-app = app
+    @app.get("/{full_path:path}")
+    def fallback_error(full_path: str):
+        return {
+            "status": "error",
+            "message": f"Initialization error: {str(e)}",
+            "traceback": traceback.format_exc()
+        }
+
+handler = app
