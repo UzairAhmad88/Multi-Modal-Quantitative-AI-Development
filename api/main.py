@@ -532,8 +532,8 @@ def predict_return(req: PredictionRequest):
 
 
 # Serve Frontend static workstation UI (mounted LAST so all API routes take precedence)
-frontend_path = Path(__file__).resolve().parents[1] / "frontend"
-if frontend_path.exists() and (frontend_path / "index.html").exists():
+frontend_path = Path(__file__).resolve().parents[1]
+if (frontend_path / "index.html").exists():
     try:
         app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
     except Exception as e:
