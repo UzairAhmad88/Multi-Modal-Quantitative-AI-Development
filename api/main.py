@@ -110,14 +110,6 @@ for module_name, attr, alias in _OPTIONAL_ROUTERS:
     except Exception:
         pass  # Non-critical — skip missing routes gracefully
 
-# Serve Frontend static workstation UI (must be mounted LAST so API routes take precedence)
-frontend_path = Path(__file__).resolve().parents[1] / "frontend"
-if frontend_path.exists() and (frontend_path / "index.html").exists():
-    try:
-        app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
-    except Exception as e:
-        print(f"StaticFiles mounting warning: {e}")
-
 
 # ── Pydantic Schemas ───────────────────────────────────────────────────────────
 class PredictionRequest(BaseModel):
@@ -528,3 +520,12 @@ def predict_return(req: PredictionRequest):
         "rsi_14": sig.get("rsi_14", 50),
         "alpha": sig.get("alpha", 0),
     }
+
+
+# Serve Frontend static workstation UI (mounted LAST so all API routes take precedence)
+frontend_path = Path(__file__).resolve().parents[1] / "frontend"
+if frontend_path.exists() and (frontend_path / "index.html").exists():
+    try:
+        app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+    except Exception as e:
+        print(f"StaticFiles mounting warning: {e}")
