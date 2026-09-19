@@ -1,0 +1,15 @@
+.git
+.github
+.pytest_cache
+artifacts
+dashboard
+docs
+logs
+notebooks
+reports
+scripts
+tests
+*.md
+Dockerfile
+docker-compose.yml
+requirements-dev.txt
