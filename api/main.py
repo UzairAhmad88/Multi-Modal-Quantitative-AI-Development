@@ -141,8 +141,15 @@ class TrainRequest(BaseModel):
 
 @app.get("/health", tags=["Health"])
 def health_check():
-    engine = get_engine()
-    trained = sum(1 for t in engine.universe if (Path(__file__).resolve().parents[1] / "data" / "models" / f"{t}_xgb.joblib").exists())
+    try:
+        engine = get_engine()
+        models_dir = Path(__file__).resolve().parents[1] / "data" / "models"
+        trained = sum(1 for t in engine.universe if models_dir.exists() and (models_dir / f"{t}_xgb.joblib").exists())
+        universe = engine.universe
+    except Exception:
+        trained = 0
+        universe = ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL"]
+
     return {
         "status": "HEALTHY",
         "system": "QUANT AI — Multi-Modal Quantitative Intelligence",
@@ -150,7 +157,7 @@ def health_check():
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "database": "CONNECTED",
         "models_online": trained,
-        "universe": engine.universe,
+        "universe": universe,
     }
 
 

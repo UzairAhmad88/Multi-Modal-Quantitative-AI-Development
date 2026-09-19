@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANT AI — Quantitative Research OS & Workstation</title>
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <!-- FontAwesome & Chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+
+    <!-- Shell Container -->
+    <div class="app-shell">
+
+        <!-- Top Command Bar -->
+        <header class="top-bar">
+            <div class="brand">
+                <i class="fa-solid fa-chart-line brand-icon"></i>
+                <span class="brand-title">QUANT AI</span>
+                <span class="brand-subtitle">RESEARCH WORKSTATION v2.5</span>
+            </div>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="globalSearch" placeholder="Search symbol, model, experiment, signal... (e.g. AAPL, NVDA, EXP-001)">
+                <div class="quick-chips">
+                    <span class="chip" onclick="switchTicker('AAPL')">AAPL</span>
+                    <span class="chip" onclick="switchTicker('NVDA')">NVDA</span>
+                    <span class="chip" onclick="switchTicker('MSFT')">MSFT</span>
+                    <span class="chip" onclick="switchTicker('SPY')">SPY</span>
+                </div>
+            </div>
+
+            <div class="command-badges">
+                <span class="badge badge-success" id="badgeMarketData"><i class="fa-solid fa-tower-broadcast"></i> MARKET DATA: LIVE</span>
+                <span class="badge badge-paper" id="badgeExecutionEnv"><i class="fa-solid fa-flask"></i> EXECUTION: PAPER</span>
+                <span class="badge badge-warning" id="badgeRealMoney"><i class="fa-solid fa-lock"></i> REAL MONEY: DISABLED</span>
+                <span class="badge badge-success" id="badgeBroker"><i class="fa-solid fa-plug"></i> BROKER: CONNECTED</span>
+                <span class="badge badge-neutral" id="utcClock">16:00:42 UTC</span>
+                <div class="user-profile">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>QUANT RESEARCHER</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Toast Notification Container -->
+        <div id="toast-container" style="position:fixed;bottom:36px;right:16px;z-index:9999;"></div>
+
+        <!-- Main Body Layout -->
+        <div class="shell-body">
+
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar">
+                <div class="nav-section-title">COMMAND CENTER</div>
+                <ul class="nav-list">
+                    <li class="nav-item active" onclick="navTo('overview', this)"><i class="fa-solid fa-gauge"></i> Overview</li>
+                    <li class="nav-item" onclick="navTo('markets', this)"><i class="fa-solid fa-chart-candlestick"></i> Market Research</li>
+                    <li class="nav-item" onclick="navTo('signals', this)"><i class="fa-solid fa-signal"></i> Signals & Lineage</li>
+                </ul>
+
+                <div class="nav-section-title">INTELLIGENCE & AI</div>
+                <ul class="nav-list">
+                    <li class="nav-item" onclick="navTo('multimodal', this)"><i class="fa-solid fa-network-wired"></i> Multi-Modal AI</li>
+                    <li class="nav-item" onclick="navTo('news', this)"><i class="fa-solid fa-newspaper"></i> News & Sentiment</li>
+                    <li class="nav-item" onclick="navTo('fundamentals', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Fundamentals</li>
+                </ul>
+
+                <div class="nav-section-title">PORTFOLIO & RISK</div>
+                <ul class="nav-list">
+                    <li class="nav-item" onclick="navTo('portfolio', this)"><i class="fa-solid fa-wallet"></i> Portfolio Engine</li>
+                    <li class="nav-item" onclick="navTo('risk', this)"><i class="fa-solid fa-shield-halved"></i> Risk Dashboard</li>
+                    <li class="nav-item" onclick="navTo('backtest', this)"><i class="fa-solid fa-clock-rotate-left"></i> Backtest Engine</li>
+                    <li class="nav-item" onclick="navTo('paper-trading', this)"><i class="fa-solid fa-robot"></i> Paper Trading</li>
+                </ul>
+
+                <div class="nav-section-title">RESEARCH & MLOPS</div>
+                <ul class="nav-list">
+                    <li class="nav-item" onclick="navTo('models', this)"><i class="fa-solid fa-brain"></i> Model Lab</li>
+                    <li class="nav-item" onclick="navTo('features', this)"><i class="fa-solid fa-sliders"></i> Feature Registry</li>
+                    <li class="nav-item" onclick="navTo('experiments', this)"><i class="fa-solid fa-flask"></i> Experiments</li>
+                    <li class="nav-item" onclick="navTo('ablation', this)"><i class="fa-solid fa-layer-group"></i> Modality Ablation</li>
+                    <li class="nav-item" onclick="navTo('robustness', this)"><i class="fa-solid fa-vial-circle-check"></i> Robustness Lab</li>
+                    <li class="nav-item" onclick="navTo('research', this)"><i class="fa-solid fa-lightbulb"></i> Research Workspace</li>
+                    <li class="nav-item" onclick="navTo('data-quality', this)"><i class="fa-solid fa-database"></i> Data Health</li>
+                    <li class="nav-item" onclick="navTo('mlops', this)"><i class="fa-solid fa-diagram-project"></i> MLOps & Drift</li>
+                    <li class="nav-item" onclick="navTo('reports', this)"><i class="fa-solid fa-file-lines"></i> Reports</li>
+                    <li class="nav-item" onclick="navTo('system', this)"><i class="fa-solid fa-server"></i> System Status</li>
+                    <li class="nav-item" onclick="navTo('settings', this)"><i class="fa-solid fa-gear"></i> Settings</li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <span class="status-indicator online"></span> API CONNECTED
+                </div>
+            </aside>
+
+            <!-- Main Workstation View Area -->
+            <main class="main-content">
+
+                <!-- 1. OVERVIEW VIEW -->
+                <section id="view-overview" class="view-panel active">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-gauge text-blue"></i> Quantitative Research Overview</h2>
+                        <span class="text-muted">Regime: <strong class="text-green">BULLISH (72%)</strong> | Volatility: 14.8% | Macro: EXPANSION</span>
+                    </div>
+
+                    <div class="grid-4">
+                        <div class="metric-card">
+                            <div class="metric-label">PORTFOLIO VALUE</div>
+                            <div class="metric-value" id="ov-port-val">$1,024,820</div>
+                            <div class="metric-change positive"><i class="fa-solid fa-arrow-trend-up"></i> +18.42% Total Return</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">ANNUALIZED SHARPE</div>
+                            <div class="metric-value">1.72</div>
+                            <div class="metric-change positive">Sortino Ratio: 2.21</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">VALUE-AT-RISK (95%)</div>
+                            <div class="metric-value text-amber">-1.82%</div>
+                            <div class="metric-change neutral">Max Drawdown: -8.41%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">RISK GATE STATUS</div>
+                            <div class="metric-value text-green"><i class="fa-solid fa-circle-check"></i> PASSED</div>
+                            <div class="metric-change positive">Gross Leverage: 0.83x</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2 mt-4">
+                        <div class="panel">
+                            <h3><i class="fa-solid fa-chart-line text-green"></i> Strategy Equity Curve</h3>
+                            <div class="chart-container">
+                                <canvas id="chart-equity-overview"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <h3><i class="fa-solid fa-pie-chart text-blue"></i> Sector Asset Allocation</h3>
+                            <div class="chart-container">
+                                <canvas id="chart-exposure-overview"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel mt-4">
+                        <h3><i class="fa-solid fa-bolt text-amber"></i> Active Model Signals Summary</h3>
+                        <table class="data-table" id="table-overview-signals">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Signal</th>
+                                    <th>5D Forecast</th>
+                                    <th>Model Confidence</th>
+                                    <th>Alpha Score</th>
+                                    <th>Lineage</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 2. MARKETS VIEW -->
+                <section id="view-markets" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-chart-candlestick text-blue"></i> Stock Market Data & Live Technical Research (<span id="mkt-selected-ticker">AAPL</span>)</h2>
+                        <div class="header-controls" style="display:flex;gap:12px;align-items:center;">
+                            <div class="chart-type-toggle" style="display:flex;gap:4px;background:#161B22;padding:4px;border-radius:6px;border:1px solid #30363D;">
+                                <button id="btnChartCandle" class="btn btn-sm active" style="padding:4px 10px;font-size:12px;" onclick="setChartType('candlestick')"><i class="fa-solid fa-chart-candlestick"></i> Candlestick</button>
+                                <button id="btnChartLine" class="btn btn-sm" style="padding:4px 10px;font-size:12px;background:transparent;color:#8B949E;" onclick="setChartType('line')"><i class="fa-solid fa-chart-line"></i> Line Chart</button>
+                            </div>
+                            <select id="tickerSelect" onchange="switchTicker(this.value)" class="select-input">
+                                <option value="AAPL">AAPL - Apple Inc.</option>
+                                <option value="NVDA">NVDA - NVIDIA Corp.</option>
+                                <option value="MSFT">MSFT - Microsoft Corp.</option>
+                                <option value="AMZN">AMZN - Amazon.com Inc.</option>
+                                <option value="GOOGL">GOOGL - Alphabet Inc.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Stock Market Data API Ingestion Control Bar -->
+                    <div class="panel mb-4" style="background: linear-gradient(135deg, #0D1117 0%, #161B22 100%); border: 1px solid #30363D;">
+                        <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <h3><i class="fa-solid fa-cloud-arrow-down text-cyan"></i> Stock Market Data API Ingestion Engine</h3>
+                            <span class="badge badge-info" id="mkt-api-provider-badge"><i class="fa-solid fa-plug"></i> Yahoo Finance / Alpaca REST API</span>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px;">
+                            <div style="flex:1;min-width:180px;">
+                                <label style="font-size:11px;color:#94A3B8;display:block;margin-bottom:4px;font-weight:600;">STOCK TICKER SYMBOL:</label>
+                                <div style="display:flex;gap:6px;">
+                                    <input type="text" id="mkt-import-symbol" class="select-input" value="AAPL" placeholder="e.g. AAPL, MSFT, TSLA, NVDA" style="text-transform:uppercase;font-weight:bold;letter-spacing:1px;width:100%;" />
+                                </div>
+                            </div>
+                            <div style="min-width:160px;">
+                                <label style="font-size:11px;color:#94A3B8;display:block;margin-bottom:4px;font-weight:600;">DATA PROVIDER API:</label>
+                                <select id="mkt-import-provider" class="select-input">
+                                    <option value="yfinance">Yahoo Finance API (yfinance)</option>
+                                    <option value="alpaca">Alpaca Market Data API</option>
+                                    <option value="auto">Auto-Detect Live API</option>
+                                </select>
+                            </div>
+                            <div style="min-width:140px;">
+                                <label style="font-size:11px;color:#94A3B8;display:block;margin-bottom:4px;font-weight:600;">TIME HORIZON:</label>
+                                <select id="mkt-import-start" class="select-input">
+                                    <option value="2024-01-01">2024 - Present (Daily)</option>
+                                    <option value="2023-01-01">2023 - Present (2 Years)</option>
+                                    <option value="2020-01-01">2020 - Present (5 Years)</option>
+                                </select>
+                            </div>
+                            <div style="margin-top:18px;">
+                                <button id="btn-import-market-data" class="btn btn-primary" onclick="importMarketDataViaApi()" style="padding:8px 16px;font-size:13px;font-weight:600;">
+                                    <i class="fa-solid fa-download"></i> Import Market Data via API
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:12px;">
+                            <span style="color:#94A3B8;font-size:11px;">QUICK SYMBOLS:</span>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('AAPL')">AAPL</button>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('MSFT')">MSFT</button>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('NVDA')">NVDA</button>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('TSLA')">TSLA</button>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('SPY')">SPY</button>
+                            <button class="btn btn-sm" style="padding:2px 8px;font-size:11px;background:#21262D;color:#58A6FF;" onclick="quickImportTicker('AMZN')">AMZN</button>
+                        </div>
+                        <div id="mkt-import-status-banner" style="display:none;margin-top:10px;padding:8px 12px;border-radius:4px;font-size:12px;background:#161B22;border:1px solid #30363D;"></div>
+                    </div>
+
+                    <div class="panel mb-4">
+                        <div class="chart-container" style="height: 360px;">
+                            <canvas id="chart-market-candlestick"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- AI Decision & Next Step Engine Card -->
+                    <div class="panel mb-4" id="ai-decision-card">
+                        <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <h3><i class="fa-solid fa-brain text-purple"></i> AI Predictive Decision & Next Action Engine</h3>
+                            <span class="badge badge-success" id="ai-accuracy-badge"><i class="fa-solid fa-bullseye"></i> Real-Time Accuracy: 84.8% OOS</span>
+                        </div>
+                        <div class="grid-3 mt-2">
+                            <div class="metric-card" style="border-left:4px solid #10B981;">
+                                <div class="metric-label">RECOMMENDED NEXT ACTION</div>
+                                <div class="metric-value text-green" id="ai-next-action">STRONG BUY</div>
+                                <div class="metric-change positive" id="ai-forecast-detail">Forecast: +2.85% (5D) | Conviction: 88.5%</div>
+                            </div>
+                            <div class="metric-card" style="border-left:4px solid #3B82F6;">
+                                <div class="metric-label">TARGET POSITION WEIGHT</div>
+                                <div class="metric-value" id="ai-target-weight">15.0% ($15,000)</div>
+                                <div class="metric-change neutral" id="ai-risk-reward">Risk-Reward Ratio: 1.54</div>
+                            </div>
+                            <div class="metric-card" style="border-left:4px solid #F59E0B;">
+                                <div class="metric-label">RISK BOUNDARIES</div>
+                                <div class="metric-value" style="font-size:16px;" id="ai-risk-bounds">Stop: $218.00 | Target: $234.50</div>
+                                <div class="metric-change neutral" id="ai-ensemble-consensus">Consensus: 5/6 Models Agree</div>
+                            </div>
+                        </div>
+                        <div class="mt-3" style="background:#0D1117;padding:12px;border-radius:6px;border:1px solid #1E2630;">
+                            <strong style="color:#94A3B8;font-size:11px;letter-spacing:0.5px;">MODEL ENSEMBLE CONSENSUS BREAKDOWN:</strong>
+                            <div id="ensemble-breakdown-grid" style="display:grid;grid-template-columns:repeat(6, 1fr);gap:8px;margin-top:8px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technical Indicators Grid (RSI, MACD, Stochastic Oscillator) -->
+                    <div class="grid-3 mb-4">
+                        <div class="panel">
+                            <div class="panel-header"><h3><i class="fa-solid fa-gauge-high text-amber"></i> RSI (14)</h3></div>
+                            <div class="chart-container" style="height:140px;">
+                                <canvas id="chart-rsi"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header"><h3><i class="fa-solid fa-wave-square text-blue"></i> MACD</h3></div>
+                            <div class="chart-container" style="height:140px;">
+                                <canvas id="chart-macd"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+                                <h3><i class="fa-solid fa-chart-area text-purple"></i> Stochastic Oscillator (%K, %D)</h3>
+                                <span class="badge" id="stoch-condition-badge" style="background:#21262D;color:#38BDF8;font-size:10px;">NEUTRAL</span>
+                            </div>
+                            <div class="chart-container" style="height:140px;">
+                                <canvas id="chart-stoch"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. SIGNALS & LINEAGE VIEW -->
+                <section id="view-signals" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-signal text-green"></i> Signal Center & Provenance Lineage</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <table class="data-table" id="table-signals-full">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Horizon</th>
+                                    <th>Signal</th>
+                                    <th>5D Forecast</th>
+                                    <th>Confidence</th>
+                                    <th>Alpha Score</th>
+                                    <th>Regime</th>
+                                    <th>Provenance</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="panel" id="signal-lineage-card" style="display:none;">
+                        <h3><i class="fa-solid fa-diagram-next text-purple"></i> Signal Traceability Lineage Chain (<span id="lineage-target-id">SIG-001</span>)</h3>
+                        <ul class="lineage-list" id="lineage-chain-list"></ul>
+                    </div>
+                </section>
+
+                <!-- 4. MULTI-MODAL VIEW -->
+                <section id="view-multimodal" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-network-wired text-purple"></i> Multi-Modal AI Fusion Analysis</h2>
+                    </div>
+                    <div class="panel">
+                        <div class="chart-container">
+                            <canvas id="chart-multimodal-bars"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. NEWS & SENTIMENT VIEW -->
+                <section id="view-news" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-newspaper text-amber"></i> News Sentiment & NLP Stream</h2>
+                    </div>
+                    <div class="panel">
+                        <table class="data-table" id="table-news-full">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Symbol</th>
+                                    <th>Source</th>
+                                    <th>Headline</th>
+                                    <th>FinBERT Sentiment</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 6. FUNDAMENTALS VIEW -->
+                <section id="view-fundamentals" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-file-invoice-dollar text-green"></i> Fundamental Statement Analysis</h2>
+                    </div>
+                    <div class="panel">
+                        <table class="data-table" id="table-fundamentals-full">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Quarter End</th>
+                                    <th>Release Date</th>
+                                    <th>Revenue</th>
+                                    <th>EPS</th>
+                                    <th>ROE</th>
+                                    <th>P/E</th>
+                                    <th>P/B</th>
+                                    <th>Free Cash Flow</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 7. PORTFOLIO VIEW -->
+                <section id="view-portfolio" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-wallet text-blue"></i> Portfolio Construction & Allocations</h2>
+                    </div>
+                    <div class="panel">
+                        <table class="data-table" id="table-portfolio-full">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Current Weight</th>
+                                    <th>Target Weight</th>
+                                    <th>Delta</th>
+                                    <th>Rebalance Action</th>
+                                    <th>Sharpe (OOS)</th>
+                                    <th>CAGR (OOS)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 8. RISK VIEW -->
+                <section id="view-risk" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-shield-halved text-red"></i> Risk Engine & Limits Dashboard</h2>
+                    </div>
+                    <div class="grid-4 mb-4">
+                        <div class="metric-card"><div class="metric-label">VOLATILITY (ANN)</div><div class="metric-value">14.8%</div></div>
+                        <div class="metric-card"><div class="metric-label">VAR (95%)</div><div class="metric-value text-amber">-1.82%</div></div>
+                        <div class="metric-card"><div class="metric-label">EXPECTED SHORTFALL</div><div class="metric-value text-red">-2.74%</div></div>
+                        <div class="metric-card"><div class="metric-label">PORTFOLIO BETA</div><div class="metric-value">0.94</div></div>
+                    </div>
+                </section>
+
+                <!-- 9. BACKTEST VIEW -->
+                <section id="view-backtest" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-clock-rotate-left text-green"></i> Event-Driven Backtesting Engine</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <button class="btn btn-primary" onclick="runBacktestUI()"><i class="fa-solid fa-play"></i> Execute Backtest Simulation</button>
+                    </div>
+                    <div class="panel">
+                        <div class="chart-container">
+                            <canvas id="chart-backtest-equity"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. PAPER TRADING VIEW -->
+                <section id="view-paper-trading" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-robot text-purple"></i> Paper-Trading Order Execution Workstation</h2>
+                        <span class="badge badge-paper"><i class="fa-solid fa-flask"></i> SIMULATION ONLY</span>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="paper-session-summary">Loading paper session status...</div>
+                    </div>
+                    <div class="panel">
+                        <h3>Open Paper Orders & Fills</h3>
+                        <table class="data-table" id="table-paper-orders">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Symbol</th>
+                                    <th>Side</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Fill Price</th>
+                                    <th>Slippage</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 11. MODEL LAB VIEW -->
+                <section id="view-models" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-brain text-purple"></i> Model Registry & Architecture Lab</h2>
+                    </div>
+                    <div class="panel">
+                        <table class="data-table" id="table-models-full">
+                            <thead>
+                                <tr>
+                                    <th>Model Name</th>
+                                    <th>Version</th>
+                                    <th>Status</th>
+                                    <th>Sharpe (OOS)</th>
+                                    <th>CAGR (OOS)</th>
+                                    <th>Dir. Accuracy</th>
+                                    <th>OOS n</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 12. FEATURE REGISTRY VIEW -->
+                <section id="view-features" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-sliders text-blue"></i> Feature Store & Permutation Importance</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="feature-groups-container">Loading feature registry...</div>
+                    </div>
+                </section>
+
+                <!-- 13. EXPERIMENTS VIEW -->
+                <section id="view-experiments" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-flask text-green"></i> Experiment Tracking & Registry</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="experiments-list-container">Loading registered experiments...</div>
+                    </div>
+                </section>
+
+                <!-- 14. ABLATION VIEW -->
+                <section id="view-ablation" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-layer-group text-blue"></i> Feature Modality Ablation Study</h2>
+                    </div>
+                    <div class="panel">
+                        <div class="chart-container">
+                            <canvas id="chart-ablation-bar"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 15. ROBUSTNESS VIEW -->
+                <section id="view-robustness" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-vial-circle-check text-amber"></i> Parameter & Regime Robustness Stress</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="robustness-matrix-container">Loading robustness stress parameters...</div>
+                    </div>
+                </section>
+
+                <!-- 16. RESEARCH WORKSPACE VIEW -->
+                <section id="view-research" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-lightbulb text-purple"></i> Research Intelligence Workspace</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="research-overview-container">Loading research workspace metrics...</div>
+                    </div>
+                </section>
+
+                <!-- 17. DATA QUALITY VIEW -->
+                <section id="view-data-quality" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-database text-green"></i> Data Quality & Feed Health</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="data-health-container">Loading data health indicators...</div>
+                    </div>
+                </section>
+
+                <!-- 18. MLOPS VIEW -->
+                <section id="view-mlops" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-diagram-project text-blue"></i> MLOps Drift & Registry Control</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="mlops-container">Monitoring prediction and feature drift...</div>
+                    </div>
+                </section>
+
+                <!-- 19. REPORTS VIEW -->
+                <section id="view-reports" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-file-lines text-green"></i> Research Reports & Exports</h2>
+                    </div>
+                    <div class="panel mb-4">
+                        <div id="reports-list-container">Loading reports directory...</div>
+                    </div>
+                    <div class="panel" id="report-content-panel" style="display:none;">
+                        <h3 id="report-content-title">Report Content</h3>
+                        <pre id="report-content-body" style="background:#0F172A; padding:1rem; border-radius:6px; color:#E2E8F0; white-space:pre-wrap;"></pre>
+                    </div>
+                </section>
+
+                <!-- 20. SYSTEM HEALTH VIEW -->
+                <section id="view-system" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-server text-blue"></i> System Health & Service Status</h2>
+                    </div>
+                    <div class="panel">
+                        <div id="system-health-status">Checking services...</div>
+                    </div>
+                </section>
+
+                <!-- 21. SETTINGS VIEW -->
+                <section id="view-settings" class="view-panel">
+                    <div class="view-header">
+                        <h2><i class="fa-solid fa-gear text-muted"></i> Workstation Settings & Safety Controls</h2>
+                    </div>
+                    <div class="panel">
+                        <div class="setting-item">
+                            <strong>Paper Trading Environment:</strong> <span class="badge badge-success">ACTIVE</span>
+                        </div>
+                        <div class="setting-item mt-2">
+                            <strong>Live Real-Money Execution:</strong> <span class="badge badge-warning">HARD-DISABLED</span>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- Terminal System Footer Bar -->
+        <footer class="bottom-terminal">
+            <div class="terminal-item"><span class="dot green"></span> MARKET DATA: LIVE</div>
+            <div class="terminal-item"><span class="dot green"></span> NEWS PIPELINE: LIVE</div>
+            <div class="terminal-item"><span class="dot green"></span> FUNDAMENTALS: UPDATED</div>
+            <div class="terminal-item"><span class="dot green"></span> FEATURE STORE: READY</div>
+            <div class="terminal-item"><span class="dot green"></span> ML MODELS: ONLINE</div>
+            <div class="terminal-item"><span class="dot green"></span> RISK ENGINE: NORMAL</div>
+            <div class="terminal-item"><span class="dot green"></span> BACKTEST ENGINE: READY</div>
+            <div class="terminal-item"><span class="dot green"></span> DATABASE: CONNECTED</div>
+        </footer>
+
+    </div>
+
+    <!-- Live Execution Confirmation Modal -->
+    <div id="liveModal" class="modal-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;">
+        <div class="modal-content" style="background:#161b22;border:2px solid #da3633;border-radius:8px;padding:24px;max-width:550px;color:#f0f6fc;box-shadow:0 0 30px rgba(218,54,51,0.5);">
+            <div class="modal-header" style="display:flex;align-items:center;gap:12px;color:#f85149;font-size:20px;font-weight:bold;margin-bottom:16px;">
+                <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+                <span>ENABLE CONTROLLED LIVE TRADING</span>
+            </div>
+            <div class="modal-body" style="font-size:14px;line-height:1.6;color:#8b949e;">
+                <p style="color:#f0f6fc;font-weight:600;margin-bottom:12px;">WARNING: You are about to authorize real order submission to the connected brokerage account.</p>
+                <ul style="background:#0d1117;padding:12px 16px 12px 32px;border-radius:6px;border-left:4px solid #da3633;margin-bottom:16px;">
+                    <li>Target Environment: <strong style="color:#f85149;">LIVE REAL-MONEY EXECUTION</strong></li>
+                    <li>Connected Broker: <strong style="color:#f0f6fc;" id="modalBrokerName">Alpaca Live Broker</strong></li>
+                    <li>Pre-Trade Risk Engine: <strong style="color:#3fb950;">ACTIVE (HARD OVERRIDE)</strong></li>
+                    <li>Max Position Cap: <strong style="color:#f0f6fc;">30.0% ($30,000)</strong></li>
+                    <li>Max Daily Loss: <strong style="color:#f0f6fc;">5.0% ($5,000)</strong></li>
+                </ul>
+                <div style="margin-bottom:16px;">
+                    <label style="display:block;font-size:12px;margin-bottom:4px;color:#c9d1d9;">Single-Use Confirmation Token:</label>
+                    <input type="text" id="liveTokenInput" placeholder="Click 'Request Token' or paste token..." style="width:100%;padding:8px 12px;background:#0d1117;border:1px solid #30363d;color:#f0f6fc;border-radius:4px;">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+                    <input type="checkbox" id="userAckCheck">
+                    <label for="userAckCheck" style="font-size:12px;color:#c9d1d9;">I confirm that orders will be dispatched to real markets.</label>
+                </div>
+            </div>
+            <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:12px;">
+                <button onclick="requestLiveTokenUI()" style="padding:8px 16px;background:#21262d;border:1px solid #30363d;color:#c9d1d9;border-radius:4px;cursor:pointer;">Get Token</button>
+                <button onclick="closeLiveModal()" style="padding:8px 16px;background:#21262d;border:1px solid #30363d;color:#c9d1d9;border-radius:4px;cursor:pointer;">Cancel</button>
+                <button onclick="confirmLiveEnablementUI()" style="padding:8px 16px;background:#da3633;border:none;color:#ffffff;border-radius:4px;font-weight:bold;cursor:pointer;">ENABLE LIVE TRADING</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script src="frontend/js/api.js"></script>
+    <script src="frontend/js/app.js"></script>
+</body>
+</html>
