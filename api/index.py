@@ -16,19 +16,16 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 try:
-    from api.main import app
+    from api.main import app as main_app
+    app = main_app
 except Exception as e:
-    print(f"FATAL ERROR IMPORTING APP: {e}", file=sys.stderr)
-    traceback.print_exc()
     from fastapi import FastAPI
     app = FastAPI()
+    err_msg = str(e)
+    tb_msg = traceback.format_exc()
 
-    @app.get("/{full_path:path}")
-    def fallback_error(full_path: str):
-        return {
-            "status": "error",
-            "message": f"Initialization error: {str(e)}",
-            "traceback": traceback.format_exc()
-        }
+    @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"])
+    def fallback(full_path: str):
+        return {"status": "error", "error": err_msg, "traceback": tb_msg}
 
 handler = app
