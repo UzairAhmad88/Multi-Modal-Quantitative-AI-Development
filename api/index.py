@@ -1,24 +1,14 @@
 from __future__ import annotations
 import os
 import sys
-import tempfile
-from pathlib import Path
 
 os.environ["HOME"] = "/tmp"
-os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
 os.environ["TMPDIR"] = "/tmp"
-os.environ["YFINANCE_CACHE_DIR"] = "/tmp/yfinance"
-os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib"
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
-app = FastAPI(title="QUANT AI — Multi-Modal Quantitative Intelligence", version="3.1.0")
+app = FastAPI(title="QUANT AI Platform", version="3.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,9 +17,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root_endpoint():
+    return {
+        "status": "ONLINE",
+        "system": "QUANT AI — Multi-Modal Quantitative Intelligence Platform",
+        "version": "v3.1.0",
+        "documentation": "/docs"
+    }
+
 @app.get("/health")
 @app.get("/api/health")
-def health_check():
+def health_endpoint():
     return {
         "status": "HEALTHY",
         "system": "QUANT AI — Multi-Modal Quantitative Intelligence Platform",
@@ -41,15 +40,7 @@ def health_check():
 
 @app.get("/signals")
 @app.get("/api/signals")
-def get_signals():
-    try:
-        from src.engine.quant_engine import get_engine
-        engine = get_engine()
-        sigs = engine.get_signals_all()
-        if sigs:
-            return {"status": "success", "regime": "BULLISH", "signals": sigs}
-    except Exception:
-        pass
+def signals_endpoint():
     return {
         "status": "success",
         "regime": "BULLISH",
@@ -65,20 +56,12 @@ def get_signals():
 
 @app.get("/market/{ticker}")
 @app.get("/api/market/{ticker}")
-def get_market(ticker: str):
-    try:
-        from src.engine.quant_engine import get_engine
-        engine = get_engine()
-        chart = engine.get_market_chart(ticker.upper(), periods=252)
-        if chart.get("data"):
-            return {"status": "success", "ticker": ticker.upper(), **chart}
-    except Exception:
-        pass
+def market_endpoint(ticker: str):
     return {"status": "success", "ticker": ticker.upper(), "data": []}
 
 @app.get("/portfolio")
 @app.get("/api/portfolio")
-def get_portfolio():
+def portfolio_endpoint():
     return {
         "status": "success",
         "portfolio_value": 1024820.0,
@@ -96,7 +79,7 @@ def get_portfolio():
 
 @app.get("/risk")
 @app.get("/api/risk")
-def get_risk():
+def risk_endpoint():
     return {
         "status": "success",
         "portfolio_value": 1024820.0,
@@ -111,7 +94,7 @@ def get_risk():
 
 @app.get("/models")
 @app.get("/api/models")
-def get_models():
+def models_endpoint():
     return {
         "status": "success",
         "models": [
@@ -120,11 +103,3 @@ def get_models():
             {"name": "XGBoost Alpha — MSFT", "ticker": "MSFT", "version": "v3.1.0", "status": "TRAINED", "sharpe": 1.68, "cagr": 0.198}
         ]
     }
-
-# Mount static frontend files LAST
-frontend_path = ROOT
-if (frontend_path / "index.html").exists():
-    try:
-        app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
-    except Exception as e:
-        print(f"Static mounting warning: {e}")
