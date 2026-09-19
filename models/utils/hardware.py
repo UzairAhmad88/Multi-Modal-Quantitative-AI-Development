@@ -4,7 +4,10 @@ Detects CUDA GPU availability with safe CPU fallback.
 """
 
 from typing import Dict, Any
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 import psutil
 
 
@@ -13,8 +16,8 @@ class HardwareDetector:
 
     @staticmethod
     def get_device_info() -> Dict[str, Any]:
-        cuda_available = torch.cuda.is_available()
-        device_name = torch.cuda.get_device_name(0) if cuda_available else "CPU"
+        cuda_available = torch.cuda.is_available() if torch is not None else False
+        device_name = torch.cuda.get_device_name(0) if cuda_available and torch is not None else "CPU"
         cpu_count = psutil.cpu_count(logical=True)
         ram_gb = round(psutil.virtual_memory().total / (1024 ** 3), 1)
 

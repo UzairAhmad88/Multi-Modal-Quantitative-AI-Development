@@ -6,7 +6,10 @@ Automates model training, seed fixing, device detection, checkpoint saving, metr
 from typing import Dict, Any, Optional
 import time
 import os
-import torch
+try:
+    import torch
+except ImportError:
+    torch = None
 import numpy as np
 import pandas as pd
 from pathlib import Path

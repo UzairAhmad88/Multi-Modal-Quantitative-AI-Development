@@ -11,10 +11,14 @@ from models.factory.base_interface import BaseQuantModel
 from src.models.ml.logistic_model import QuantLinearModel
 from src.models.ml.random_forest import QuantRandomForestModel
 from src.models.ml.xgboost_model import QuantXGBoostModel
-from src.models.dl.lstm import LSTMModel
-from src.models.dl.gru import GRUModel
-from src.models.dl.transformer import TransformerModel
-from src.models.dl.multi_modal import MultiModalQuantNet
+
+try:
+    from src.models.dl.lstm import LSTMModel
+    from src.models.dl.gru import GRUModel
+    from src.models.dl.transformer import TransformerModel
+    from src.models.dl.multi_modal import MultiModalQuantNet
+except ImportError:
+    LSTMModel = GRUModel = TransformerModel = MultiModalQuantNet = None
 
 
 class ModelWrapper(BaseQuantModel):
