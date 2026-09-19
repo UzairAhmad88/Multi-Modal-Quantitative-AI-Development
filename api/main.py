@@ -21,25 +21,25 @@ from src.engine.quant_engine import get_engine, download_ticker, train_model
 
 # ── Legacy route routers (retained from earlier phases) ────────────────────────
 try:
-    from api.routes.research import router as research_router
+    from src.api_routes.research import router as research_router
     _has_research = True
 except Exception:
     _has_research = False
 
 try:
-    from api.routes.realtime import router as realtime_router
+    from src.api_routes.realtime import router as realtime_router
     _has_realtime = True
 except Exception:
     _has_realtime = False
 
 try:
-    from api.routes.portfolio_routes import router as portfolio_router
+    from src.api_routes.portfolio_routes import router as portfolio_router
     _has_portfolio_r = True
 except Exception:
     _has_portfolio_r = False
 
 try:
-    from api.routes.mlops import router as mlops_router
+    from src.api_routes.mlops import router as mlops_router
     _has_mlops = True
 except Exception:
     _has_mlops = False
@@ -72,30 +72,30 @@ if _has_mlops:
 
 # Include optional domain routers safely
 _OPTIONAL_ROUTERS = [
-    ("api.routes.research_intelligence_routes",     "router", "research_intelligence_router"),
-    ("api.routes.validation_routes",                "router", "validation_router"),
-    ("api.routes.orchestration_routes",             "router", "orchestration_router"),
-    ("api.routes.research_intelligence_v2_routes",  "router", "research_intelligence_v2_router"),
-    ("api.routes.model_factory_routes",             "router", "model_factory_router"),
-    ("api.routes.data_platform_routes",             "router", "data_platform_router"),
-    ("api.routes.portfolio_optimization_routes",    "router", "portfolio_optimization_router"),
-    ("api.routes.execution_routes",                 "router", "execution_router"),
-    ("api.routes.research_evaluation_routes",       "router", "research_evaluation_router"),
-    ("api.routes.research_lab_routes",              "router", "research_lab_router"),
-    ("api.routes.orchestrator_routes",              "router", "orchestrator_router"),
-    ("api.routes.knowledge_routes",                 "router", "knowledge_router"),
-    ("api.routes.portfolio_construction_routes",    "router", "portfolio_construction_router"),
-    ("api.routes.risk_engine_routes",               "router", "risk_engine_router"),
-    ("api.routes.walk_forward_validation_routes",   "router", "walk_forward_validation_router"),
-    ("api.routes.monitoring_routes",                "router", "monitoring_router"),
-    ("api.routes.pipeline_routes",                  "router", "pipeline_router"),
+    ("src.api_routes.research_intelligence_routes",     "router", "research_intelligence_router"),
+    ("src.api_routes.validation_routes",                "router", "validation_router"),
+    ("src.api_routes.orchestration_routes",             "router", "orchestration_router"),
+    ("src.api_routes.research_intelligence_v2_routes",  "router", "research_intelligence_v2_router"),
+    ("src.api_routes.model_factory_routes",             "router", "model_factory_router"),
+    ("src.api_routes.data_platform_routes",             "router", "data_platform_router"),
+    ("src.api_routes.portfolio_optimization_routes",    "router", "portfolio_optimization_router"),
+    ("src.api_routes.execution_routes",                 "router", "execution_router"),
+    ("src.api_routes.research_evaluation_routes",       "router", "research_evaluation_router"),
+    ("src.api_routes.research_lab_routes",              "router", "research_lab_router"),
+    ("src.api_routes.orchestrator_routes",              "router", "orchestrator_router"),
+    ("src.api_routes.knowledge_routes",                 "router", "knowledge_router"),
+    ("src.api_routes.portfolio_construction_routes",    "router", "portfolio_construction_router"),
+    ("src.api_routes.risk_engine_routes",               "router", "risk_engine_router"),
+    ("src.api_routes.walk_forward_validation_routes",   "router", "walk_forward_validation_router"),
+    ("src.api_routes.monitoring_routes",                "router", "monitoring_router"),
+    ("src.api_routes.pipeline_routes",                  "router", "pipeline_router"),
 ]
 
 import importlib
 
 # Explicitly register key quantitative data platform router
 try:
-    from api.routes.data_platform_routes import router as data_platform_router
+    from src.api_routes.data_platform_routes import router as data_platform_router
     app.include_router(data_platform_router)
     app.include_router(data_platform_router, prefix="/api")
 except Exception as ex:
