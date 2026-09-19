@@ -56,7 +56,7 @@ try:
 except Exception:
     pass
 
-UNIVERSE = ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "SPY", "QQQ", "TSLA", "META", "JPM"]
+UNIVERSE = ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL", "SPY", "QQQ", "TSLA", "META", "JPM", "XAUUSD"]
 TRAIN_START = "2020-01-01"
 HORIZON = 5  # 5-day forward return prediction
 
@@ -69,7 +69,9 @@ def _cache_path(ticker: str) -> Path:
 
 def download_ticker(ticker: str, start: str = TRAIN_START, force: bool = False) -> pd.DataFrame:
     """Download OHLCV data from yfinance with same-day caching."""
-    cp = _cache_path(ticker)
+    ticker_clean = ticker.upper().strip()
+    yf_symbol = "GC=F" if ticker_clean in ("XAUUSD", "GOLD", "XAU") else ticker_clean
+    cp = _cache_path(ticker_clean)
     today = datetime.utcnow().date()
 
     if cp.exists() and not force:
@@ -81,9 +83,9 @@ def download_ticker(ticker: str, start: str = TRAIN_START, force: bool = False) 
                 pass
 
     try:
-        raw = yf.download(ticker, start=start, auto_adjust=True, progress=False)
+        raw = yf.download(yf_symbol, start=start, auto_adjust=True, progress=False)
         if raw.empty:
-            raise ValueError(f"yfinance returned empty for {ticker}")
+            raise ValueError(f"yfinance returned empty for {yf_symbol}")
         raw = raw.reset_index()
         # Flatten MultiIndex columns (yfinance 0.2+ returns MultiIndex)
         if isinstance(raw.columns, pd.MultiIndex):
@@ -91,7 +93,7 @@ def download_ticker(ticker: str, start: str = TRAIN_START, force: bool = False) 
         raw.columns = [str(c).lower().replace(" ", "_") for c in raw.columns]
         if "close" not in raw.columns and "adj_close" in raw.columns:
             raw["close"] = raw["adj_close"]
-        raw["ticker"] = ticker
+        raw["ticker"] = ticker_clean
         raw["date"] = pd.to_datetime(raw["date"])
         raw = raw.sort_values("date").reset_index(drop=True)
         try:
@@ -100,7 +102,7 @@ def download_ticker(ticker: str, start: str = TRAIN_START, force: bool = False) 
             pass
         return raw
     except Exception as e:
-        logger.error(f"[{ticker}] Download failed: {e}")
+        logger.error(f"[{ticker_clean}] Download failed: {e}")
         # Try loading stale cache
         if cp.exists():
             try:
