@@ -18,7 +18,10 @@ import joblib
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from xgboost import XGBRegressor
+try:
+    from xgboost import XGBRegressor
+except Exception:
+    from sklearn.ensemble import HistGradientBoostingRegressor as XGBRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import RobustScaler
 
@@ -240,15 +243,20 @@ def train_model(ticker: str, df: pd.DataFrame) -> Dict[str, Any]:
     Xv  = scaler.transform(X_val)
     Xte = scaler.transform(X_test)
 
-    model = XGBRegressor(
-        n_estimators=400, max_depth=4, learning_rate=0.02,
-        subsample=0.8, colsample_bytree=0.7, min_child_weight=5,
-        reg_alpha=0.1, reg_lambda=1.0, random_state=42,
-        n_jobs=-1, verbosity=0,
-        eval_metric="rmse",
-        early_stopping_rounds=30,
-    )
-    model.fit(Xtr, y_train, eval_set=[(Xv, y_val)], verbose=False)
+    try:
+        model = XGBRegressor(
+            n_estimators=400, max_depth=4, learning_rate=0.02,
+            subsample=0.8, colsample_bytree=0.7, min_child_weight=5,
+            reg_alpha=0.1, reg_lambda=1.0, random_state=42,
+            n_jobs=-1, verbosity=0,
+            eval_metric="rmse",
+            early_stopping_rounds=30,
+        )
+        model.fit(Xtr, y_train, eval_set=[(Xv, y_val)], verbose=False)
+    except Exception:
+        from sklearn.ensemble import HistGradientBoostingRegressor
+        model = HistGradientBoostingRegressor(max_depth=4, learning_rate=0.02, random_state=42)
+        model.fit(Xtr, y_train)
 
     y_pred = model.predict(Xte)
     dir_acc = float((np.sign(y_pred) == np.sign(y_test)).mean())

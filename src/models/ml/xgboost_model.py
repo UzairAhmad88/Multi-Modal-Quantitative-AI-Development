@@ -4,7 +4,10 @@ from pathlib import Path
 from typing import Any, Dict
 import numpy as np
 import pandas as pd
-from xgboost import XGBRegressor, XGBClassifier
+try:
+    from xgboost import XGBRegressor, XGBClassifier
+except Exception:
+    from sklearn.ensemble import HistGradientBoostingRegressor as XGBRegressor, HistGradientBoostingClassifier as XGBClassifier
 from src.models.base_model import BaseModel
 from src.utils.logger import get_logger
 
