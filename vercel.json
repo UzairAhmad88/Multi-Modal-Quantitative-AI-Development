@@ -1,12 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/css/(.*)",
-      "destination": "/frontend/css/$1"
-    },
-    {
-      "source": "/js/(.*)",
-      "destination": "/frontend/js/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     },
     {
       "source": "/health",
@@ -82,10 +78,6 @@
     },
     {
       "source": "/predict",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/api/(.*)",
       "destination": "/api/index.py"
     }
   ]
