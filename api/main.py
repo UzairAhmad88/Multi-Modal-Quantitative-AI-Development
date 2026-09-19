@@ -100,24 +100,16 @@ _OPTIONAL_ROUTERS = [
     ("src.api_routes.pipeline_routes",                  "router", "pipeline_router"),
 ]
 
-import importlib
-
-# Explicitly register key quantitative data platform router
-try:
-    from src.api_routes.data_platform_routes import router as data_platform_router
-    app.include_router(data_platform_router)
-    app.include_router(data_platform_router, prefix="/api")
-except Exception as ex:
-    print(f"Data platform router import warning: {ex}")
-
-for module_name, attr, alias in _OPTIONAL_ROUTERS:
-    try:
-        mod = importlib.import_module(module_name)
-        r = getattr(mod, attr)
-        app.include_router(r)
-        app.include_router(r, prefix="/api")
-    except Exception:
-        pass  # Non-critical — skip missing routes gracefully
+# Include optional domain routers only when NOT running on serverless to prevent cold-start timeout
+if not (os.environ.get("VERCEL") == "1" or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+    for module_name, attr, alias in _OPTIONAL_ROUTERS:
+        try:
+            import importlib
+            mod = importlib.import_module(module_name)
+            r = getattr(mod, attr)
+            app.include_router(r)
+        except Exception:
+            pass
 
 
 # ── Pydantic Schemas ───────────────────────────────────────────────────────────

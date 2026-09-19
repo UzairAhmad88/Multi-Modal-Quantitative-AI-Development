@@ -7,7 +7,6 @@ IC decay, quantile spread returns, and factor neutralization.
 from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
-from scipy import stats
 
 
 class FactorAnalyzer:
